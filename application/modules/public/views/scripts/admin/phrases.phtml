@@ -1,0 +1,362 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<!-- Apple devices fullscreen -->
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<!-- Apple devices fullscreen -->
+		<meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		
+		<title><?php echo SITE_NAME; ?> <?php echo translate('admin'); ?> &mdash; <?php echo translate('site_phrases'); ?></title>
+		
+	    <?php if( !empty( $_SESSION['site']['phrases'] ) ): ?>    
+	    	<script type="text/javascript">
+	    		var SITE_PHRASES = new Array();
+				<?php foreach( $_SESSION['site']['phrases'] AS $key => $value ): ?>
+					SITE_PHRASES['<?php echo $key; ?>'] = '<?php echo addslashes( str_replace( "\r\n", '<br>', $value ) ); ?>';
+				<?php endforeach; ?>
+	    	</script>
+	    <?php endif; ?>		
+			    		   	    
+		<script type="text/javascript">
+			var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+			var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_ADMIN_PRELOADER_IMAGE_PATH; ?>';
+			var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['username']; ?>';
+			var SITE_NAME				= '<?php echo SITE_NAME; ?>';			
+			var CURRENT_USER			= new Array();	
+					
+			<?php foreach( $_SESSION['user'] AS $key => $value ): ?>
+				CURRENT_USER['<?php echo $key; ?>'] = '<?php echo $value; ?>';
+			<?php endforeach; ?>
+		</script>		
+	
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/bootstrap.min.css">
+		<!-- Bootstrap responsive -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/bootstrap-responsive.min.css">
+		<!-- jQuery UI -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/plugins/jquery-ui/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/plugins/jquery-ui/smoothness/jquery.ui.theme.css">
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/style.css">
+		<!-- Color CSS -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/themes.css">
+
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js?<?php echo rand(); ?>"></script>
+		<!-- jQuery -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.8.3.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/bootstrap.min.js"></script>		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jQuery.equalHeights.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+		<!-- imagesLoaded -->		
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/imagesLoaded/jquery.imagesloaded.min.js"></script>		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/img-preload.js?<?php echo rand(); ?>"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/jquery.blockUI.defaults.js?<?php echo rand(); ?>"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
+		
+		<!-- Nice Scroll -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+		<!-- jQuery UI -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/jquery-ui/jquery.ui.core.min.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/jquery-ui/jquery.ui.widget.min.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/jquery-ui/jquery.ui.mouse.min.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/jquery-ui/jquery.ui.draggable.min.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/jquery-ui/jquery.ui.resizable.min.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/jquery-ui/jquery.ui.sortable.min.js"></script>
+		<!-- Touch enable for jquery UI -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/touch-punch/jquery.touch-punch.min.js"></script>
+		<!-- slimScroll -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		<!-- Bootbox -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/bootbox/jquery.bootbox.js"></script>
+	
+		<!-- Theme framework -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/eakroko.min.js"></script>
+		<!-- Theme scripts -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/application.js"></script>
+		<!-- Just for demonstration -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/demonstration.min.js"></script>
+	
+		<!--[if lte IE 9]>
+			<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/placeholder/jquery.placeholder.min.js"></script>
+			<script>
+				$(document).ready(function() {
+					$('input, textarea').placeholder();
+				});
+			</script>
+		<![endif]-->
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/favicon.ico" />
+		<!-- Apple devices Homescreen icon -->
+		<link rel="apple-touch-icon-precomposed" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/apple-touch-icon-precomposed.png" />
+	
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/custom.css?<?php echo rand(); ?>">
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/custom.js?<?php echo rand(); ?>"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/jquery.observor.js?<?php echo rand(); ?>"></script>
+	
+		<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/font-awesome.min.css" rel="stylesheet">
+	</head>
+
+	<?php if( strlen( trim( @$_COOKIE['adminTemplateColor'] ) ) ): ?>
+		<body class="theme-<?php echo $_COOKIE['adminTemplateColor']; ?>" data-theme="theme-<?php echo $_COOKIE['adminTemplateColor']; ?>">
+	<?php else: ?>
+		<body>
+	<?php endif; ?>	
+	
+		<?php echo $this->partial('partials/blockui.phtml'); ?>
+		
+		<div id="navigation">
+		<div class="container-fluid">
+			<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin" id="brand"><i class="icon-thumbs-up-alt"></i> <?php echo SITE_NAME; ?></a>
+			<a href="#" class="toggle-nav" rel="tooltip" data-placement="bottom" title="Toggle navigation"><i class="icon-reorder"></i></a>
+			<ul class="main-nav">
+				<li class="active">
+					<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+						<span><?php echo ucfirst( translate('settings') ); ?></span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin"><?php echo ucfirst( translate('site') ); ?></a>
+						</li>
+						<li class="active">
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/phrases"><?php echo ucfirst( translate('phrases') ); ?></a>
+						</li>						
+					</ul>
+				</li>
+				<li>
+					<a href="#" data-toggle="dropdown" class='dropdown-toggle'>
+						<span><?php echo ucfirst( translate('users') ); ?></span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/users"><?php echo ucfirst( translate('all') ); ?></a>
+						</li>
+				        	<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/user-add"><?php echo ucfirst( translate('add_user') ); ?></a>
+						</li>
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/usergroups"><?php echo ucfirst( translate('usergroups') ); ?></a>
+						</li>												
+					</ul>
+				</li>
+				<li>
+					<a href="#" data-toggle="dropdown" class='dropdown-toggle'>
+						<span>Media</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/media"><?php echo ucfirst( translate('all') ); ?></a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<div class="user">
+				<ul class="icon-nav">					
+					<li class="dropdown colo">
+						<a href="#" class='dropdown-toggle' data-toggle="dropdown"><i class="icon-tint"></i></a>
+						<ul class="dropdown-menu pull-right theme-colors">
+							<li class="subtitle">
+								<?php echo translate('template_color'); ?>
+							</li>
+							<li>
+								<span class='red'></span>
+								<span class='orange'></span>
+								<span class='green'></span>
+								<span class="brown"></span>
+								<span class="blue"></span>
+								<span class='lime'></span>
+								<span class="teal"></span>
+								<span class="purple"></span>
+								<span class="pink"></span>
+								<span class="magenta"></span>
+								<span class="grey"></span>
+								<span class="darkblue"></span>
+								<span class="lightred"></span>
+								<span class="lightgrey"></span>
+								<span class="satblue"></span>
+								<span class="satgreen"></span>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown language-select">						 				
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<?php if( $_SESSION['user']['site_language'] == 1 ): ?>	
+								<img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/demo/flags/us.gif" alt="">												
+								<span>English (U.S.)</span>
+							<?php elseif( $_SESSION['user']['site_language'] == 2 ): ?>
+								<img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/demo/flags/de.gif" alt="">
+								<span>Deutsch</span>
+							<?php endif; ?>
+						</a>
+						<ul class="dropdown-menu pull-right">
+							<li>
+								<a href="#" id="dropdown-langChange" data-langid="<?php if( $_SESSION['user']['site_language'] == 1 ): ?>2<?php elseif( $_SESSION['user']['site_language'] == 2 ): ?>1<?php endif;?>">
+									<?php if( $_SESSION['user']['site_language'] == 1 ): ?>	
+										<img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/demo/flags/de.gif" alt="">					
+										<span>Deutsch</span>
+									<?php elseif( $_SESSION['user']['site_language'] == 2 ): ?>
+										<img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/demo/flags/us.gif" alt="">
+										<span>English (U.S.)</span>
+									<?php endif; ?>								
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<div class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['email']; ?> <img class="adminAvatarThumb" src="<?php echo $_SESSION['user']['avatar_url']; ?>" alt=""></a>
+					<ul class="dropdown-menu pull-right">
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/profile/edit" target="_blank"><?php echo ucfirst( translate('account_settings') ); ?></a>
+						</li>
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/logout"><?php echo translate('logoff'); ?></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid" id="content">
+		<div id="left">
+			<div class="subnav">
+				<div class="subnav-title">
+					<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span><?php echo ucfirst( translate('settings') ); ?></span></a>
+				</div>
+				<ul class="subnav-menu">
+					<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/settings"><?php echo ucfirst( translate('site') ); ?></a>
+					</li>
+					<li class="active">
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/phrases"><?php echo ucfirst( translate('phrases') ); ?></a>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="subnav subnav-hidden">
+				<div class="subnav-title">
+					<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span><?php echo ucfirst( translate('users') ); ?></span></a>
+				</div>
+				<ul class="subnav-menu">
+					<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/users"><?php echo ucfirst( translate('all') ); ?></a>
+					</li>
+					<li>
+			
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/user-add"><?php echo ucfirst( translate('add_user') ); ?></a>
+					</li>
+					<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/usergroups"><?php echo ucfirst( translate('usergroups') ); ?></a>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="subnav subnav-hidden">
+				<div class="subnav-title">
+					<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span><?php echo ucfirst( translate('media') ); ?></span></a>
+				</div>
+				<ul class="subnav-menu">
+					<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/media"><?php echo ucfirst( translate('all') ); ?></a>
+					</li>
+				</ul>
+			</div>
+			
+		
+		</div>
+		<div id="main">
+			<div class="container-fluid">
+				<div class="page-header">
+					<div class="pull-right">
+						<ul class="stats">
+							<li class='lightred'>
+								<i class="icon-calendar"></i>
+								<div class="details">
+									<span class="big"></span>
+									<span></span>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="breadcrumbs">
+					<ul>
+						<li>
+							<a target="_blank" href="<?php echo PROTOCOL_RELATIVE_URL; ?>"><?php echo SITE_NAME; ?></a>
+							<i class="icon-angle-right"></i>
+						</li>					
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin">Admin</a>
+							<i class="icon-angle-right"></i>
+						</li>
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/phrases"><?php echo translate('site_phrases'); ?></a>
+						</li>
+					</ul>
+					<div class="close-bread">
+						<a href="#"><i class="icon-remove"></i></a>
+					</div>
+				</div>
+				
+				<div class="row-fluid">
+					<div class="span12">
+						<div class="box box-bordered box-color">
+							<div class="box-title">
+								<h3><i class="icon-th-list"></i> <?php echo translate('site_phrases'); ?></h3>
+							</div>
+							<div class="box-content nopadding">
+								<ul class="nav nav-tabs">
+									<?php $i = 0; ?>
+									<?php foreach( $this->phrases AS $key => $value ): ?>								
+										<li <?php if( $i == 0 ): ?> class="active" <?php endif; ?>>
+											<a id="sitePhrases-<?php echo $i; ?>" data-toggle="tab" href="#tabSitePhrases-<?php echo $i; ?>"><?php echo translate( $key ); ?></a>
+										</li>
+										<?php $i++; ?>
+								  	<?php endforeach; ?>
+								</ul>
+								
+								<div class="tab-content" id="tabsSitePhrases">
+									<?php $i = 0; ?>																	
+									<?php foreach( $this->phrases AS $key => $value ): ?>
+										<div class="tab-pane <?php if( $i == 0 ): ?> active<?php endif; ?>" id="tabSitePhrases-<?php echo $i; ?>">								
+											<?php if( !empty( $value ) ): ?>																	
+												<form id="sitePhrases" name="sitePhrases" action="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/phrases" method="POST" class="form-vertical form-bordered">
+													<?php foreach( $value AS $valueKey => $valueValue ): ?>
+														<div class="control-group">
+															<label for="<?php echo $valueValue['name']; ?>" class="control-label">
+																<?php echo $valueValue['name']; ?> / <i><?php echo $valueValue['friendly_name']; ?></i>
+															</label>
+															<div class="controls">
+																<textarea style="height: 250px;" name="id[<?php echo $valueValue['id']; ?>]" id="id[<?php echo $valueValue['id']; ?>]" class="span12"><?php echo $valueValue['text']; ?></textarea>
+															</div>
+														</div>
+													<?php endforeach; ?>
+													<div class="form-actions">
+														<button type="submit" class="blockUI-trigger btn btn-primary"><?php echo translate('save_changes'); ?></button>
+														<button type="button" class="windowReload blockUI-trigger btn"><?php echo translate('cancel'); ?></button>
+													</div>
+												</form>											
+											<?php endif; ?>	
+										</div>
+										<?php $i++; ?>								
+								  	<?php endforeach; ?>								
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div></div>
+		
+		<?php echo $this->partial('partials/img-preload.phtml'); ?>
+				
+	</body>
+</html>

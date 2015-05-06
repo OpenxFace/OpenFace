@@ -1,0 +1,2 @@
+1. This application uses Zend Framework 1.x
+2. Standard MySQL queries were used instead of an ORM

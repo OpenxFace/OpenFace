@@ -1,0 +1,683 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<!-- Apple devices fullscreen -->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<!-- Apple devices fullscreen -->
+	<meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	
+		<title><?php echo SITE_NAME; ?> <?php echo translate('admin'); ?> &mdash; <?php echo translate('profile_edit'); ?></title>
+	
+    <?php if( !empty( $_SESSION['site']['phrases'] ) ): ?>    
+    	<script type="text/javascript">
+    		var SITE_PHRASES = new Array();
+			<?php foreach( $_SESSION['site']['phrases'] AS $key => $value ): ?>
+				SITE_PHRASES['<?php echo $key; ?>'] = '<?php echo addslashes( str_replace( "\r\n", '<br>', $value ) ); ?>';
+			<?php endforeach; ?>
+    	</script>
+    <?php endif; ?>		
+		    		   	    
+	<script type="text/javascript">
+		var BASEURL			= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+		var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_ADMIN_PRELOADER_IMAGE_PATH; ?>';
+		var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['username']; ?>';
+		var SITE_NAME			= '<?php echo SITE_NAME; ?>';			
+		var CURRENT_USER		= new Array();	
+		var IS_POST			= parseInt('<?php echo ( !empty( $_POST ) ) ? 1 : 0; ?>');
+				
+		<?php foreach( $_SESSION['user'] AS $key => $value ): ?>
+			CURRENT_USER['<?php echo $key; ?>'] = '<?php echo $value; ?>';
+		<?php endforeach; ?>
+	</script>	
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/bootstrap.min.css">
+	<!-- Bootstrap responsive -->
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/bootstrap-responsive.min.css">
+	<!-- jQuery UI -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/jquery-ui/themes/redmond/jquery-ui.min.css">
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/jquery-ui/themes/redmond/jquery.ui.theme.css">
+	<!-- Theme CSS -->
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/style.css">
+	<!-- Color CSS -->
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/themes.css">
+
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js?<?php echo rand(); ?>"></script>
+	<!-- jQuery -->
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.8.3.min.js"></script>
+	<!-- Bootstrap -->
+	<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/bootstrap.min.js"></script>
+		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jQuery.equalHeights.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+	<!-- imagesLoaded -->
+	<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/imagesLoaded/jquery.imagesloaded.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/img-preload.js?<?php echo rand(); ?>"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/jquery.blockUI.defaults.js?<?php echo rand(); ?>"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
+		
+		<!-- Nice Scroll -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+	<!-- jQuery UI -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+		<!-- Touch enable for jquery UI -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/touch-punch/jquery.touch-punch.min.js"></script>
+	<!-- slimScroll -->
+	<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<!-- Bootbox -->
+	<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/bootbox/jquery.bootbox.js"></script>
+
+	<!-- Theme framework -->
+	<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/eakroko.min.js"></script>
+	<!-- Theme scripts -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/application.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/demonstration.js"></script>
+
+	<!--[if lte IE 9]>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/placeholder/jquery.placeholder.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('input, textarea').placeholder();
+			});
+		</script>
+	<![endif]-->
+	
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/favicon.ico" />
+	<!-- Apple devices Homescreen icon -->
+	<link rel="apple-touch-icon-precomposed" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/apple-touch-icon-precomposed.png" />
+
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/custom.css?<?php echo rand(); ?>">
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/custom.js?<?php echo rand(); ?>"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/jquery.observor.js?<?php echo rand(); ?>"></script>	
+	  	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/spin.min.js"></script>
+	  	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.spin.js"></script>		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/plupload/plupload.full.min.js"></script>
+</head>
+
+<?php if( strlen( trim( @$_COOKIE['adminTemplateColor'] ) ) ): ?>
+	<body class="theme-<?php echo $_COOKIE['adminTemplateColor']; ?>" data-theme="theme-<?php echo $_COOKIE['adminTemplateColor']; ?>">
+<?php else: ?>
+	<body>
+<?php endif; ?>	
+	<?php echo $this->partial('partials/blockui.phtml'); ?>
+	<div id="navigation">
+		<div class="container-fluid">
+			<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin" id="brand"><i class="icon-thumbs-up-alt"></i> <?php echo SITE_NAME; ?></a>
+			<a href="#" class="toggle-nav" rel="tooltip" data-placement="bottom" title="Toggle navigation"><i class="icon-reorder"></i></a>
+			<ul class="main-nav">
+				<li>
+					<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+						<span><?php echo ucfirst( translate('settings') ); ?></span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li class="active">
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin"><?php echo ucfirst( translate('site') ); ?></a>
+						</li>
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/phrases"><?php echo ucfirst( translate('phrases') ); ?></a>
+						</li>
+						
+					</ul>
+				</li>
+				<li class="active">
+					<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+						<span>Users</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/users"><?php echo ucfirst( translate('all') ); ?></a>
+						</li>
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/user-add"><?php echo ucfirst( translate('add_user') ); ?></a>
+						</li>
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/usergroups"><?php echo ucfirst( translate('usergroups') ); ?></a>
+						</li>
+					</ul>
+				</li>
+
+		</ul>
+		<div class="user">
+			<ul class="icon-nav">
+
+					<li class="dropdown colo">
+					<a href="#" class='dropdown-toggle' data-toggle="dropdown"><i class="icon-tint"></i></a>
+					<ul class="dropdown-menu pull-right theme-colors">
+						<li class="subtitle">
+								<?php echo translate('template_color'); ?>
+						</li>
+						<li>
+							<span class='red'></span>
+							<span class='orange'></span>
+							<span class='green'></span>
+							<span class="brown"></span>
+							<span class="blue"></span>
+							<span class='lime'></span>
+							<span class="teal"></span>
+							<span class="purple"></span>
+							<span class="pink"></span>
+							<span class="magenta"></span>
+							<span class="grey"></span>
+							<span class="darkblue"></span>
+							<span class="lightred"></span>
+							<span class="lightgrey"></span>
+							<span class="satblue"></span>
+							<span class="satgreen"></span>
+						</li>
+					</ul>
+				</li>
+					<li class="dropdown language-select">						 				
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<?php if( $_SESSION['user']['site_language'] == 1 ): ?>	
+								<img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/demo/flags/us.gif" alt="">												
+								<span>English (U.S.)</span>
+							<?php elseif( $_SESSION['user']['site_language'] == 2 ): ?>
+								<img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/demo/flags/de.gif" alt="">
+								<span>Deutsch</span>
+							<?php endif; ?>
+						</a>
+						<ul class="dropdown-menu pull-right">
+							<li>
+								<a href="#" id="dropdown-langChange" data-langid="<?php if( $_SESSION['user']['site_language'] == 1 ): ?>2<?php elseif( $_SESSION['user']['site_language'] == 2 ): ?>1<?php endif;?>">
+									<?php if( $_SESSION['user']['site_language'] == 1 ): ?>	
+										<img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/demo/flags/de.gif" alt="">					
+										<span>Deutsch</span>
+									<?php elseif( $_SESSION['user']['site_language'] == 2 ): ?>
+										<img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/demo/flags/us.gif" alt="">
+										<span>English (U.S.)</span>
+									<?php endif; ?>								
+								</a>
+							</li>
+						</ul>
+					</li>
+			</ul>
+			<div class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['email']; ?> <img class="adminAvatarThumb" src="<?php echo $_SESSION['user']['avatar_url']; ?>" alt=""></a>
+				<ul class="dropdown-menu pull-right">
+					<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/profile/edit" target="_blank"><?php echo ucfirst( translate('account_settings') ); ?></a>
+					</li>
+					<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/logout"><?php echo translate('logoff'); ?></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid" id="content">
+	<div id="left">
+			<div class="subnav subnav-hidden">
+			<div class="subnav-title">
+					<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span><?php echo ucfirst( translate('settings') ); ?></span></a>
+			</div>
+			<ul class="subnav-menu">
+				<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/settings"><?php echo ucfirst( translate('site') ); ?></a>
+				</li>
+						<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/phrases"><?php echo ucfirst( translate('phrases') ); ?></a>
+						</li>
+							</ul>
+			</div>
+			
+		<div class="subnav subnav-hidden">
+			<div class="subnav-title">
+					<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span><?php echo ucfirst( translate('users') ); ?></span></a>
+			</div>
+			<ul class="subnav-menu">
+				<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/users"><?php echo ucfirst( translate('all') ); ?></a>
+				</li>
+							</ul>
+		</div>
+	</div>
+	<div id="main">
+		<div class="container-fluid">
+			<div class="page-header">
+				<div class="pull-right">
+					<ul class="stats">
+							<li class="lightred">
+							<i class="icon-calendar"></i>
+							<div class="details">
+									<span class="big"></span>
+									<span></span>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="breadcrumbs">
+				<ul>
+					<li>
+							<a target="_blank" href="<?php echo PROTOCOL_RELATIVE_URL; ?>"><?php echo SITE_NAME; ?></a>
+						<i class="icon-angle-right"></i>
+					</li>
+					<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin">Admin</a>
+						<i class="icon-angle-right"></i>
+					</li>
+					<li>
+							<a href="#"><?php echo translate('profile_edit'); ?></a>
+					</li>
+				</ul>
+				<div class="close-bread">
+					<a href="#"><i class="icon-remove"></i></a>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+						<div class="box box-bordered box-color">
+						<div class="box-title">
+								<h3><i class="icon-th-list"></i> <?php echo translate('profile_edit'); ?> (<?php echo $this->user['username']; ?>)</h3>
+						</div>
+						<div class="box-content nopadding">
+							<ul class="tabs tabs-inline tabs-top">
+									<li class="active">
+										<a data-toggle="tab" id="tabTriggerProfile" href="#tabProfile"><i class="icon-user"></i>&nbsp;&nbsp;Profile</a>
+								</li>
+								<li>
+										<a data-toggle="tab" id="tabTriggerUsergroups" href="#tabUsergroups">
+											<i class="icon-key"></i>&nbsp;&nbsp;Usergroups
+										</a>
+									</li>									
+									<li>
+										<a data-toggle="tab" id="tabTriggerSocial" href="#tabSocial"><i class="icon-bullhorn"></i>&nbsp;&nbsp;Social</a>
+								</li>
+								<li>
+										<a data-toggle="tab" id="tabTriggerSiteStatus" href="#tabSiteStatus"><i class="icon-question"></i>&nbsp;&nbsp;Site Status</a>
+								</li>
+							</ul>
+							<div class="tab-content padding tab-content-inline tab-content-bottom">
+									<div id="tabProfile" class="tab-pane active">
+										<form class="form-horizontal" action="" method="POST" name="adminUpdateUser" id="adminUpdateUser">
+										<div class="row-fluid">
+											<div class="span2">
+													<div data-provides="fileupload" class="fileupload fileupload-new">													
+														<div id="avatarContainer">								
+															<img id="userAvatar" src="<?php echo $this->user['avatar_url']; ?>" border="1" style="border: 1px solid #000000;">
+															<div id="avatarDeleteContainer" style="margin-top: 5px; <?php if( $this->user['avatar_url'] == SITE_DEFAULT_AVATAR_URL ): ?> display: none; <?php endif; ?>">
+																<a href="javascript:void(0);" id="adminDeleteAvatar" class="noBlockUI" data-userid="<?php echo $this->user['id']; ?>">
+																	<i class="icon-remove-sign"></i> Delete this avatar
+																</a>																				
+															</div>
+														</div>													
+														<div id="filelist" style="margin-top: 60px;">Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
+														<div id="uploadControls" style="margin-top: 5px;">
+															<button id="selectFiles" class="btn btn-primary">Select Avatar</button>
+															<button id="uploadFiles" class="btn btn-default">Upload</button>
+													</div>
+														<script type="text/javascript">								 
+															var imageUploader = new plupload.Uploader({
+															    runtimes: 'html5,flash,silverlight,html4',
+														        chunk_size: '1mb',
+														        unique_names: true,										     
+															    browse_button: 'selectFiles', // you can pass in id...
+															    container: document.getElementById('uploadControls'), // ... or DOM Element itself										     
+															    url: BASEURL + '/admin/ajax',
+															    multi_selection: false,
+															    file_data_name: 'newAvatar',
+															    multipart_params: {
+																	'method': 'avatar-upload',
+																	'userId': <?php echo $this->user['id']; ?>
+															    },										     
+															    filters: {
+															        max_file_size : '10mb',
+															        mime_types: [
+															            {title : 'Image files', extensions : 'jpeg,jpg,gif,png'}
+															        ],
+															        prevent_duplicates: true
+															    },
+															    max_file_count: 1,
+														        // Flash settings
+														        flash_swf_url: BASEURL + '/js/plupload/moxie.swf',
+														        // Silverlight settings
+														        silverlight_xap_url: BASEURL + '/js/plupload/moxie.xap',
+														        // PreInit events, bound before any internal events
+														        preinit: {
+														            Init: function(up, info) {
+														            },
+														            UploadFile: function(up, file) {									 
+														                // You can override settings before the file is uploaded
+														                // up.settings.url = 'upload.php?id=' + file.id;
+														                // up.settings.multipart_params = {param1 : 'value1', param2 : 'value2'};
+														            }
+														        },
+														        // Post init events, bound after the internal events
+														        init: {
+															        PostInit: function() {
+															            document.getElementById('filelist').innerHTML = '';										 
+															            document.getElementById('uploadFiles').onclick = function() {
+															            	imageUploader.start();
+															                return false;
+															            };
+															        },
+														            Refresh: function(up) {
+														                // Called when upload shim is moved
+														                // console.log('[Refresh]');
+														            },
+														            StateChanged: function(up) {
+														                // Called when the state of the queue is changed
+														                // console.log('[StateChanged]', up.state == plupload.STARTED ? "STARTED" : "STOPPED");
+														                switch( up.state ) {
+														                	case 2:
+														                		$('#avatarContainer').block({ message: null, 
+																											  overlayCSS:  { 
+														                	        							backgroundColor: '#FFFFFF', 
+														                	        							opacity:         0.6, 
+														                	        							cursor:          'wait' 
+														                	    							  }
+														                		});
+																                $('#avatarContainer').spin();
+																            	$('#selectFiles').button('disable');									                	
+																            	$('#uploadFiles').button('disable');
+															                	break; 
+															                default:
+																                setTimeout(function() {
+																	            	$('#selectFiles').button('enable');
+																              	}, 2000);										                
+														                }
+														            },
+														            QueueChanged: function(up) {
+														            	if( up.files.length > 0 && imageUploader.state != 2 ) {
+																			$('#uploadFiles').button('enable');										            									            	
+														            	}									            
+														                // Called when the files in queue are changed by adding/removing files
+														                // console.log('[QueueChanged]');
+														            },
+														            UploadProgress: function(up, file) {
+														                // called while a file is being uploaded
+														                // console.log( file.percent );
+															            document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+														            },
+														            FilesAdded: function(up, files) {								          
+														                // called when files are added to queue
+																	    if( up.files.length > 1 ) {
+																		    var i = 0;
+																	    	$.each( imageUploader.files, function( index, value ) {
+																		    	i++;
+																		    	if( i < up.files.length ) {
+																			    	imageUploader.removeFile( imageUploader.files[index] );
+																			    	$('#' + value.id).remove(); 													    	
+																		    	}	
+																			});												    							    
+																	    }    																								
+														                plupload.each(imageUploader.files, function(file) {
+															                document.getElementById('filelist').innerHTML += '<div class="listedFile" id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+														                });																										            
+														            },
+														            FilesRemoved: function(up, files) {
+														                // Called when files where removed from queue
+														                // console.log('[FilesRemoved]');
+														                plupload.each(files, function(file) {
+														                	// console.log('  File:', file);
+														                });
+														            },
+														            FileUploaded: function(up, file, info) {								            	
+														                // Called when a file has finished uploading
+														                // console.log('[FileUploaded] File:', file, "Info:", info);
+														                $('#uploadFiles').button('disable');
+														                var json = $.parseJSON( info.response );
+														                if( json.status == 'OK' ) {
+															                $('#userAvatar').attr('src', json.url);
+															                setTimeout(function() {
+															    				$('#avatarContainer').height( $('#userAvatar').height() + 30 );
+															    				$('#avatarContainer').width( $('#userAvatar').width() );
+															                	$('#avatarContainer').unblock();
+																                $('#avatarContainer').spin(false);
+																                $('#avatarDeleteContainer').show();
+															              	}, 4000);									                									                
+														                } 
+														            },
+														            ChunkUploaded: function(up, file, info) {
+														                // Called when a file chunk has finished uploading
+														                // console.log('[ChunkUploaded] File:', file, "Info:", info);
+														            },
+														            Error: function(up, args) {
+														                // Called when a error has occured
+														            }
+														        }
+															});
+															imageUploader.init();									 
+														</script>																												
+												</div>
+											</div>
+											<div class="span10">
+												<div class="control-group">
+														<label class="control-label right" for="name">Username:</label>
+													<div class="controls">
+															<input type="text" value="<?php echo $this->user['username']; ?>" style="width: 80%;" class="input-xlarge" name="username">
+													</div>
+												</div>
+												<div class="control-group">
+														<label class="control-label right" for="name">First Name:</label>
+													<div class="controls">
+															<input type="text" value="<?php echo $this->user['first_name']; ?>" style="width: 80%;" class="input-xlarge" name="first_name">
+													</div>
+												</div>
+												<div class="control-group">
+														<label class="control-label right" for="name">Last Name:</label>
+													<div class="controls">
+															<input type="text" value="<?php echo $this->user['last_name']; ?>" style="width: 80%;" class="input-xlarge" name="last_name">
+													</div>
+												</div>
+												<div class="control-group">
+														<label class="control-label right" for="email">Email:</label>
+													<div class="controls">
+															<input type="text" value="<?php echo $this->user['email']; ?>" style="width: 80%;" class="input-xlarge" name="email" id="email" readonly>
+														<div class="form-button">
+																<a class="btn btn-grey-4 change-input" href="#">Change</a>
+														</div>
+													</div>
+												</div>
+												<div class="control-group">
+														<label class="control-label right" for="password">Password:</label>
+													<div class="controls">
+															<input type="password" value="" style="width: 80%;" class="input-xlarge" name="password" autocomplete="off" readonly>
+														<div class="form-button">
+																<a class="btn btn-grey-4 change-input" href="#">Change</a>
+															</div>
+														</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label right" for="email">About:</label>
+														<div class="controls">
+															<textarea name="blurb" style="width: 80%; height: 250px;"><?php echo $this->user['blurb']; ?></textarea>
+												</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label right" for="url_slug">URL Slug:</label>
+														<div class="controls">
+															<input type="text" value="<?php echo $this->user['url_slug']; ?>" style="width: 80%;" class="input-xlarge" name="url_slug">
+														</div>
+													</div>																																																																																													
+												<div class="form-actions">
+														<input type="submit" value="Save" class="btn btn-primary blockUI-trigger">
+														<input type="reset" value="Discard changes" class="btn">
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+									<div id="tabUsergroups" class="tab-pane">
+										<form class="form-horizontal" action="" method="POST">
+										<div class="control-group">
+											<div class="controls">
+													<?php 
+														if( !empty( $this->usergroups ) ) {
+															foreach( $this->usergroups AS $key => $value ) {
+																$checked = ( in_array( $value['id'], $this->user['usergroups'] ) ) ? ' checked="CHECKED" ' : ' ';														
+													?>					
+														<label class="checkbox">
+															<input type="checkbox" name="usergroups[]" value="<?php echo $value['id']; ?>" id="usergroup-value=<?php echo $value['id']; ?>" <?php echo $checked; ?>> <?php echo $value['name']; ?>
+														</label>																					 					
+													<?php 
+															}
+														}
+													?>								
+												</div>
+											</div>
+											<div class="form-actions">
+												<input type="submit" value="Save" class="btn btn-primary blockUI-trigger">
+												<input type="reset" value="Discard changes" class="btn">
+											</div>											
+										</form>									
+									</div>									
+									<div id="tabSocial" class="tab-pane">
+										<form class="form-horizontal" action="" method="POST">
+											<div class="control-group">
+												<label class="control-label right" for="twitter_username">Twitter Username:</label>
+												<div class="controls">
+													<input type="text" value="<?php echo $this->user['twitter_username']; ?>" style="width: 80%;" class="input-xlarge" name="twitter_username">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label right" for="facebook_url">Facebook Page:</label>
+												<div class="controls">
+													<input type="text" value="<?php echo $this->user['facebook_url']; ?>" style="width: 80%;" class="input-xlarge" name="facebook_url">
+											</div>
+										</div>
+										<div class="control-group">
+												<label class="control-label right" for="google_plus_url">Google+ URL:</label>
+											<div class="controls">
+													<input type="text" value="<?php echo $this->user['google_plus_url']; ?>" style="width: 80%;" class="input-xlarge" name="google_plus_url">
+											</div>
+										</div>
+										<div class="form-actions">
+												<input type="submit" value="Save" class="btn btn-primary blockUI-trigger">
+												<input type="reset" value="Discard changes" class="btn">
+										</div>
+									</form>
+								</div>
+									<div id="tabSiteStatus" class="tab-pane">
+										<form class="form-horizontal" action="" method="POST">
+										<div class="control-group">
+												<label class="control-label right" for="date_created">Date Created:</label>
+												<div class="controls" style="padding-top: 5px;">
+													<?php echo date( 'l, F j, Y / H:i:s T O', $this->user['date_created'] ); ?>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label right" for="last_active">Last Active:</label>
+												<div class="controls" style="padding-top: 5px;">
+													<?php if( strlen( $this->user['last_active'] ) ): ?>
+														<?php echo date( 'l, F j, Y / H:i:s T O', $this->user['last_active'] ); ?>
+													<?php else: ?>
+														--
+													<?php endif; ?>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label right" for="last_login_date">Last Login Date:</label>
+												<div class="controls" style="padding-top: 5px;">
+													<?php if( strlen( $this->user['last_login_date'] ) ): ?>
+														<?php echo date( 'l, F j, Y / H:i:s T O', $this->user['last_login_date'] ); ?>
+													<?php else: ?>
+														--
+													<?php endif; ?>
+												</div>
+											</div>																																			
+											<div class="control-group">
+												<label class="control-label right" for="signup_ip">Signup IP:</label>
+												<div class="controls" style="padding-top: 5px;">
+													<?php if( strlen( $this->user['signup_ip'] ) ): ?>
+														<?php echo $this->user['signup_ip']; ?>
+													<?php else: ?>
+														--
+													<?php endif; ?>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label right" for="last_ip">Last IP:</label>
+												<div class="controls" style="padding-top: 5px;">
+													<?php if( strlen( $this->user['last_ip'] ) ): ?>												
+														<?php echo $this->user['last_ip']; ?>
+													<?php else: ?>
+														--
+													<?php endif; ?>
+												</div>
+											</div>																														
+											<div class="control-group">
+												<label class="control-label right" for="last_article_submission">Last Article Submission:</label>
+												<div class="controls" style="padding-top: 5px;">
+													<?php if( strlen( $this->user['last_article_submission'] ) ): ?>
+														<?php echo date( 'l, F j, Y / H:i:s T O', $this->user['last_article_submission'] ); ?>
+													<?php else: ?>
+														--
+													<?php endif; ?>
+											</div>
+										</div>
+										<div class="control-group">
+												<label class="control-label right" for="site_status">Site Status:</label>
+											<div class="controls">
+													<?php 
+														$enumValues = get_enum_values( DB_TABLE_PREFIX.'users', 'site_status' );
+														if( !empty( $enumValues ) ):
+													?>
+													<select name="site_status">
+														<?php foreach( $enumValues AS $key => $value ): ?>
+															<option value="<?php echo $value; ?>" <?php if( $value == $this->user['site_status'] ): ?> selected="selected" <?php endif; ?>><?php echo translate( $value ); ?></option>
+														<?php endforeach; ?>
+													</select> 					
+													<?php 
+														endif;
+													?>								
+											</div>
+										</div>
+										<div class="form-actions">
+												<input type="submit" value="Save" class="btn btn-primary blockUI-trigger">
+												<input type="reset" value="Discard changes" class="btn">
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div></div>
+	<?php echo $this->partial('partials/img-preload.phtml'); ?>	
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#avatarContainer').height( $('#userAvatar').height() + 23 );
+				$('#avatarContainer').width( $('#userAvatar').width() );
+				$('#selectFiles').button({ 
+					icons: {
+						primary: 'ui-icon-document'
+					}
+				});
+				$('#uploadFiles').button({ 
+					icons: {
+						primary: 'ui-icon-arrowthick-1-n'
+					}
+				}, 'disable');	
+				$('a[data-toggle="tab"]').on('click', function (e) {
+					var myId = $(this).attr('id');
+					// http://stackoverflow.com/questions/18590152/change-from-days-to-seconds-on-jquery-cookie-js-plugin
+			        var date	= new Date();
+			        var minutes = 1;
+			        date.setTime( date.getTime() + (minutes * 60 * 1000) );
+			        $.cookie('adminLastTabUserProfile', myId, {
+			            expires: date,
+			            path: '/'
+			        });
+				});
+				if( IS_POST === 1 ) {
+					// go to the last tab, if it exists:
+					var lastTab = $.cookie('adminLastTabUserProfile');
+					if( typeof lastTab !== 'undefined' ) {
+						$('#'+lastTab).tab('show');
+					}					
+				}						
+			});		
+		</script>			
+</body>
+
+</html>

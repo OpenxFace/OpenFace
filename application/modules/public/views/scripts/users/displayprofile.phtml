@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $_SESSION['user']['locale']; ?>" class="hl-<?php echo $_SESSION['user']['locale']; ?> logged-in bb-loading can-open-media">
+<head>
+    <meta charset="UTF-8" />
+    <title><?php echo $this->data['username']; ?> on <?php echo SITE_NAME; ?></title>
+    
+ 	<?php
+		if( SITE_ALLOW_TEMPLATE_CHANGE == 1 ) {
+ 			$currentTheme = ( strlen( @$_COOKIE['theme'] ) ) ? $_COOKIE['theme'] : SITE_DEFAULT_TEMPLATE;
+		} else {
+ 			$currentTheme = SITE_DEFAULT_TEMPLATE;
+ 			setcookie( 'theme', SITE_DEFAULT_TEMPLATE );
+		}  
+	?>
+     
+	<?php $siteThemes = $GLOBALS['SITE_THEMES']; ?>  
+    
+    <?php if( !empty( $_SESSION['site']['phrases'] ) ): ?>    
+    	<script type="text/javascript">
+    		var SITE_PHRASES = new Array();
+			<?php foreach( $_SESSION['site']['phrases'] AS $key => $value ): ?>
+				SITE_PHRASES['<?php echo $key; ?>'] = '<?php echo addslashes( str_replace( "\r\n", '<br>', $value ) ); ?>';
+			<?php endforeach; ?>
+    	</script>
+    <?php endif; ?>
+    
+	<?php if( !empty( $siteThemes ) ): ?>
+		<?php			 
+			if( $currentTheme != SITE_DEFAULT_TEMPLATE ) {
+				if( !array_key_exists( $currentTheme, $siteThemes ) ) {
+					$currentTheme = SITE_DEFAULT_TEMPLATE;
+					setcookie( 'theme', SITE_DEFAULT_TEMPLATE );
+				}
+			}			
+		?>	
+		<script type="text/javascript">	
+			var SITE_THEMES = new Array();
+			<?php foreach( $siteThemes AS $key => $value ): ?>
+				SITE_THEMES['<?php echo $key; ?>'] = '<?php echo $value; ?>';	
+			<?php endforeach; ?>
+		</script>
+		<?php else: ?>
+		<script type="text/javascript">		
+			var SITE_THEMES = new Array();
+		</script>							
+	<?php endif; ?>    
+    
+	<script type="text/javascript">
+		var BASEURL									= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+		var DEFAULT_PRELOADER_IMAGE 				= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
+		var TOTAL_PAGE_COUNT						= Math.ceil(<?php echo ( $this->data['media_count'] / SITE_DEFAULT_MEDIA_FETCH_LIMIT ); ?>);
+		var SITE_ROTATE_USER_COMP_HEADER			= <?php echo SITE_ROTATE_USER_COMP_HEADER; ?>;
+		var SITE_ROTATE_USER_COMP_HEADER_INTERVAL	= <?php echo SITE_ROTATE_USER_COMP_HEADER_INTERVAL; ?>;
+		var SITE_USER_COMP_HEADER_FLIP_INTERVAL		= <?php echo SITE_USER_COMP_HEADER_FLIP_INTERVAL; ?>; 
+		var PRIVATE_PROFILE							= parseInt( <?php echo $this->data['private_profile']; ?> );
+		var CAN_ACCESS								= <?php echo $this->data['can_access']; ?>;
+		var THIS_USER_ID							= <?php echo $this->data['id']; ?>;
+		var THIS_USERNAME							= '<?php echo $this->data['username']; ?>';
+		var THIS_USER_AVATAR						= '<?php echo $this->data['avatar_url']; ?>';
+		var MY_USER_ID								= <?php echo $_SESSION['user']['id']; ?>;
+		var LOCAL_STORAGE							= window.localStorage;
+		var CURRENT_THEME 							= '<?php echo $currentTheme; ?>';
+		var IS_NORMALIZED							= false;	
+		var CURRENT_USERNAME						= '<?php echo $_SESSION['user']['username']; ?>';
+		var CURRENT_USER							= new Array();
+		var USER_RELATIONSHIP						= '<?php echo $this->relationship; ?>';
+		var REVERSE_USER_RELATIONSHIP				= '<?php echo $this->reverseRelationship; ?>';
+		var SITE_VIDEO_PLAYER						= '<?php echo SITE_VIDEO_PLAYER; ?>';
+
+		<?php foreach( $_SESSION['user'] AS $key => $value ): ?>
+			CURRENT_USER['<?php echo $key; ?>'] = '<?php echo $value; ?>';
+		<?php endforeach; ?>			
+	</script>    
+
+    <meta name="robots" content="noimageindex" />
+
+    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js?<?php echo rand(); ?>"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/spin.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.spin.js"></script>	
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/themeswitcher.js?<?php echo rand(); ?>"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment+langs.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>	
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.ajax-progress.js"></script>	
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.jrumble.1.3.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.observor.js?<?php echo rand(); ?>"></script>	
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bluebar.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-paged-scroll.min.js"></script>		
+	
+	<script type="text/javascript">
+		<?php if( empty( $this->data['user_media'] ) ): ?>	
+			window._jscalls = [
+				["userprofile","init",[{"username":"<?php echo $this->data['username']; ?>","bio":"<?php echo $this->data['bio']; ?>","website":"<?php echo $this->data['website']; ?>","profile_picture":"<?php echo $this->data['avatar_url']; ?>","full_name":"<?php echo $this->data['first_name'].' '.$this->data['last_name']; ?>","counts":{"media":<?php echo $this->data['media_count']; ?>,"followed_by":0,"follows":0},"id":"<?php echo $this->data['id']; ?>"},{"username":"<?php echo $_SESSION['user']['username']; ?>","bio":"<?php echo $_SESSION['user']['bio']; ?>","website":"<?php echo $_SESSION['user']['website']; ?>","profile_picture":"<?php echo $_SESSION['user']['avatar_url']; ?>","full_name":"<?php echo $_SESSION['user']['full_name']; ?>","id":"<?php echo $_SESSION['user']['id']; ?>"},{"incoming_request":false,"followed_by":false,"outgoing_request":false,"following":false,"blocking":false,"is_private":false},[],false,[]]],			
+			];
+			<?php else: ?>
+				window._jscalls = [
+					//["userprofile","init",[{"username":"<?php echo $_SESSION['user']['username']; ?>","bio":"","website":"","profile_picture":"<?php echo $_SESSION['user']['avatar_url']; ?>","full_name":"<?php echo $_SESSION['user']['full_name']; ?>","counts":{"media":0,"followed_by":0,"follows":0},"id":"<?php echo $_SESSION['user']['id']; ?>"},{"username":"<?php echo $_SESSION['user']['username']; ?>","bio":"<?php echo $_SESSION['user']['bio']; ?>","website":"<?php echo $_SESSION['user']['website']; ?>","profile_picture":"<?php echo $_SESSION['user']['avatar_url']; ?>","full_name":"<?php echo $_SESSION['user']['full_name']; ?>","id":"<?php echo $_SESSION['user']['id']; ?>"},{"incoming_request":false,"followed_by":false,"outgoing_request":false,"following":false,"blocking":false,"is_private":false},[],false,[]]],
+				];	
+		<?php endif; ?>
+	</script>
+
+	<!-- script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/polyfills-build/polyfill_modern.js"></script>
+	<script data-main="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/modules-build/main.js" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/require.js"></script>
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/strings/strings_en.js"></script>
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/json2.js"></script -->
+    
+    <meta property="og:type" content="profile" />
+    <meta property="og:image" content="<?php echo $this->data['avatar_url']; ?>"/>
+    <meta property="og:title" content="<?php echo $this->data['username']; ?> on <?php echo SITE_NAME; ?>"/>
+    <meta property="og:url" content="<?php echo $this->data['profile_url']; ?>"/>
+
+	<link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/profile.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/profile-main.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/dialogs.css" />    
+    
+	<?php if( $currentTheme != 'instagram'): ?>
+		<?php if( !array_key_exists( $currentTheme, $siteThemes ) ): ?>
+			<link rel="stylesheet" id="theme-url" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/<?php echo $currentTheme; ?>/jquery-ui.css" type="text/css" media="screen" />
+			<?php else: ?>
+			<link rel="stylesheet" id="normalizeCss" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/normalize.css" type="text/css" />
+			<link rel="stylesheet" id="theme-url" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery-ui/themes/<?php echo $currentTheme; ?>/jquery-ui.css" type="text/css" media="screen" />		
+		<?php endif; ?>		
+		
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/fg.menu.css" type="text/css" />
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/fg.menu.js"></script>
+		
+	<?php else: ?>
+		<link rel="stylesheet" id="theme-url" href="" type="text/css" media="screen" />
+	<?php endif; ?>
+	    
+    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.selectBoxIt.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/font-awesome.min.css">	
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.selectBoxIt.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.form.js"></script>    
+    
+    <?php if( SITE_VIDEO_PLAYER == 'jw-player' ): ?>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jwplayer/jwplayer.js"></script>
+	<?php elseif( SITE_VIDEO_PLAYER == 'video-js' ): ?>	    
+		<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/video-js/video-js.css" rel="stylesheet">
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/video-js/video.js"></script>
+		<script type="text/javascript" >
+		 	videojs.options.flash.swf = "<?php echo PROTOCOL_RELATIVE_URL; ?>/js/video-js/video-js.swf"
+		</script>    
+	<?php endif; ?>
+	
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.corner.js"></script -->
+</head>
+<body class="page-profile">
+
+	<!-- START:		blockUI -->
+		<div style="display: block" class="blockUI"></div>
+		<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
+		<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><img src="<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>"></div>		
+	<!-- END:		blockUI -->	
+
+<div class="root">
+
+
+    <div class="page">
+        
+        <header class="instagram top-bar" <?php if( $currentTheme != 'instagram' ): ?> style="display: none;" <?php endif; ?>>
+            <div class="wrapper">
+                <hgroup>
+                    <h1 class="logo">
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>"><?php echo SITE_NAME; ?></a>
+					</h1>                    
+                </hgroup>
+
+                <div class="account-state">
+                    <ul class="actions">
+                        <li id="link_profile" class="link-profile has-dropdown">
+                            <a id="userActions" href="javascript:;" class="noBlockUI">
+                                
+							    <span class="img img-outset current-user-avatar" style="background-image: url(<?php echo $_SESSION['user']['avatar_url']; ?>);">
+							        <img src="<?php echo $_SESSION['user']['avatar_url']; ?>" onerror="imageFallback(this);" alt="" />
+							        <b></b>
+							    </span>
+								
+								<strong id="dropdownUsername"><?php echo $_SESSION['user']['username']; ?></strong>
+                            </a>
+
+                            <div class="dropdown">
+                                <i></i>
+
+                                <ul>
+                                	<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/activity">Activity</a></li>
+									<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/upload">Upload</a></li>
+                                    <li><a href="<?php echo $_SESSION['user']['profile_url']; ?>">View Profile</a></li>
+                                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Edit Profile</a></li>
+                                    <!-- li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/badges/">Badges</a></li -->
+                                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">Log Out</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </header> <!-- .top-bar -->
+        
+
+		<header class="jquery-ui ui-widget-header" <?php if( $currentTheme == 'instagram' ): ?> style="min-height: 35px; display: none;" <?php endif; ?>>
+			<div style="margin: 0 auto; width: 50%; margin-top: 2px; min-height: 35px">
+				<div style="width: 100px; float: left;">
+					<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>" alt="<?php echo SITE_NAME; ?>" title="<?php echo SITE_NAME; ?>">
+						<span style="margin: 20px;" class="font-awesome icon-camera-retro icon-2x"></span>
+					</a>								
+				</div>	
+				
+				<div style="width: 200px; float: right;">
+					<a tabindex="0" href="#userMenuOptions" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="flat">
+						<span class="ui-icon ui-icon-triangle-1-s"></span>
+						<?php echo $_SESSION['user']['username']; ?>
+					</a>
+					<div id="userMenuOptions" class="hidden">
+					<ul>
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/activity">Activity</a></li>
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/upload">Upload</a></li>
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['username']; ?>">View Profile</a></li>									
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Edit Profile</a></li>
+						<!-- li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/badges/">Badges</a></li -->
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">Logout</a></li>
+					</ul>
+					</div>							
+				</div>							
+			</div>										
+		</header>        
+        
+        <div class="main">
+            
+
+		<?php if( $this->data['private_profile'] == 1 ): ?>	
+			<?php if( $this->data['id'] == $_SESSION['user']['id'] ): ?>
+				<div class="header-notice privacy-notice">        
+        			<p class="customPrivacyNotice">
+        				<strong><?php echo $_SESSION['site']['phrases']['self_profile_privacy_notice']; ?></strong>
+        			</p>        
+    			</div>		
+			<?php endif; ?>
+		<?php endif; ?>
+    
+
+    <header style="width: 100%; margin-left: auto; margin-right: auto;" class="feed-header" id="feed-header" role="banner">
+		<?php if( $this->data['private_profile'] == 1 AND $this->data['can_access'] != 1 AND $this->relationship != 'BLOCKED' ): ?>	
+			<?php if( $this->data['id'] != $_SESSION['user']['id'] ): ?>
+				<div class="photo-grid-status status-private">
+					<p>
+						<strong>
+							<span>
+								<span><?php echo $_SESSION['site']['phrases']['user_is_private']; ?></span>
+							</span>
+						</strong>
+						<span class="photo-grid-status-message">
+							<span>
+								<span> <?php echo $_SESSION['site']['phrases']['need_to_follow']; ?>  </span>
+								<span><?php echo $this->data['username']; ?></span>
+								<span>  <?php echo $_SESSION['site']['phrases']['like_or_comment']; ?> </span>
+							</span>
+						</span>
+					</p>
+				</div>		    			
+			<?php endif; ?>
+			<?php elseif( $this->relationship == 'BLOCKED' ): ?>
+				<div class="photo-grid-status status-private">
+					<p>
+						<strong>
+							<span>
+								<span>You are blocked by this user</span>
+							</span>
+						</strong>
+						<span class="photo-grid-status-message">
+							<span>
+								<span> <?php echo $_SESSION['site']['phrases']['need_to_follow']; ?>  </span>
+								<span><?php echo $this->data['username']; ?></span>
+								<span>  <?php echo $_SESSION['site']['phrases']['like_or_comment']; ?> </span>
+							</span>
+						</span>
+					</p>
+				</div>			
+			<?php else: ?>
+		    	<?php if( !empty( $this->data['random_media'] ) ): ?> 
+		    		<?php $i = 0; ?>   	
+					<div class="compWrapper">
+						<div class="compInnerWrapper">
+							<div class="compContainer">
+								<?php foreach ( $this->data['random_media'] AS $key => $value ): ?>
+									<?php $i++; ?>					
+									<div class="compPhoto compPhoto<?php echo $i; ?> <?php $rand = rand(0, 10); if ($rand >= 5): ?> compFlipped<?php endif;?>">
+										<a data-timestampiso8601="<?php echo date( 'c', $value['upload_date'] ); ?>" data-timestamp="<?php echo $value['upload_date']; ?>" data-image="<?php echo $value['thumb_url_path']; ?>" data-mediaid="<?php echo $value['id']; ?>" class="displayModal noBlockUI compFrontside" target="_blank" href="<?php echo PROTOCOL_RELATIVE_URL;?>/p/<?php echo $value['uuid']; ?>">
+											<?php if( $value['media_type'] == 'video' ): ?>
+												<!-- div class="tVideo" -->					
+											<?php endif; ?>						
+											<div alt="" src="<?php if( $i == 3 ): ?><?php echo $value['mid_url_path']; ?><?php else: ?><?php echo $value['thumb_url_path']; ?><?php endif; ?>" style="<?php if( $i == 3 ): ?> background-image: url(<?php echo $value['mid_url_path']; ?>); <?php else: ?> background-image: url(<?php echo $value['mid_url_path']; ?>); <?php endif; ?> width: 100%; height: 100%;" class="Image iLoaded "></div>
+											<?php if( $value['media_type'] == 'video' ): ?>
+												<!--div class="tVideoIndicator"></div>
+												</div-->										
+											<?php endif; ?>											
+											<b class="compPhotoShadow"></b>
+										</a>
+										<?php if( !empty( $value['flip'] ) ): ?>
+											<a data-timestampiso8601="<?php echo date( 'c', $value['upload_date'] ); ?>" data-timestamp="<?php echo $value['upload_date']; ?>" data-image="<?php echo $value['thumb_url_path']; ?>" data-mediaid="<?php echo $value['id']; ?>" class="displayModal noBlockUI compFlipside" target="_blank" href="<?php echo PROTOCOL_RELATIVE_URL;?>/p/<?php echo $value['flip']['uuid']; ?>">
+												<?php if( $value['media_type'] == 'video' ): ?>
+													<!--div class="tVideo"-->					
+												<?php endif; ?>												
+												<div alt="" src="<?php if( $i == 3 ): ?><?php echo $value['flip']['mid_url_path']; ?><?php else: ?><?php echo $value['flip']['mid_url_path']; ?><?php endif; ?>" style="<?php if( $i == 3 ): ?> background-image: url(<?php echo $value['flip']['mid_url_path']; ?>); <?php else: ?> background-image: url(<?php echo $value['flip']['mid_url_path']; ?>); <?php endif; ?> width: 100%; height: 100%;" class="Image iLoaded "></div>
+												<?php if( $value['media_type'] == 'video' ): ?>
+													<!--div class="tVideoIndicator"></div>
+													</div-->										
+												<?php endif; ?>												
+												<b class="compPhotoShadow"></b>
+											</a>
+										<?php else: ?>
+											<a data-timestampiso8601="<?php echo date( 'c', $value['upload_date'] ); ?>" data-timestamp="<?php echo $value['upload_date']; ?>" data-image="<?php echo $value['thumb_url_path']; ?>" data-mediaid="<?php echo $value['id']; ?>" class="displayModal noBlockUI compFlipside" target="_blank" href="<?php echo PROTOCOL_RELATIVE_URL;?>/p/<?php echo $value['uuid']; ?>">
+												<?php if( $value['media_type'] == 'video' ): ?>
+													<!--div class="tVideo"-->					
+												<?php endif; ?>												
+												<div alt="" src="<?php if( $i == 3 ): ?><?php echo $value['mid_url_path']; ?><?php else: ?><?php echo $value['mid_url_path']; ?><?php endif; ?>" style="<?php if( $i == 3 ): ?> background-image: url(<?php echo $value['mid_url_path']; ?>); <?php else: ?> background-image: url(<?php echo $value['mid_url_path']; ?>); <?php endif; ?> width: 100%; height: 100%;" class="Image iLoaded "></div>
+												<?php if( $value['media_type'] == 'video' ): ?>
+													<!--div class="tVideoIndicator"></div>
+													</div-->										
+												<?php endif; ?>												
+												<b class="compPhotoShadow"></b>
+											</a>								
+										<?php endif; ?>
+									</div>
+								<?php endforeach; ?>							
+							</div>
+						</div>
+					</div>
+					<?php else: ?>
+				        <div class="compWrapper" id="profile_comp" style="height: 90px;">
+				          <div class="compInnerWrapper">
+				            <div class="compContainer compContainerLoading"></div>
+				          </div>
+				        </div>			
+				<?php endif; ?>				
+		<?php endif; ?>    		    
+    </header>
+
+    <div class="profile-user" id="profile_user">
+        
+		<div class="profile-options <?php if( $this->data['id'] != $_SESSION['user']['id'] ): ?> has-dropdown <?php endif; ?>">
+			<h1 id="profile_username">
+				<a id="userActions" class="noBlockUI" href="javascript:;">
+					<span id="userLink"></span>
+					<b></b>
+				</a>
+			</h1>
+			<div class="dropdown">
+				<i></i>
+				<ul>
+					<li class="negative">
+						<a href="#"> Report User </a>
+					</li>
+				</ul>
+			</div>
+		</div>        
+
+        <p class="avatar-container">
+            <span id="user_avatar" class="img img-inset user-avatar"></span>
+			<!-- span>
+				<span></span>
+				<span class="FollowButtonContainer ">
+					<span style="display: none;" class="followButtonIndicator">
+						<div class="Spinner"></div>
+					</span>
+					<span class="followButtonActions">
+						<a href="javascript:;" role="button" class="Button FollowButton followButtonFollow">
+							<span>
+								<span>Follow</span>
+							</span>
+						</a>
+					</span>
+				</span>
+			</span -->            
+            <span id="avatar_action" class="avatar-action">
+                <a class="button" href="#">&nbsp;</a>
+            </span>
+        </p>
+
+        <p class="user-bio" id="user_bio"></p>
+
+        <ul class="user-stats" id="user_stats">
+            <li id="user_stats_posts"></li>
+            <li id="user_stats_followers"></li>
+            <li id="user_stats_following"></li>
+        </ul>
+    </div>
+
+    <section class="feed-photos" id="feed-photos">
+		<?php if( $this->data['can_access'] == 1 AND !empty( $this->data['user_media'] ) ): ?>        
+        	<div class="photo-grid">
+	        	<?php if( !empty( $this->data['user_media'] ) ): ?>
+	        		<?php $month	= array(); ?>
+	        		<?php $monthI	= 0; ?>
+	        		<ul class="photo-feed">
+	        		<?php foreach ( $this->data['user_media'] AS $key => $value ): ?>
+	        			<?php $thisMonth = date( 'F', $value['upload_date'] ); $monthI++; $month[$thisMonth][] = $monthI; ?>
+	        			<li id="photo-<?php echo $value['id'];?>" class="photo">
+							<div class="photo-wrapper">
+								<?php if( count( $month[$thisMonth] ) == 1 ): ?>
+									<h3>
+										<span><?php echo $thisMonth; ?></span>
+										<span> </span>
+										<span><?php echo date( 'Y', $value['upload_date'] ); ?></span>
+									</h3>
+								<?php endif; ?>
+								<a class="bg noBlockUI" target="_blank" href="<?php echo PROTOCOL_RELATIVE_URL;?>/p/<?php echo $value['uuid']; ?>"></a>
+								<time class="photo-date">
+									<span>
+										<span></span>
+										<span><?php echo date( 'd', $value['upload_date'] ); ?></span>
+										<span> </span>
+										<span><?php echo $thisMonth; ?></span>
+										<span> </span>
+										<span><?php echo date( 'Y', $value['upload_date'] ); ?></span>
+										<span></span>
+									</span>
+								</time>
+								<a data-timestampiso8601="<?php echo date( 'c', $value['upload_date'] ); ?>" data-timestamp="<?php echo $value['upload_date']; ?>" data-mediaid="<?php echo $value['id']; ?>" data-image="<?php echo $value['url_path']; ?>" class="displayModal noBlockUI" target="_blank" href="<?php echo PROTOCOL_RELATIVE_URL;?>/p/<?php echo $value['uuid']; ?>">
+									<?php if( $value['media_type'] == 'video' ): ?>
+										<div class="tVideo">																			
+									<?php endif; ?>
+										<div src="<?php echo $value['thumb_url_path']; ?>" class="Image iLoaded iWithTransition" style="background-image: url('<?php echo $value['thumb_url_path']; ?>');"></div>
+									<?php if( $value['media_type'] == 'video' ): ?>
+											<div class="tVideoIndicator"></div>
+										</div>
+									<?php endif; ?>
+									<div class="photoShadow"></div>
+								</a>
+								<ul class="photo-stats">
+									<li class="stat-likes">
+										<b>492</b>
+									</li>
+									<li class="stat-comments">
+										<b>2</b>
+									</li>
+								</ul>
+							</div>        			
+	        			</li>
+	        		<?php endforeach; ?>
+						</ul>        		 
+	        		<?php else: ?>
+	            		        		     	
+	        	<?php endif; ?>        			        	
+        	</div>
+        <?php else: ?>
+			<p class="photo-grid-status status-no-photos">
+				<span class="no-photos-message">
+					<span>
+						<span><?php echo $_SESSION['site']['phrases']['no_photos_to_display']; ?></span>
+					</span>
+				</span>
+			</p>
+		<?php endif; ?>	        	
+        
+		<?php if( $this->data['can_access'] == 1 AND !empty( $this->data['user_media'] ) ): ?>        
+			<span class="more-photos">
+				<a class="more-photos-disabled">
+					<span style="display: none;" class="loading-indicator">
+						<div class="Spinner"></div>
+					</span>
+					<span class="more-label">
+						<span>
+							<span>All items loaded</span>
+						</span>
+					</span>
+				</a>
+			</span>
+		<?php endif; ?>        
+    </section>
+
+    <section class="profile-media-modal hidden" id="profile-media-modal">
+    </section>
+
+        </div> <!-- .main -->
+        
+
+    </div> <!-- .page -->
+
+    
+    <footer class="page-footer">
+        <div class="wrapper">
+            <nav>
+                <ul>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Your Account</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/us/">About us</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/">Support</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/">Blog</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/developer/">API</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/jobs/">Jobs</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/legal/privacy/">Privacy</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/legal/terms/">Terms</a></li>
+                </ul>
+            </nav>
+
+            <p class="copyright">&copy; 2012 - <?php echo date('Y').' '.SITE_NAME; ?></p>
+        </div>
+    </footer>
+    
+		
+	<?php echo $this->partial( 'partials/footer.phtml' ); ?>
+
+</div> <!-- .root -->
+
+		<script type="text/javascript">	
+			$(document).ready(function() {
+			    if( CURRENT_THEME != 'instagram' ) {					    							    
+					$('#flat').menu({ 
+						content: $('#flat').next().html(), // grab content from this page
+						showSpeed: 400 
+					});						    
+			    }
+			        					
+		    	$('#theme-switcher').themeswitcher({
+		    		useGoogleCDN: false,			    	 
+			    	loadTheme: CURRENT_THEME, 
+			    	localCssPath: BASEURL + '/css/public/jquery-ui/themes',
+			    	localThemes: SITE_THEMES,
+			    	cookieExpires: 315569259747, 
+			    	cookiePath: '/',		   
+			    	cookieName: 'theme', 
+			    	cookieOnSet: function( cookieName, cookieValue ) {										    	
+				    	CURRENT_THEME = cookieValue;
+				    							    	
+				    	if( CURRENT_THEME != 'instagram' ) {							    							    							    									    																					    	
+					    	if( !IS_NORMALIZED ) {							    	
+				    			$('head').append('<link id="normalizeCss" rel="stylesheet" href="'+BASEURL+'/css/public/normalize.css" type="text/css" />');
+				    			IS_NORMALIZED = true;
+					    	}
+
+					    	$('header.instagram').hide();
+					    	$('header.jquery-ui').show();							    	
+					    								    	
+					    	//$('.root > div.page > header.top-bar').removeAttr('class');
+					    	//$('.root > div.page > header').addClass('ui-widget-header');							    	
+				    	} else {							    	
+				    		if( IS_NORMALIZED ) {
+					    		$('#normalizeCss').remove();
+					    		IS_NORMALIZED = false;
+
+					    		/*$.blockUI();
+								window.location.reload(); */			    		
+				    		}
+
+				    		$('header.jquery-ui').hide();						    		
+				    		$('header.instagram').show();
+				    	}
+				    		    	
+			    		$.post( BASEURL + '/users/ajax', { method: 'updateTheme', theme: cookieValue },
+							function( response ) {
+				    			if( CURRENT_THEME != 'instagram' ) {
+									$('.font-awesome').css( 'color', $('.ui-widget-header').css('color') );									
+				    			}	
+
+				    			if( response.status == 'OK' ) {
+					    			location.reload();
+				    			}	
+							}
+						);					
+				    },
+			    	onSelect: function() {						  						    
+  			
+		        	},
+		        	onSelectComplete: function() {				        			        		     
+		    			$.blockUI({ message: '<img border="0" src="' + BASEURL + '/images/preloader/tools.gif">' });
+		    			//window.location.reload();
+		        	},
+		        	appendThemes: function(switcherpane) {
+		        		//$('#themeGalleryList').append('<li style="width: 120px; padding: 2px; margin: 1px; border: 1px solid rgb(17, 17, 17); clear: left; float: left;"><a href="' + BASEURL + '/css/jquery-ui/aristo/aristo.css" style="color: rgb(170, 170, 170); text-decoration: none; float: left; width: 100%; outline: 0pt none;">			<img title="Test" alt="Test" src="http://jqueryui.com/themeroller/images/themeGallery/theme_90_swanky_purse.png" style="float: left; border: 1px solid rgb(51, 51, 51); margin: 0pt 2px;">			<span class="themeName" style="float: left; margin: 3px 0pt;">Test</span>			</a></li>');
+				    }
+		    	});	
+
+		    	<?php if( !empty( $this->data['user_media'] ) ): ?>								
+				if( CAN_ACCESS ) {
+					$(window).paged_scroll({
+						startPage: 1,
+						pagesToScroll: TOTAL_PAGE_COUNT,											
+				        handleScroll: function (page, container ) {	
+					        $('span.more-label').text('Loading...');
+					        $('span.loading-indicator').show();
+					        			        	
+				        	$.ajax({
+				        		type: 'POST',
+				        		url: BASEURL + '/media/ajax',
+				        		data: { page: page, 
+					        			method: 'fetchPagedUserMedia',
+					        			userId: '<?php echo $this->data['id']; ?>'
+								},
+				        		success: function( response ) {
+					        		if( response.status == 'OK' ) {
+						        		if( page == TOTAL_PAGE_COUNT ) {
+									        $('span.more-label').text('All items loaded');							        		
+						        		} else {
+									        $('span.more-label').text('Load more...');							        		
+						        		}
+						        				
+								        $('span.loading-indicator').hide();
+
+								        $('.photo-feed').append( response.data.html );	
+
+								        //console.log( response );						        		
+					        		}					        		
+				        		},
+				        		dataType: 'json'
+							});
+				        },
+				        triggerFromBottom: '10%',
+				        targetElement : $('.photo-feed'),
+                        // html to show when loading
+	                    loading : {
+	                         html: ''
+	                    }			        
+					});					
+				}
+				<?php endif; ?>
+			    				
+				$.imgpreload([DEFAULT_PRELOADER_IMAGE,
+				              BASEURL + '/images/preloader/spinner/indicator.gif',								 
+							  BASEURL + '/images/preloader/tools.gif', 
+							  BASEURL + '/images/preloader/spinner/482.gif',
+							  BASEURL + '/images/preloader/spinner/482-white.gif',
+							  BASEURL + '/images/placeholder/image/modal.png', 
+							  BASEURL + '/images/preloader/spinner/481.gif', 
+							  BASEURL + '/images/preloader/download/381.gif', 
+							  BASEURL + '/images/bg/following_bg.png',
+							  BASEURL + '/images/bg/follow_request.png'], {
+				    each: function() {
+				        // this = dom image object
+				        // check for success with: $(this).data('loaded')
+				        // callback executes on every image load
+				    },
+				    all: function() {
+				        // this = array of dom image objects
+				        // check for success with: $(this[i]).data('loaded')
+				        // callback executes when all images are loaded
+				    }
+				});			
+
+				$.blockUI.defaults.message = '<img border="0" src="'+ DEFAULT_PRELOADER_IMAGE + '">';				
+				$.blockUI.defaults.baseZ = 1001;
+				$.blockUI.defaults.css = { 
+		            padding: 0,
+		            margin: 0,
+		            width: '30%',
+		            top: '40%',
+		            left: '35%',
+		            textAlign: 'center',
+		            cursor: 'wait'
+		        };
+
+				$.blockUI.defaults.overlayCSS = { 
+        			backgroundColor: '#FFFFFF', 
+        			opacity:         0.6, 
+        			cursor:          'wait'
+				};
+																
+				$('body').imagesLoaded( function() {
+					$.unblockUI();
+				});				
+								
+				$('#dropdownUsername').css({ 'display': 'inline' });
+				<?php if( !empty( $this->data['random_media'] ) ): ?>
+					setInterval( function() {
+						var random = Math.round(Math.random()*10);
+						$('.compContainer > .compPhoto').eq(random).not('.compFlipped').addClass('compFlipped');
+						var random = Math.round(Math.random()*10);
+						$('.compContainer > .compPhoto').eq(random).removeClass('compFlipped').addClass('compFlipped').siblings().removeClass('compFlipped');										
+					}, SITE_USER_COMP_HEADER_FLIP_INTERVAL );
+
+					if( SITE_ROTATE_USER_COMP_HEADER ) {
+						setInterval( function() {																
+							$('.compContainer > .compPhoto').block({ message: '<img src="'+BASEURL+'/images/preloader/spinner/482-white.gif" />' });
+							//$('.compContainer > .compPhoto').jrumble();
+							//$('.compContainer > .compPhoto').trigger('startRumble');						 
+							$.ajax({
+								type: 'POST',
+								url: BASEURL + '/media/random-media/',
+								data: { userId: <?php echo $_SESSION['user']['id']; ?>, 
+										count: <?php echo ( SITE_COMP_IMAGE_LIMIT * 2 ); ?> 
+								},
+								dataType: 'html',
+								}).done(function( response ) {
+									if( response != 'ERROR' ) {
+										$('.compContainer').hide().html( response ).fadeIn('slow');
+										//$('.compContainer > .compPhoto').trigger('stopRumble');
+									}
+								}
+							);										
+						}, SITE_ROTATE_USER_COMP_HEADER_INTERVAL );						
+					}									 			
+				<?php endif; ?>	
+	
+				$('#user_stats_posts').html('<span"><span></span><span id="userPostCount" class="number-stat"><?php echo number_format( $this->data['media_count'] ); ?></span><span>  posts </span></span>');
+				$('#user_stats_followers').html('<span"><span></span><span id="followerCount" class="number-stat"><?php echo number_format( $this->data['follower_count'] ); ?></span><span>  followers </span></span>');
+				$('#user_stats_following').html('<span"><span></span><span id="followingCount" class="number-stat"><?php echo number_format( $this->data['following_count'] ); ?></span><span>  following </span></span>');	
+	
+				$('#user_avatar').replaceWith('<span class="img img-inset user-avatar"><span style="background-image:url(<?php echo $this->data['avatar_url']; ?>);" class="img img-inset user-avatar"><img src="<?php echo $this->data['avatar_url']; ?>"><b></b></span></span>');	
+
+				<?php if( $_SESSION['user']['id'] == $this->data['id'] ): ?>
+					$('.user-avatar').addClass('myAvatar');
+					
+					$('#avatar_action').html('<a href="<?php BASEURL; ?>/accounts/edit/" class="button edit-profile-button"><span><span>Edit Profile</span></span></a>');
+					<?php elseif( $this->relationship == 'REQUEST_PENDING' ): ?>
+					$('#avatar_action').html('<a style="width: 95px; background-image: url(<?php echo PROTOCOL_RELATIVE_URL; ?>/images/bg/follow_request.png);" class="Button FollowButton followButtonRequested"><span><span>Requested</span></span></a>');
+					<?php elseif( $this->relationship == 'IS_FOLLOWING'): ?>
+					$('#avatar_action').html('<a style="width: 95px; background-image: url(<?php echo PROTOCOL_RELATIVE_URL; ?>/images/bg/following_bg.png);" class="Button FollowButton followButtonFollowing"><span><span>Following</span></span></a>');
+					<?php else: ?>
+					$('#avatar_action').html('<a class="Button FollowButton followButtonFollow" style="width: 95px;"><span><span>Follow</span></span></a>');					
+				<?php endif; ?>					
+
+				<?php if( $this->data['id'] != $_SESSION['user']['id'] ): ?>						
+					$('#userLink').text('<?php echo $this->data['username']; ?>');
+					$('#reportUserTrigger').live('click', function() {
+						$('div.dropdown').fadeIn();
+					});
+				<?php else: ?>
+					$('#profile_username').html('<?php echo $this->data['username']; ?>');
+				<?php endif; ?>					
+				$('#user_bio').html('<strong><?php echo $this->data['first_name'].' '.$this->data['last_name']; ?></strong><br><?php echo $this->data['bio']; ?>');
+			});
+		</script>					
+		
+		<!-- START:  media modal -->
+		<div class="igDialogLayer">
+			<div class="VerticalCenter">
+				<div class="vcCell">
+					<div class="igdContentWrap">
+						<div class="igDialogContent Modal MediaModal">
+							<span>
+								<span></span>
+								<div class="Item">
+									<div class="LikeableFrame iMedia" id="modalImageContainer">
+										<div id="likeableFrameProgress">
+											<div class="progress-label"></div>
+										</div>
+										<div src="" class="Image iLoaded iWithTransition Frame instagramFrame" style="width: 100%; height: 100%; background-image: url('');"></div>
+										<div class="Image iLoaded iWithTransition Frame normalFrame" style="display: none; width: 100%; height: 100%;">										
+											<img border="0" src="" width="100%" height="100%">
+										</div>
+										<span class="lbAnimation"></span>																				
+									</div>
+									
+									<div class="LikeableFrame iMedia" id="modalVideoContainer" style="display: none;">
+										<div id="modalVideoSource"></div>
+										<video style="display: none;" id="videojs_video" class="video-js vjs-default-skin" controls preload="auto" width="612" height="612" poster="" data-setup='{"techOrder": ["flash", "html5"], "autoplay": false, "controls": true, "preload": true }'></video>																																							
+										<span class="lbAnimation"></span>									
+									</div>
+									
+									<div class="Info">
+										<div class="iContentArea">
+											<div class="iMeasuredHeader">
+												<div class="iMeasuredHeaderInner">
+													<div class="ImageBlock Voice Story">
+														<div src="<?php echo $this->data['avatar_url']; ?>" style="background-image: url('<?php echo $this->data['avatar_url']; ?>'); width: 40px; height: 40px;" class="Image iLoaded  ibImg"></div>
+														<div style="margin-left: 40px;" class="ibContent">
+															<a class="sNameLink" href="<?php echo BASEURL; ?>/<?php echo $this->data['username']; ?>"><?php echo $this->data['username']; ?></a>
+															<span> </span>
+															<div>
+																<span title="" value="" datetime="" class="timeAgo modalTimestamp timestamp"></span>
+															</div>
+															<span>
+																<span id="captionText" class="captionText"></span>
+															</span>
+															<span>
+																<span></span>
+																																
+																<?php if( $_SESSION['user']['id'] == $this->data['id'] ): ?>
+																	<span class="modalMediaDeleteButton">
+																		<img id="modalMediaDeleteIcon" data-mediaid="" src="<?php echo BASEURL; ?>/images/icons/fam3/delete.png">
+																	</span>
+																<?php endif; ?>
+																
+																<?php if( $_SESSION['user']['id'] != $this->data['id'] ): ?>
+																	<?php if( (int)$_SESSION['user']['id'] != 0 ): ?>
+																		<!-- span id="repostIcon" data-mediaid="" alt="Repost" title="Repost" class="icon-retweet" style="cursor: pointer; float: right;"></span-->
+																	<?php endif;?>
+																<?php endif; ?>
+																
+																<?php if( $_SESSION['user']['id'] != $this->data['id'] ): ?>
+																	<span class="FollowButtonContainer">
+																		<span style="display: none;" class="followButtonIndicator">
+																			<div class="Spinner"></div>
+																		</span>
+																		<span class="followButtonActions">
+																			<a href="javascript:;" role="button" class="noBlockUI Button FollowButton <?php if( $this->relationship == 'IS_FOLLOWING' ): ?> followButtonFollowing <?php else: ?> followButtonFollow <?php endif; ?>">
+																				<span>
+																					<span class="noBlockUI"><?php if( $this->relationship == 'IS_FOLLOWING' ): ?>Following<?php else: ?>Follow<?php endif;?></span>
+																				</span>
+																			</a>
+																		</span>
+																	</span>
+																<?php endif; ?>
+															</span>
+														</div>
+													</div>
+													
+													<span class="LikeList LikesBar">
+														<span>&nbsp;&nbsp;</span>
+													</span>													
+													<span></span>
+												</div>
+											</div>
+											<div class="ScrollContainer iMeasuredScrollContainer">
+												<div class="iComments"></div>
+											</div>
+										</div>
+										<div class="FeedbackBar">
+											<a label="Toggle like" aria-label="Toggle like" href="javascript:;" role="button" class="Button IconButton LikeButton">
+												<span data-mediaid="" id="modalLikeButton" class="ibInner"></span>
+											</a>
+											<div class="fbInputContainer">
+												<input data-mediaid="" type="text" value="" placeholder="Leave a comment..." class="fbInput">
+											</div>
+											<span>
+												<a label="More" aria-label="More" href="javascript:;" role="button" class="Button IconButton MoreButton">
+													<span class="ibInner"></span>
+												</a>
+												<span></span>
+												<span></span>
+											</span>
+										</div>
+									</div>
+									<a data-mediaid="" data-media="" class="mmLeftArrow" role="button" href="javascript:;">
+										<span>
+											<span>Previous photo</span>
+										</span>
+									</a>
+									<a data-mediaid="" data-media="" class="mmRightArrow" role="button" href="javascript:;">
+										<span>
+											<span>Next photo</span>
+										</span>
+									</a>
+								</div>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<i class="igDialogClose">×</i>
+		</div>
+		<!-- END:  media modal -->
+		
+		<div id="dialog-avatarUpload" style="display: none;">									
+			<form enctype="multipart/form-data" method="POST" name="avatarUpload" id="avatarUpload" action="<?php echo PROTOCOL_RELATIVE_URL; ?>/users/ajax">
+				<input type="hidden" name="method" value="uploadOwnAvatar" />
+				<input style="width: 100%;" type="file" name="myNewAvatar" id="myNewAvatar" class="text ui-widget-content ui-corner-all">					
+			</form>	
+						
+			<div id="avatarPreview" style="position: absolute; right: 10px; top: 5px; height: 128px; width: 128px;">
+				<img id="myAvatarUrl" style="border: solid 1px #000000; height: 128px; width: 128px;" height="128" width="128" src="<?php echo $this->data['avatar_url']; ?>">
+			</div>													
+		</div>				
+		
+	</body>
+</html>

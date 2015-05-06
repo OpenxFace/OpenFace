@@ -1,0 +1,36 @@
+<?php if( !IS_MOBILE ): ?>
+<div id="siteControls" style="width: 200px; position: absolute; right: 0; bottom: 0;">
+	<table align="right">
+		<tr>
+			<td>
+				<?php if( (int)SITE_ALLOW_LANGUAGE_CHANGE == 1 ): ?>	
+				    <?php 
+				        $Languages = new Languages; 
+				        $languages = $Languages->getActive();
+				    ?>
+				    <?php if( !empty( $languages ) ): ?>
+    					<select autocomplete="off" name="langSelect" id="langSelect">    					 
+    						<option value=""><?php echo ucfirst( $_SESSION['site']['phrases']['language'] ); ?></option>
+    						<?php foreach( $languages AS $key => $value ): ?>
+    						    <option <?php if( $_SESSION['user']['site_language'] == $value['id'] ): ?> selected="selected" <?php endif; ?> value="<?php echo $value['id']; ?>"><?php echo $value['friendly_name']; ?></option>
+    						<?php endforeach; ?>
+    					</select>
+					<?php endif; ?>
+				<?php endif; ?>			
+			</td>
+			<td>
+				<?php if( (int)SITE_ALLOW_TEMPLATE_CHANGE == 1 ): ?>		
+				    <?php global $SITE_THEMES; if( !empty( $SITE_THEMES ) ): ?>	
+					<select autocomplete="off" name="themeSelect" id="themeSelect">
+					    <option value=""><?php echo translate('theme', 'ucfirst'); ?></option>
+					    <?php global $SITE_THEMES; foreach( $SITE_THEMES AS $key => $value ): ?>
+						  <option <?php if( $_COOKIE['theme'] == $value['name'] ): ?> selected="selected" <?php endif; ?> value="<?php echo $value['name']; ?>"><?php echo $value['display_name']; ?></option>
+						<?php endforeach; ?>
+					</select>
+					<?php endif; ?>
+				<?php endif; ?>			 			
+			</td>			
+		</tr>
+	</table>						
+</div>
+<?php endif; ?>

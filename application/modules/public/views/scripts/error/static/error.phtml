@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<HTML>
+	<head>
+		<meta charset="utf-8">
+		<title>__SITE_NAME__ - ERROR</title>
+		<link href="__THEME_PATH__/jquery-ui.css" rel="stylesheet">
+		
+		<script type="text/javascript">
+			var BASEURL					= '__PROTOCOL_RELATIVE_URL__';
+			var DEFAULT_PRELOADER_IMAGE = '__SITE_DEFAULT_PRELOADER_IMAGE_PATH__';
+		</script>
+		
+		<script type="text/javascript" src="__JS_PATH__/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="__JS_PATH__/jquery-ui-1.9.2.custom.min.js"></script>
+		<script type="text/javascript" src="__JS_PATH__/jquery.blockUI.js"></script>
+		<script type="text/javascript" src="__JS_PATH__/jquery.blockUI.defaults.js"></script>
+		<script type="text/javascript">
+		$(function() {		
+			var $dialog = $('<div></div>')
+			.html('__ERROR_MESSAGE__')
+			.dialog({
+				title: '__SITE_NAME__ - ERROR',				
+				autoOpen: true,
+				modal: true,
+				closeOnEscape: false,
+				minWidth: 500,
+    			open: function(event, ui) {
+    				$('.ui-dialog-titlebar-close').remove();        			
+    				$('.ui-dialog-title').html('<span class="ui-icon ui-icon-alert"></span> __SITE_NAME__ - Permission Error');
+    				$('.ui-dialog .ui-dialog-title .ui-icon').css({'float': 'left', 'margin-right': '4px'});    					    							    			
+    			}    							
+			});
+		});
+		</script>
+		
+		<style type="text/css">
+			body{
+				font: "Trebuchet MS", sans-serif;
+				margin: 50px;
+			}
+		</style>	
+	</head>
+	<body></body>
+</HTML>

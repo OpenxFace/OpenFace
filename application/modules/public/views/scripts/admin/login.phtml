@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<!-- Apple devices fullscreen -->
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<!-- Apple devices fullscreen -->
+		<meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		
+		<title><?php echo SITE_NAME; ?> - Admin Login</title>
+		
+	    <?php if( !empty( $_SESSION['site']['phrases'] ) ): ?>    
+	    	<script type="text/javascript">
+	    		var SITE_PHRASES = new Array();
+				<?php foreach( $_SESSION['site']['phrases'] AS $key => $value ): ?>
+					SITE_PHRASES['<?php echo $key; ?>'] = '<?php echo addslashes( str_replace( "\r\n", '<br>', $value ) ); ?>';
+				<?php endforeach; ?>
+	    	</script>
+	    <?php endif; ?>		
+	
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/bootstrap.min.css">
+		<!-- Bootstrap responsive -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/bootstrap-responsive.min.css">
+		<!-- icheck -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/plugins/icheck/all.css">
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/style.css">
+		<!-- Color CSS -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/admin/themes.css">
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/font-awesome.min.css">
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/font-awesome-ie7.min.css">
+		<![endif]-->		
+	
+		<!-- jQuery -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.8.3.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/bootstrap.min.js"></script>				
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js?<?php echo rand(); ?>"></script>	    		   	    
+		<script type="text/javascript">
+			var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+			var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_ADMIN_PRELOADER_IMAGE_PATH; ?>';
+			var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['username']; ?>';
+			var SITE_NAME				= '<?php echo SITE_NAME; ?>';			
+			var CURRENT_USER			= new Array();	
+					
+			<?php foreach( $_SESSION['user'] AS $key => $value ): ?>
+				CURRENT_USER['<?php echo $key; ?>'] = '<?php echo $value; ?>';
+			<?php endforeach; ?>
+		</script> 
+		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>	
+		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/img-preload.js?<?php echo rand(); ?>"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/jquery.blockUI.defaults.js?<?php echo rand(); ?>"></script>		
+
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/jquery.observor.js?<?php echo rand(); ?>"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/custom.js?<?php echo rand(); ?>"></script>				
+		
+		<!-- Nice Scroll -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/nicescroll/jquery.nicescroll.min.js"></script>
+		<!-- Validation -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/validation/jquery.validate.min.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/validation/additional-methods.min.js"></script>
+		<!-- icheck -->
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/icheck/jquery.icheck.min.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/eakroko.js"></script>
+	
+		<!--[if lte IE 9]>
+			<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/admin/plugins/placeholder/jquery.placeholder.min.js"></script>
+			<script>
+				$(document).ready(function() {
+					$("input, textarea").placeholder();
+				});
+			</script>
+		<![endif]-->
+		
+	
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/favicon.ico" />
+		<!-- Apple devices Homescreen icon -->
+		<link rel="apple-touch-icon-precomposed" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/admin/apple-touch-icon-precomposed.png" />
+		
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/custom.validation.js?<?php echo rand(); ?>" type="text/javascript" charset="utf-8"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.formparams.min.js" type="text/javascript" charset="utf-8"></script>								     		
+	
+	</head>
+
+	<?php if( strlen( trim( @$_COOKIE['adminTemplateColor'] ) ) ): ?>
+		<body class="login theme-<?php echo $_COOKIE['adminTemplateColor']; ?>" data-theme="theme-<?php echo $_COOKIE['adminTemplateColor']; ?>">
+	<?php else: ?>
+		<body class="login">
+	<?php endif; ?>	
+	
+		<?php echo $this->partial('partials/blockui.phtml'); ?>
+			
+		<div class="wrapper">
+			<h1>
+				<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin">
+					<i class="icon-thumbs-up-alt"></i> <?php echo SITE_NAME; ?>
+				</a>
+			</h1>
+			<div id="loginError" class="alert alert-danger" style="display: none;">
+				<table width="100%;">
+					<tr>
+						<td style="width: 32px;">
+							<i class="icon-warning-sign"></i>&nbsp;&nbsp;						
+						</td>
+						<td id="loginErrorMessage"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="login-body">
+				<h2>SIGN IN</h2>
+				<form action="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/login" method="post" class="form-validate" id="frmAdminLogin" name="frmAdminLogin">
+					<div class="control-group">
+						<div class="email controls">
+							<input type="text" id="username" name="username" placeholder="Email address" class="input-block-level" data-rule-required="true">
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="pw controls">
+							<input type="hidden" id="password" name="password">
+							<input type="password" id="passwordHolder" name="passwordHolder" placeholder="Password" class="input-block-level" data-rule-required="true">
+						</div>
+					</div>
+					<div class="submit">
+						<div class="remember">
+							<input type="checkbox" name="remember" class="icheck-me" data-skin="square" data-color="blue" id="remember"> <label for="remember">Remember me</label>
+						</div>
+						<input type="submit" value="Sign me in" class="btn btn-primary">
+					</div>
+				</form>
+				<div class="forget">
+					<a href="#"><span>Forgot password?</span></a>
+				</div>
+			</div>
+		</div>
+		<?php echo $this->partial('partials/img-preload.phtml'); ?>		
+	</body>	
+</html>

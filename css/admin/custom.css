@@ -1,0 +1,23 @@
+.adminAvatarThumb {
+	border: 1px;
+	border-color: #FFFFFF;
+	border-style: solid;
+	height: 25px;
+	width: 25px;		
+}
+
+td {
+	vertical-align: top !important;	
+}
+
+th.sorting, th.sorting_asc, th.sorting_desc {
+	cursor: pointer;	
+}
+
+input.error, input.inputError {
+	border-color: #E9322D !important;
+	box-shadow: 0 0 6px #F8B9B7 !important;	
+}
+.error, .inputError {
+	color: #B94A48 !important;	
+}

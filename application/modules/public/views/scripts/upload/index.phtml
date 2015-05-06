@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $_SESSION['user']['locale']; ?>" class="hl-<?php echo $_SESSION['user']['locale']; ?> logged-in ">
+<head>
+    <meta charset="UTF-8" />
+    <title>Upload &bull; <?php echo SITE_NAME; ?></title>
+    
+ 	<?php
+		if( SITE_ALLOW_TEMPLATE_CHANGE == 1 ) {
+ 			$currentTheme = ( strlen( @$_COOKIE['theme'] ) ) ? $_COOKIE['theme'] : SITE_DEFAULT_TEMPLATE;
+		} else {
+ 			$currentTheme = SITE_DEFAULT_TEMPLATE;
+			setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+		}  
+	?>
+     
+	<?php $siteThemes = $GLOBALS['SITE_THEMES']; ?> 
+	
+	<?php if( !empty( $siteThemes ) ): ?>
+		
+		<?php			 
+			if( $currentTheme != SITE_DEFAULT_TEMPLATE ) {
+				if( !array_key_exists( $currentTheme, $siteThemes ) ) {
+					$currentTheme = SITE_DEFAULT_TEMPLATE;
+					setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+				}
+			}			
+		?>
+			
+		<script type="text/javascript">	
+			var SITE_THEMES = new Array();
+			<?php foreach( $siteThemes AS $key => $value ): ?>
+				SITE_THEMES['<?php echo $key; ?>'] = '<?php echo $value; ?>';	
+			<?php endforeach; ?>
+		</script>
+		<?php else: ?>
+		<script type="text/javascript">		
+			var SITE_THEMES = new Array();
+		</script>					
+	<?php endif; ?>    
+
+    <meta name="robots" content="noimageindex" />
+    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <script type="text/javascript">
+		var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+		var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
+		var IMG_ROOT				= BASEURL + '/img';
+		var JS_ROOT					= BASEURL + '/js';
+		var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
+		var IS_NORMALIZED			= false;		
+	</script>
+
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js?<?php echo rand(); ?>"></script>    
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.js"></script>   
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>     
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/themeswitcher.js?<?php echo rand(); ?>"></script> 
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>		
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.defaults.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/custom.js?<?php echo rand(); ?>"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.observor.js?<?php echo rand(); ?>"></script>		
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bluebar.js"></script>
+        
+        <!-- START:	plupload -->
+			<!-- Load plupload and all it's runtimes and finally the jQuery queue widget -->
+			<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/plupload/plupload.full.js"></script>
+			<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
+			<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/plupload/plupload.browserplus.js"></script> 			        
+        <!-- END:	plupload -->
+
+        <script type="text/javascript">
+            __DEV__ = false;
+            window._jscalls = [];
+        </script>
+
+
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/polyfills-build/polyfill_modern.js"></script>
+    <script data-main="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/modules-build/main.js" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/require.js"></script>
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/strings/strings_en.js"></script>
+
+
+
+
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/navigation.js"></script>
+
+
+
+    <link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/accounts-main.css"/>
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.selectBoxIt.css" type="text/css" />
+	
+	<?php if( $currentTheme != 'instagram'): ?>
+		<?php if( !array_key_exists( $currentTheme, $siteThemes ) ): ?>
+			<link rel="stylesheet" id="theme-url" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/<?php echo $currentTheme; ?>/jquery-ui.css" type="text/css" media="screen" />
+			<?php else: ?>
+			<link rel="stylesheet" id="normalizeCss" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/normalize.css" type="text/css" />
+			<link rel="stylesheet" id="theme-url" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery-ui/themes/<?php echo $currentTheme; ?>/jquery-ui.css" type="text/css" media="screen" />		
+		<?php endif; ?>		
+		
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/fg.menu.css" type="text/css" />
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/fg.menu.js"></script>
+		
+	<?php else: ?>
+		<link rel="stylesheet" id="theme-url" href="" type="text/css" media="screen" />
+	<?php endif; ?>
+	
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/custom.css?<?php echo rand(); ?>"/>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.selectBoxIt.min.js"></script>	
+
+	
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.pnotify.min.js"></script>
+	<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.pnotify.icons.css" media="all" rel="stylesheet" type="text/css" />
+	
+	<style type="text/css">
+		.ui-progressbar {
+			position: relative;
+		}
+		
+		.progress-label {
+			position: absolute;
+			left: 50%;
+			top: 4px;
+			font-weight: normal;
+			z-index: 200;
+		}
+	</style>
+ 	
+ 	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.typewatch.js"></script>
+ 		
+</head>
+<body class="sidebar-page">
+	<?php if( SITE_USE_BLOCKUI == 1 AND !IS_MOBILE ): ?>
+	<!-- START:		blockUI -->
+		<div style="display: block" class="blockUI"></div>
+		<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
+		<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><img src="<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>"></div>		
+	<!-- END:		blockUI -->	
+	<?php endif; ?>
+
+<div class="root">
+
+
+    <div class="page">
+
+        <header class="instagram top-bar" <?php if( $currentTheme != 'instagram' ): ?> style="display: none;" <?php endif; ?>>
+            <div class="wrapper">
+                <hgroup>
+                    <h1 class="logo"><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>"><?php echo SITE_NAME; ?></a></h1>
+
+                </hgroup>
+
+
+
+                <div class="account-state">
+                    <ul class="actions">
+
+
+                        <li id="link_profile" class="link-profile has-dropdown">
+                            <a href="javascript:;" class="noBlockUI">
+
+    	<span class="img img-outset current-user-avatar" style="background-image: url(<?php echo PROTOCOL_RELATIVE_URL; ?>/images/profiles/anonymousUser.jpg);">
+        <img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/profiles/anonymousUser.jpg" onerror="imageFallback(this);" alt="" />
+        <b></b>
+    </span>
+
+                                <strong><?php echo $_SESSION['user']['username']; ?></strong>
+                            </a>
+
+                            <div class="dropdown">
+                                <i></i>
+
+                                <ul>
+									<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/upload">Upload</a></li>                                
+                                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['username']; ?>">View Profile</a></li>
+                                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Edit Profile</a></li>
+                                    <!-- li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/badges/">Badges</a></li -->
+                                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">Log Out</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </header> <!-- .top-bar -->
+
+
+					<header class="jquery-ui ui-widget-header" <?php if( $currentTheme == 'instagram' ): ?> style="min-height: 35px; display: none;" <?php endif; ?>>
+						<div style="margin: 0 auto; width: 50%; margin-top: 2px; min-height: 35px">
+							<div style="width: 100px; float: left;">
+								<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>" alt="<?php echo SITE_NAME; ?>" title="<?php echo SITE_NAME; ?>">
+									<span style="margin: 20px;" class="font-awesome icon-camera-retro icon-2x"></span>
+								</a>								
+							</div>	
+							
+							<div style="width: auto; float: right;">
+								<a tabindex="0" href="#userMenuOptions" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="flat">
+									<span class="ui-icon ui-icon-triangle-1-s"></span>
+									<?php echo $_SESSION['user']['username']; ?>
+								</a>
+								<div id="userMenuOptions" class="hidden">
+								<ul>
+									<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/upload">Upload</a></li>
+									<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['username']; ?>">View Profile</a></li>									
+									<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Edit Profile</a></li>
+									<!-- li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/badges/">Badges</a></li -->
+									<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">Logout</a></li>
+								</ul>
+								</div>							
+							</div>							
+						</div>										
+					</header>         
+
+    <div class="sidebar">
+        <div class="wrapper">
+            <nav class="sidebar-nav">
+                <div class="sidebar-content">
+
+    <h2><i></i>Your Account<span class="separator"> &bull; </span><span class="subtitle"></span></h2>
+    <ul>
+		<li class="active">
+        	<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/upload">
+        	Upload
+            	<i class="disclosure"></i>
+        	</a>
+		</li>    
+    
+        <li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">
+
+            Edit Profile
+
+            <i class="disclosure"></i>
+
+        </a>
+
+    </li>
+        <li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/password/change/">
+
+            Change Password
+
+            <i class="disclosure"></i>
+
+        </a>
+
+    </li>
+        <!-- li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/manage_access">
+
+            Manage Applications
+
+            <i class="disclosure"></i>
+
+        </a>
+
+    </li -->
+        <!-- li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/badges/">
+
+            Badges
+
+            <i class="disclosure"></i>
+
+        </a>
+
+    </li -->
+        <li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">
+
+            Log Out
+
+        </a>
+
+    </li>
+    </ul>
+
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="main">
+        <div class="wrapper">
+            <section class="nav-page-content" role="main">
+
+    <header>
+    <h1>Upload</h1>
+    </header>
+
+
+
+
+
+
+<form method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="adjacent bordered">
+
+	<input type="hidden" name="fileUpload" id="fileUpload" value="true"> 
+   	<input type="hidden" name="csrfmiddlewaretoken" value="<?php echo sha1( $_SESSION['user']['id'] ); ?>" />
+
+    <p class="form-text">
+        <label>Files</label>
+        <span>
+		<!-- START:	plupload -->	
+			<div id="pluploadContainer">
+				<div id="filelist">No runtime found.</div>
+			</div>					
+		<!-- END:	plupload -->
+		</span>
+    </p>    
+
+    <p class="form-actions">
+		<button style="width: 200px;" type="button" id="selectFiles">Select Files</button>
+		<button style="width: 200px;" type="button" id="uploadFiles" disabled="disabled">Upload</button>    
+    	<!-- button style="width: 100px;" type="button" class="button-green" id="uploadFiles">Upload</button -->
+    </p>
+
+</form>
+
+            </section>
+        </div> <!-- .main -->
+    </div> <!-- .main -->
+
+
+    </div> <!-- .page -->
+
+    <?php echo $this->partial( 'partials/footer.phtml' ); ?>
+
+    <footer class="page-footer">
+        <div class="wrapper">
+            <nav>
+                <ul>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Your Account</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/us/">About us</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/">Support</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/">Blog</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/developer/">API</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/legal/privacy/">Privacy</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/legal/terms/">Terms</a></li>
+                </ul>
+            </nav>
+
+            <p class="copyright">&copy; 2012 - <?php echo date('Y'); ?> <?php echo SITE_NAME; ?></p>
+        </div>
+    </footer>
+
+<?php if( SITE_DEBUG ): ?>
+	<!-- textarea style="width: 100%;" rows="50" cols="50" readonly="readonly">
+	*** DEBUG ***
+	------------------
+	
+	SESSION:
+	------------------
+	<?php print_r( $_SESSION ); ?>
+	</textarea --> 
+<?php endif; ?>
+
+</div> <!-- .root -->
+
+<!-- START:	plupload -->
+	<script type="text/javascript">
+		$(function() {
+	    	$.pnotify.defaults.styling		= 'jqueryui';
+	    	$.pnotify.defaults.history		= false;
+	    	$.pnotify.defaults.maxonscreen 	= 1;			    
+	    				
+		    if( CURRENT_THEME != 'instagram' ) {					    							    
+				$('#flat').menu({ 
+					content: $('#flat').next().html(), // grab content from this page
+					showSpeed: 400 
+				});
+
+				$('.sidebar').css('margin-top', '1px');
+				$('.page-footer').css('margin-top', '0px');
+		    } else {
+				$('#theme-url').attr('href', BASEURL + '/css/public/jquery-ui/themes/redmond/jquery-ui.min.css');			    
+		    }    			    			   
+						    
+	    	$('#theme-switcher').themeswitcher( { 
+		    	useGoogleCDN: false,
+		    	loadTheme: CURRENT_THEME,
+		    	localCssPath: BASEURL + '/css/public/jquery-ui/themes', 
+		    	localThemes: SITE_THEMES,
+		    	cookieExpires: 315569259747, 
+		    	cookiePath: '/',		   
+		    	cookieName: 'theme', 
+		    	cookieOnSet: function( cookieName, cookieValue ) {
+			    	CURRENT_THEME = cookieValue;
+			    							    	
+			    	if( CURRENT_THEME != 'instagram' ) {							    							    							    									    																					    	
+				    	if( !IS_NORMALIZED ) {							    	
+			    			$('head').append('<link id="normalizeCss" rel="stylesheet" href="'+BASEURL+'/css/public/normalize.css" type="text/css" />');
+			    			IS_NORMALIZED = true;
+				    	}
+
+				    	$('header.instagram').hide();
+				    	$('header.jquery-ui').show();							    								    	
+			    	} else {							    	
+			    		if( IS_NORMALIZED ) {
+				    		$('#normalizeCss').remove();
+				    		IS_NORMALIZED = false;			    		
+			    		}
+
+			    		$('header.jquery-ui').hide();						    		
+			    		$('header.instagram').show();
+			    	}
+
+		    		$.post( BASEURL, { sessionUpdate: true, theme: cookieValue },
+						function( data ) {
+			    			if( CURRENT_THEME != 'instagram' ) {									
+								$('.font-awesome').css( 'color', $('.ui-widget-header').css('color') );
+			    			}																    				
+						}
+					);					
+			    },
+		    	onSelect: function() {						  						    
+		    		   			
+	        	},
+	        	onSelectComplete: function() {		     
+		    		$.blockUI({ message: '<img border="0" src="' + BASEURL + '/images/preloader/tools.gif">' });
+		    		window.location.reload();				        		
+	        	},
+	        	appendThemes: function(switcherpane) {
+	        		//$('#themeGalleryList').append('<li style="width: 120px; padding: 2px; margin: 1px; border: 1px solid rgb(17, 17, 17); clear: left; float: left;"><a href="' + BASEURL + '/css/jquery-ui/aristo/aristo.css" style="color: rgb(170, 170, 170); text-decoration: none; float: left; width: 100%; outline: 0pt none;">			<img title="Test" alt="Test" src="http://jqueryui.com/themeroller/images/themeGallery/theme_90_swanky_purse.png" style="float: left; border: 1px solid rgb(51, 51, 51); margin: 0pt 2px;">			<span class="themeName" style="float: left; margin: 3px 0pt;">Test</span>			</a></li>');
+			    }
+	    	});	    						
+	    						    
+			$.imgpreload([DEFAULT_PRELOADER_IMAGE, BASEURL+'/images/preloader/tools.gif', BASEURL+'/images/preloader/download/small/blue.gif', BASEURL + '/images/preloader/spinner/481.gif', BASEURL + '/images/preloader/download/381.gif'], {
+			    each: function() {
+			        // this = dom image object
+			        // check for success with: $(this).data('loaded')
+			        // callback executes on every image load
+			    },
+			    all: function() {
+			        // this = array of dom image objects
+			        // check for success with: $(this[i]).data('loaded')
+			        // callback executes when all images are loaded
+			    }
+			});				
+					    
+			$('body').imagesLoaded( function() {
+				$.unblockUI();
+			});
+			
+			$('#selectFiles').button();
+			$('#uploadFiles').button({ disabled: true });
+
+			var uploader = new plupload.Uploader({
+				runtimes:				'html5,flash,gears,silverlight,browserplus',
+				browse_button:			'selectFiles',
+				container:				'pluploadContainer',
+				max_file_size:			'1024mb',
+				url:					BASEURL + '/upload/ajax',
+				flash_swf_url:			JS_ROOT + '/plupload/plupload.flash.swf',
+				silverlight_xap_url:	JS_ROOT + '/plupload/plupload.silverlight.xap',
+				filters: [
+					{title: 'Images', extensions: 'jpeg,jpg,gif,png'},
+					{title: 'Videos', extensions: 'flv,mov,mp4'}
+				],
+				unique_names: true,
+				headers: {plupload: true}
+			});
+		
+			uploader.bind('Init', function(up, params) {				
+				$('#filelist').html('<div class="ui-widget"><div style="margin-bottom: 5px; padding: 7px;" class="ui-state-highlight ui-corner-all">Current runtime: ' + params.runtime + '</div></div>');
+			});
+		
+			$('#uploadFiles').click(function(e) {
+				$('#uploadFiles').button({ disabled: true });				
+				uploader.start();
+				e.preventDefault();
+			});
+		
+			uploader.init();
+		
+			uploader.bind('FilesAdded', function(up, files) {
+				$('.pluploadError').fadeOut('slow');
+				//$('#uploadFiles').button({ disabled: false });				
+				$.each(files, function(i, file) {
+					$('#filelist').append(
+						'<div id="' + file.id + '">' +
+						file.name + ' (' + plupload.formatSize(file.size) + ') <b></b>' +
+					'</div><div id="'+file.id+'-progressbar"><div class="progress-label"></div></div>');
+				});
+
+				// Reposition Flash/Silverlight				
+				up.refresh();
+			});
+		
+			uploader.bind('UploadProgress', function(up, file) {
+				$('#' + file.id + '-progressbar').progressbar({ value: file.percent,
+																change: function() {
+																	// $('#' + file.id + '-progressbar').find('.progress-label').text( file.percent + '%' );																	
+																},
+																complete: function() {
+																    setTimeout(function(){
+																		$('#' + file.id + '-progressbar').fadeOut('slow', function() {
+																			$('#' + file.id + '-progressbar').progressbar('destroy');																			 
+																			$('#' + file.id + '-progressbar').remove(); 
+																		});																		
+																		$('#' + file.id + ' b').fadeOut('slow', function() { 
+																			$(this).remove(); 
+																		});
+																    }, 1000);																	
+																}																					
+				});				
+				$('#' + file.id + ' b').html(file.percent + '%');
+			});
+		
+			uploader.bind('Error', function(up, err) {				
+				$('#filelist').append('<div class="pluploadError ui-widget"><div style="margin-bottom: 5px; padding: 7px;" class="ui-state-error ui-corner-all">' + err.code +
+					':&nbsp;&nbsp;' + err.message +
+					(err.file ? '<br>File: ' + err.file.name : '') +
+					'</div></div>'
+				);
+
+				// Reposition Flash/Silverlight				
+				up.refresh();
+			});
+		
+			uploader.bind('FileUploaded', function(up, file, info) {
+				$('#' + file.id + ' b').html('100%');
+				var json = $.parseJSON( info.response );
+								
+				if( up.total.queued < 1 ) {
+					$('#uploadFiles').button({ disabled: true });					
+				}
+
+				if( !is_null( json ) ) {
+					if( json.status == 'OK' ) {
+						// display the uploaded image
+						$('#' + file.id).append('<div><img src="'+ json.thumbUrl +'"></div>');					
+					} else {
+						$('#' + file.id).append('<div class="pluploadError ui-widget"><div class="ui-state-error ui-corner-all" style="margin-bottom: 5px; padding: 7px;">'+ json.error +'</div></div>');
+											
+						return;
+					}					
+				} else {
+					if( up.total.queued > 0 ) {
+						uploader.stop();
+						$('#uploadFiles').button({ disabled: false });
+
+						$('#' + file.id).append('<div class="pluploadError ui-widget"><div class="ui-state-error ui-corner-all" style="margin-bottom: 5px; padding: 7px;"><span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>File Upload Error. The upload queue has been paused. Please contact the site administrator if this error persists.</div></div>');												
+					} else {
+						$('#' + file.id).append('<div class="pluploadError ui-widget"><div class="ui-state-error ui-corner-all" style="margin-bottom: 5px; padding: 7px;"><span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>File Upload Error. Please contact the site administrator if this error persists.</div></div>');						
+					}			 																									
+					
+					return;					
+				}			
+				
+				// add a caption field
+				$('#' + file.id).append( $('#captionPlaceholder').html() );
+				var textArea = $('#' + file.id).find('textarea');
+				textArea.attr('id', 'media-' + json.mediaId );
+				textArea.data('mediaid', json.mediaId ); 
+
+				// callback: The callback function
+				// wait: The number of milliseconds to wait after the the last key press before firing the callback
+				// highlight: Highlights the element when it receives focus
+				// captureLength: Minimum # of characters necessary to fire the callback
+
+				var options = {
+				    callback: function (value) { 
+						if( strlen( trim( value ) ) ) {																					
+							var commentText = textArea.val();
+							var mediaId		= textArea.data('mediaid');
+	    		    		    		    					    								   	    	
+					    	$.ajax({
+					    		type: 'POST',
+					    		url: BASEURL + '/media/ajax',
+					    		data: { method: 'updateCaption',
+					    				mediaId: mediaId,
+					    				comment: commentText 
+					    		},
+					    		complete: function( jqXHR, textStatus ) {
+					    				    			
+					    		},
+					    		success: function( response, textStatus, jqXHRresponse ) {
+					    	    	
+					    		},
+					    		error: function(  jqXHR, textStatus, errorThrown ) {
+	
+					    		},		
+					    		dataType: 'json'
+					    	});
+						}							 
+					},
+				    wait: 750,
+				    highlight: true,
+				    captureLength: 2
+				}
+
+				textArea.typeWatch( options );																							
+			});
+
+			uploader.bind('QueueChanged', function(up) {
+				if( up.total.queued < 1 ) {
+					$('#uploadFiles').button({ disabled: true });					
+				} else {
+					$.ajax({
+						type: 'POST',
+						url: BASEURL + '/media/ajax',
+						data: { method: 'checkDestinationPerms' },
+						complete: function( jqXHR, textStatus ) {
+							
+						},
+						success: function( response, textStatus, jqXHRresponse ) {
+							$.pnotify_remove_all();	
+													
+							if( response.status == 'OK' ) {
+								$('#uploadFiles').button({ disabled: false });		
+							} else {
+								$.pnotify({
+									title: 'ERROR',
+									text: 'File permissions are not properly set on the destination directory. Please contact the site administrator if this issue persists.',
+									type: 'error',
+									icon: 'picon picon-flag-red',
+									hide: false,
+									width: '400px'
+								});
+																
+								$('#uploadFiles').button({ disabled: true });								
+							}	
+						},
+						error: function(  jqXHR, textStatus, errorThrown ) {
+							$.pnotify_remove_all();	
+
+							$.pnotify({
+								title: 'ERROR',
+								text: 'File permissions are not properly set on the destination directory. Please contact the site administrator if this issue persists.',
+								type: 'error',
+								icon: 'picon picon-flag-red',
+								hide: false,
+								width: '400px'
+							});
+																				
+							$('#uploadFiles').button({ disabled: true });
+						},		
+						dataType: 'json'
+					});							 
+				}	
+			});	
+					
+		});
+	</script>
+<!-- END:	plupload -->
+
+		<div id="captionPlaceholder" style="display: none;">
+			<div style="margin-top: 10px;">
+				<p class="form-text">
+					<span class="captionText" style="margin-bottom: 10px;">Caption:</span>
+		        	<span>
+		        		<textarea class="mediaCaption" data-mediaid="" rows="20" cols="100" autocapitalize="off" autocorrect="off" type="text" name="" id="" /></textarea>
+					</span>
+		    	</p>
+	    	</div>
+		</div>    	
+		
+	</body>
+</html>

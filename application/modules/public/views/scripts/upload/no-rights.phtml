@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $_SESSION['user']['locale']; ?>" class="hl-<?php echo $_SESSION['user']['locale']; ?> logged-in ">
+<head>
+    <meta charset="UTF-8" />
+    <title><?php echo ucfirst( $_SESSION['site']['phrases']['upload'] ); ?> &bull; <?php echo SITE_NAME; ?></title>
+
+ 	<?php
+		if( SITE_ALLOW_TEMPLATE_CHANGE == 1 ) {
+ 			$currentTheme = ( strlen( @$_COOKIE['theme'] ) ) ? $_COOKIE['theme'] : SITE_DEFAULT_TEMPLATE;
+		} else {
+ 			$currentTheme = SITE_DEFAULT_TEMPLATE;
+			setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+		}  
+	?>
+     
+	<?php $siteThemes = $GLOBALS['SITE_THEMES']; ?> 
+	
+	<?php if( !empty( $siteThemes ) ): ?>
+		
+		<?php			 
+			if( $currentTheme != SITE_DEFAULT_TEMPLATE ) {
+				if( !array_key_exists( $currentTheme, $siteThemes ) ) {
+					$currentTheme = SITE_DEFAULT_TEMPLATE;
+					setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+				}
+			}			
+		?>
+			
+		<script type="text/javascript">	
+			var SITE_THEMES = new Array();
+			<?php foreach( $siteThemes AS $key => $value ): ?>
+				SITE_THEMES['<?php echo $key; ?>'] = '<?php echo $value; ?>';	
+			<?php endforeach; ?>
+		</script>
+		<?php else: ?>
+		<script type="text/javascript">		
+			var SITE_THEMES = new Array();
+		</script>					
+	<?php endif; ?> 
+	    
+    <meta name="robots" content="noimageindex" />
+    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <script type="text/javascript">
+		var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+		var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
+		var IMG_ROOT				= BASEURL + '/img';
+		var JS_ROOT					= BASEURL + '/js';
+		var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
+		var IS_NORMALIZED			= false;		
+	</script>
+
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js?<?php echo rand(); ?>"></script>    
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script> 
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/themeswitcher.js?<?php echo rand(); ?>"></script> 	  
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>      
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.defaults.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.observor.js?<?php echo rand(); ?>"></script>		
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bluebar.js"></script>
+
+	<script type="text/javascript">
+		__DEV__ = false;
+		window._jscalls = [];
+	</script>
+
+
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/polyfills-build/polyfill_modern.js"></script>
+    <script data-main="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/modules-build/main.js" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/require.js"></script>
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/strings/strings_en.js"></script>
+
+
+
+
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/navigation.js"></script>
+
+
+
+    <link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/accounts-main.css"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery-ui/themes/instagram/jquery-ui-1.9.2.custom.min.css">
+
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.selectBoxIt.css" type="text/css" />
+	
+	<?php if( $currentTheme != 'instagram'): ?>
+		<?php if( !array_key_exists( $currentTheme, $siteThemes ) ): ?>
+			<link rel="stylesheet" id="theme-url" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/<?php echo $currentTheme; ?>/jquery-ui.css" type="text/css" media="screen" />
+			<?php else: ?>
+			<link rel="stylesheet" id="normalizeCss" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/normalize.css" type="text/css" />
+			<link rel="stylesheet" id="theme-url" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery-ui/themes/<?php echo $currentTheme; ?>/jquery-ui.css" type="text/css" media="screen" />		
+		<?php endif; ?>		
+		
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/fg.menu.css" type="text/css" />
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/fg.menu.js"></script>
+		
+	<?php else: ?>
+		<link rel="stylesheet" id="theme-url" href="" type="text/css" media="screen" />
+	<?php endif; ?>
+	
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/font-awesome.min.css">
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.selectBoxIt.min.js"></script>	
+
+</head>
+<body class="sidebar-page">
+
+	<!-- START:		blockUI -->
+		<div style="display: block" class="blockUI"></div>
+		<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
+		<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><img src="<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>"></div>		
+	<!-- END:		blockUI -->	
+
+<div class="root">
+
+
+    <div class="page">
+
+        <header class="instagram top-bar" <?php if( $currentTheme != 'instagram' ): ?> style="display: none;" <?php endif; ?>>
+            <div class="wrapper">
+                <hgroup>
+                    <h1 class="logo"><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>"><?php echo SITE_NAME; ?></a></h1>
+
+                </hgroup>
+
+
+
+                <div class="account-state">
+                    <ul class="actions">
+
+
+                        <li id="link_profile" class="link-profile has-dropdown">
+                            <a href="javascript:;" class="noBlockUI">
+
+    	<span class="img img-outset current-user-avatar" style="background-image: url(<?php echo PROTOCOL_RELATIVE_URL; ?>/images/profiles/anonymousUser.jpg);">
+        <img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/profiles/anonymousUser.jpg" onerror="imageFallback(this);" alt="" />
+        <b></b>
+    </span>
+
+                                <strong><?php echo $_SESSION['user']['username']; ?></strong>
+                            </a>
+
+                            <div class="dropdown">
+                                <i></i>
+
+                                <ul>
+									<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/upload">Upload</a></li>                                
+                                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['username']; ?>">View Profile</a></li>
+                                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Edit Profile</a></li>
+                                    <!-- li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/badges/">Badges</a></li -->
+                                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">Log Out</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </header> <!-- .top-bar -->
+
+
+		<header class="jquery-ui ui-widget-header" <?php if( $currentTheme == 'instagram' ): ?> style="min-height: 35px; display: none;" <?php endif; ?>>
+			<div style="margin: 0 auto; width: 50%; margin-top: 2px; min-height: 35px">
+				<div style="width: 100px; float: left;">
+					<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>" alt="<?php echo SITE_NAME; ?>" title="<?php echo SITE_NAME; ?>">
+						<span style="margin: 20px;" class="font-awesome icon-camera-retro icon-2x"></span>
+					</a>								
+				</div>	
+				
+				<div style="width: auto; float: right;">
+					<a tabindex="0" href="#userMenuOptions" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="flat">
+						<span class="ui-icon ui-icon-triangle-1-s"></span>
+						<?php echo $_SESSION['user']['username']; ?>
+					</a>
+					<div id="userMenuOptions" class="hidden">
+					<ul>
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/upload">Upload</a></li>
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['username']; ?>">View Profile</a></li>									
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Edit Profile</a></li>
+						<!-- li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/badges/">Badges</a></li -->
+						<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">Logout</a></li>
+					</ul>
+					</div>							
+				</div>							
+			</div>										
+		</header>         
+
+    <div class="sidebar">
+        <div class="wrapper">
+            <nav class="sidebar-nav">
+                <div class="sidebar-content">
+
+    <h2><i></i>Your Account<span class="separator"> &bull; </span><span class="subtitle"></span></h2>
+    <ul>
+		<li class="active">
+        	<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/upload">
+        	<?php echo ucfirst( $_SESSION['site']['phrases']['upload'] ); ?>
+            	<i class="disclosure"></i>
+        	</a>
+		</li>    
+    
+        <li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">
+
+            Edit Profile
+
+            <i class="disclosure"></i>
+
+        </a>
+
+    </li>
+        <li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/password/change/">
+
+            Change Password
+
+            <i class="disclosure"></i>
+
+        </a>
+
+    </li>
+        <!-- li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/manage_access">
+
+            Manage Applications
+
+            <i class="disclosure"></i>
+
+        </a>
+
+    </li -->
+        <!-- li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/badges/">
+
+            Badges
+
+            <i class="disclosure"></i>
+
+        </a>
+
+    </li --> 
+        <li >
+        <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">
+
+            Log Out
+
+        </a>
+
+    </li>
+    </ul>
+
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="main">
+        <div class="wrapper">
+            <section class="nav-page-content" role="main">
+
+    <header>
+    <h1><?php echo ucfirst( $_SESSION['site']['phrases']['upload'] ); ?></h1>
+    </header>
+
+    <div class="ui-widget">
+		<div style="padding: 0 .7em;" class="ui-state-error ui-corner-all">
+			<p style="margin: 10px;">
+				<span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>
+				<strong style="text-transform: uppercase;"><?php echo $_SESSION['site']['phrases']['error']; ?>:</strong>&nbsp;&nbsp;<?php echo $_SESSION['site']['phrases']['no_upload_permission']; ?>
+				<?php if( strlen( $this->error ) ): ?>
+					<br>
+					<span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>									
+					<strong style="text-transform: uppercase;">Additional Info:</strong>&nbsp;&nbsp;Account Status: '<?php echo $this->error; ?>'. Check your e-mail for information on how to activate your account.
+				<?php endif; ?>
+			</p>
+		</div>
+	</div>
+
+            </section>
+        </div> <!-- .main -->
+    </div> <!-- .main -->
+
+
+    </div> <!-- .page -->
+
+    <?php echo $this->partial( 'partials/footer.phtml' ); ?>
+
+    <footer class="page-footer">
+        <div class="wrapper">
+            <nav>
+                <ul>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Your Account</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/us/">About us</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/">Support</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/">Blog</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/developer/">API</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/legal/privacy/">Privacy</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/legal/terms/">Terms</a></li>
+                </ul>
+            </nav>
+
+            <p class="copyright">&copy; 2012 - <?php echo date('Y'); ?> <?php echo SITE_NAME; ?></p>
+        </div>
+    </footer>
+
+<?php if( SITE_DEBUG ): ?>
+	<!-- textarea style="width: 100%;" rows="50" cols="50" readonly="readonly">
+	*** DEBUG ***
+	------------------
+	
+	SESSION:
+	------------------
+	<?php print_r( $_SESSION ); ?>
+	</textarea --> 
+<?php endif; ?>
+
+</div> <!-- .root --> 	
+
+		<script type="text/javascript">	
+			$(document).ready(function() {
+			    if( CURRENT_THEME != 'instagram' ) {					    							    
+					$('#flat').menu({ 
+						content: $('#flat').next().html(), // grab content from this page
+						showSpeed: 400 
+					});
+
+					$('.sidebar').css('margin-top', '1px');
+					$('.sidebar').css('height', '107%');
+					$('.page-footer').css('margin-top', '0px');
+			    } else {
+					$('#theme-url').attr('href', BASEURL + '/css/public/jquery-ui/themes/redmond/jquery-ui.min.css');			    
+			    }    			    			   
+							    
+		    	$('#theme-switcher').themeswitcher( { 
+			    	useGoogleCDN: false,
+			    	loadTheme: CURRENT_THEME,
+			    	localCssPath: BASEURL + '/css/public/jquery-ui/themes', 
+			    	localThemes: SITE_THEMES,
+			    	cookieExpires: 315569259747, 
+			    	cookiePath: '/',		   
+			    	cookieName: 'theme', 
+			    	cookieOnSet: function( cookieName, cookieValue ) {
+				    	CURRENT_THEME = cookieValue;
+				    							    	
+				    	if( CURRENT_THEME != 'instagram' ) {							    							    							    									    																					    	
+					    	if( !IS_NORMALIZED ) {							    	
+				    			$('head').append('<link id="normalizeCss" rel="stylesheet" href="'+BASEURL+'/css/public/normalize.css" type="text/css" />');
+				    			IS_NORMALIZED = true;
+					    	}
+
+					    	$('header.instagram').hide();
+					    	$('header.jquery-ui').show();							    								    	
+				    	} else {							    	
+				    		if( IS_NORMALIZED ) {
+					    		$('#normalizeCss').remove();
+					    		IS_NORMALIZED = false;			    		
+				    		}
+
+				    		$('header.jquery-ui').hide();						    		
+				    		$('header.instagram').show();
+				    	}
+
+			    		$.post( BASEURL, { sessionUpdate: true, theme: cookieValue },
+							function( data ) {
+				    			if( CURRENT_THEME != 'instagram' ) {									
+									$('.font-awesome').css( 'color', $('.ui-widget-header').css('color') );
+				    			}																    				
+							}
+						);					
+				    },
+			    	onSelect: function() {						  						    
+			    		   			
+		        	},
+		        	onSelectComplete: function() {		     
+			    		$.blockUI({ message: '<img border="0" src="' + BASEURL + '/images/preloader/tools.gif">' });
+			    		window.location.reload();				        		
+		        	},
+		        	appendThemes: function(switcherpane) {
+		        		//$('#themeGalleryList').append('<li style="width: 120px; padding: 2px; margin: 1px; border: 1px solid rgb(17, 17, 17); clear: left; float: left;"><a href="' + BASEURL + '/css/jquery-ui/aristo/aristo.css" style="color: rgb(170, 170, 170); text-decoration: none; float: left; width: 100%; outline: 0pt none;">			<img title="Test" alt="Test" src="http://jqueryui.com/themeroller/images/themeGallery/theme_90_swanky_purse.png" style="float: left; border: 1px solid rgb(51, 51, 51); margin: 0pt 2px;">			<span class="themeName" style="float: left; margin: 3px 0pt;">Test</span>			</a></li>');
+				    }
+		    	});	
+		    								    				
+				$.imgpreload([DEFAULT_PRELOADER_IMAGE, BASEURL+'/images/preloader/tools.gif', BASEURL+'/images/preloader/download/small/blue.gif', BASEURL + '/images/preloader/spinner/481.gif'], {
+				    each: function() {
+				        // this = dom image object
+				        // check for success with: $(this).data('loaded')
+				        // callback executes on every image load
+				    },
+				    all: function() {
+				        // this = array of dom image objects
+				        // check for success with: $(this[i]).data('loaded')
+				        // callback executes when all images are loaded
+				    }
+				});
+																
+				$('body').imagesLoaded( function() {
+					$.unblockUI();
+				});				
+			});
+		</script>
+		
+	</body>
+</html>

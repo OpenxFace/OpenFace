@@ -963,7 +963,7 @@ CREATE TABLE IF NOT EXISTS `base_site_config` (
 -- Dumping data for table `base_site_config`
 --
 
-INSERT INTO `base_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(1, 'site_name', 'BizLogic Base Framework', NULL, 'global', 'text', '1', 'Site Name', NULL);
+INSERT INTO `base_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(1, 'site_name', 'OpenFace', NULL, 'global', 'text', '1', 'Site Name', NULL);
 INSERT INTO `base_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(2, 'site_default_preloader_image_path', '__BASEURL__/images/preloader/486.gif', NULL, 'global', 'text', '1', NULL, NULL);
 INSERT INTO `base_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(3, 'site_default_landing_page', '', NULL, 'global', 'text', '1', 'Local URL to redirect to after login, do not include the scheme, i.e. http://', NULL);
 INSERT INTO `base_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(4, 'site_allow_template_change', '1', '0,1', 'global', 'radio', '1', 'Allow Template Change', NULL);

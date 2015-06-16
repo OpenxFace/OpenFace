@@ -1,5 +1,12 @@
 <?php 
-    $currentTheme = $_SESSION['current_theme'];
+    if( (int)SITE_ALLOW_TEMPLATE_CHANGE == 1 ) {
+        $currentTheme = ( strlen( @$_COOKIE['theme'] ) ) ? $_COOKIE['theme'] : SITE_DEFAULT_TEMPLATE;
+    } else {
+        $currentTheme = SITE_DEFAULT_TEMPLATE;
+        setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+    }
+    	
+    $_SESSION['current_theme'] = $currentTheme;
 ?>
 
 <div class="navbar <?php if( $currentTheme == 'faceboot'): ?> navbar-inverse <?php else: ?> navbar-default <?php endif; ?>  navbar-fixed-top">

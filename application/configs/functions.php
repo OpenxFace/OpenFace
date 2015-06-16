@@ -3018,3 +3018,17 @@ function decrypt_openssl( $string, $privateKeyPath )
     
     return $decrypted;
 }
+
+/**
+ * Force an error
+ *
+ * @link    http://stackoverflow.com/a/4188995
+ * @param   string  $errorMessage
+ * @param   int     $httpErrorCode
+ * @return  void
+*/
+function forceError( $errorMessage = null, $httpErrorCode = '404' )
+{
+    $errorMessage = ( !strlen( trim( $errorMessage ) ) ) ? translate('error') : $errorMessage;
+    throw new Zend_Controller_Action_Exception( $errorMessage, (int)$httpErrorCode );
+}

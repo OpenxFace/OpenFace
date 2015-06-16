@@ -242,6 +242,20 @@ class Db
 	 * @param	int		$offset
 	 * @param	array	$orderBy
 	 * @return	array
+	 */
+	public function getByAttr( $attributes = array(), $limit = 1, $offset = 0, $orderBy = array() )
+	{
+	    return $this->getBy( $attributes = array(), $limit = 1, $offset = 0, $orderBy = array() );
+	}
+	
+	/**
+	 * Get by Columns & Values
+	 *
+	 * @param	array	$attribues
+	 * @param	int		$limit
+	 * @param	int		$offset
+	 * @param	array	$orderBy
+	 * @return	array
 	*/	
 	public function getBy( $attributes = array(), $limit = 1, $offset = 0, $orderBy = array() )
 	{		    

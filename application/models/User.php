@@ -805,11 +805,40 @@ class User extends Db
     }
     
     /**
+     * Fetch User Data via UUID
+     *
+     * @param   string  $uuid
+     * @return  array
+    */
+    public function fetchUserDetailsByUUID( $uuid )
+    {
+        $sql    = "SELECT * FROM `".DB_TABLE_PREFIX."user` ";
+        $sql   .= "WHERE `uuid` = '".mysqli_real_escape_string( $this->db, $uuid )."' ";
+        $sql   .= "LIMIT 1 ";
+    
+        $res    = mysqli_query( $this->db, $sql ) OR die( mysqli_error( $this->db ).'<br>'.$sql );
+    
+        if( mysqli_num_rows( $res ) > 0 ) {
+            $data = mysqli_fetch_assoc( $res );
+    
+            if( !strlen( trim( $data['avatar_url'] ) ) ) {
+                $data['avatar_url'] = SITE_DEFAULT_AVATAR_URL;
+            } elseif ( !urlExists( $data['avatar_url'] ) ) {
+                $data['avatar_url'] = SITE_DEFAULT_AVATAR_URL;
+            }
+    
+            return $data;
+        } else {
+            return array();
+        }
+    }    
+    
+    /**
      * Fetch User Data via User ID
      *
      * @param   string  $userId
      * @return  array
-     */
+    */
     public function fetchUserDetailsById( $userId )
     {
     	$sql    = "SELECT * FROM `".DB_TABLE_PREFIX."user` ";

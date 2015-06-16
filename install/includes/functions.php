@@ -71,7 +71,7 @@ function updateDbConfig()
 
 function checkDbConnection( $hostname, $username, $password, $dbName, $port = 3306 )
 {
-	$mysqli = new mysqli($hostname, $username, $password, $dbName, $port);
+	$mysqli = new mysqli( $hostname, $username, $password, $dbName, (int)$port );
 	if ( $mysqli->connect_errno ) {
 		return 'MySQL Error:  '. $mysqli->connect_errno . ' ' . $mysqli->connect_error;
 	}

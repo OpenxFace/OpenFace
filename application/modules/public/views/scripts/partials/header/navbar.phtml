@@ -1,5 +1,5 @@
 <?php 
-$currentTheme = $_SESSION['current_theme'];
+    $currentTheme = $_SESSION['current_theme'];
 ?>
 
 <div class="navbar <?php if( $currentTheme == 'faceboot'): ?> navbar-inverse <?php else: ?> navbar-default <?php endif; ?>  navbar-fixed-top">
@@ -71,7 +71,7 @@ $currentTheme = $_SESSION['current_theme'];
 
 			<!-- START:	Search Form -->
 			<form class="navbar-form navbar-left">
-            	<input type="text" style="width: 200%;" placeholder="<?php echo translate('search'); ?>" class="form-control col-lg-8">
+            	<input id="frmSearch" class="form-control col-lg-8" type="text" style="width: 100%;" placeholder="<?php echo translate('search'); ?>">
             </form>
 			<!-- END:	Search Form -->
 

@@ -1,0 +1,10 @@
+.avatar-sm {
+	height: 32px;
+	width: 32px;
+	border: 1px solid #CCCCCC;
+}
+
+.avatar-md {
+	height: 64px;
+	width: 64px;
+}

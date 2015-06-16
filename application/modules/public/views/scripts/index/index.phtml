@@ -136,6 +136,9 @@
 	    <!-- Sticky Footer -->
 	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/sticky-footer-navbar.css" type="text/css" />	
 	    
+	    <!-- Custom CSS (OpenFace) -->	
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/openface.css" type="text/css" />		    
+	    
 	    <!-- Custom CSS -->	
 	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/newsfeed.css" type="text/css" />	
 	    
@@ -184,26 +187,29 @@
 		
 	    <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-2">
-                    <img class="img-thumbnail img-responsive" src="<?php echo $_SESSION['user']['avatar_url']; ?>">
-                    <div class="self-username">
-                        <strong>
-                            <?php echo $_SESSION['user']['username']; ?>
-                        </strong>
+                <div class="col-lg-2" style="padding-bottom: 10px;">
+                    <div style="position: relative;">
+                        <div>
+                            <img class="avatar-sm img-responsive" src="<?php echo $_SESSION['user']['avatar_url']; ?>">
+                        </div>
                         
-                        <br>
-                        
-                        <?php echo translate('edit_profile'); ?>
-                    </div>
+                        <div style="position: absolute; top: 0; left: 42px;">
+                            <?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>
+                        </div>                      
+                    </div>                                       
                 </div>
                 
                 <div class="col-lg-8"> 
                     <div class="well"> 
                         <form role="form" class="form-horizontal">
-                            <div class="form-group" style="padding: 14px; padding-top: 0px;">
+                            <div class="form-group" style="padding: 14px;">
                                 <textarea class="form-control" rows="5" id="frmNewStatus" name="status" placeholder="<?php echo translate('prompt_whats_new'); ?>"></textarea>
                             </div>
-                            <button type="button" class="btn btn-lg btn-primary pull-right"><?php echo translate('post'); ?></button>
+                            
+                            <button class="btn btn-primary pull-right" id="btnNewStatus" type="button">
+                                <i class="fa fa-pencil"></i> <?php echo translate('post'); ?>
+                            </button>
+                            
                             <ul class="list-inline">
                                 <li>
                                     <a href="">
@@ -217,26 +223,22 @@
                                     </a>
                                 </li>
                                 
-                                <li>
+                                <!-- li>
                                     <a href="">
                                         <i class="glyphicon glyphicon-map-marker"></i>
                                     </a>
-                                </li>
+                                </li -->
                             </ul>
                         </form>
-                    </div>                                   
+                    </div> 
+                    
+                    <div id="statusList"></div>                                 
                 </div> 
                 
                 <div class="col-lg-2">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque pulvinar ut mi sit amet ultricies. Fusce lacinia erat metus, eu consectetur purus egestas sed. Quisque sed porta lacus, et vehicula nibh. Nam maximus fringilla tortor. Etiam sit amet tristique nibh. Nunc ornare lorem vel erat lacinia vulputate. Vestibulum molestie mi vitae ex auctor, quis fermentum mi mollis. Cras ut sollicitudin justo. Sed venenatis dolor lacus, rutrum euismod justo hendrerit sed. Vivamus maximus, ipsum ac viverra tristique, risus diam viverra urna, bibendum congue massa libero eget augue. Integer nec tellus orci.
                     <br><br>
-                    Curabitur sit amet elit odio. Proin vel pharetra augue, at tristique justo. Nam faucibus auctor mauris, et tempor turpis malesuada ut. Pellentesque et libero at velit pharetra sagittis. Aliquam aliquet tempor sollicitudin. Donec viverra rhoncus ultricies. Suspendisse tempor risus ac consequat dictum. Donec magna libero, sodales eget fringilla sed, facilisis sed dolor. Ut ac nulla pretium lacus ullamcorper varius et sed nunc. Nullam urna nulla, eleifend sit amet felis hendrerit, suscipit luctus enim. Pellentesque feugiat elementum quam ut faucibus. In hac habitasse platea dictumst. Nam vitae elementum elit. Vivamus non lorem placerat, pellentesque nulla eu, semper tortor. Pellentesque commodo vehicula eros vel pretium.
-                    <br><br>
-                    Mauris at enim et lacus condimentum blandit. Integer condimentum, nisi sit amet fringilla laoreet, urna ipsum venenatis purus, fermentum porttitor dui tellus eget arcu. Nam risus ante, auctor condimentum sapien vel, volutpat porttitor dolor. Vivamus felis nunc, ultrices commodo ipsum et, tincidunt tincidunt nibh. Nam placerat porta justo vel viverra. Donec ante diam, molestie eu mi at, vehicula posuere tellus. Phasellus sed metus ex. Maecenas quis pellentesque urna, vitae elementum mauris. Proin nec sem posuere, laoreet dui nec, sodales lorem. Praesent at consequat ex. Nunc non justo et risus malesuada eleifend. Integer vulputate eu orci sit amet consequat.
-                    <br><br>
-                    Quisque in lacus a risus hendrerit tincidunt. Donec non ipsum ipsum. Integer porta placerat tempor. Sed vitae sapien quam. Donec suscipit arcu vel aliquet malesuada. In lobortis blandit nisl, id ornare mauris. Maecenas nec dictum mauris.
-                    <br><br>
-                    Morbi iaculis nisi eu nunc aliquet, sit amet mollis purus facilisis. Duis eu felis semper, dignissim metus consectetur, maximus tellus. Sed sed est ac quam venenatis ornare. Sed dapibus egestas nibh et gravida. Curabitur ornare, libero rhoncus venenatis consequat, quam ex mattis quam, vitae venenatis lectus dolor in nisl. Vestibulum in ante hendrerit, cursus urna non, finibus lacus. Nullam blandit, felis blandit consectetur scelerisque, lacus tellus condimentum neque, sit amet imperdiet sapien massa id nibh. Maecenas laoreet, mauris sed maximus luctus, augue lorem efficitur mauris, eget molestie lacus justo a velit. Vestibulum lobortis tincidunt urna sit amet pellentesque. Duis dignissim, lorem ac laoreet consequat, nunc leo laoreet eros, nec cursus eros ante at sem. In dictum urna et consectetur posuere. Maecenas nunc dolor, blandit non urna quis, commodo tristique neque.                     
+                    Curabitur sit amet elit odio. Proin vel pharetra augue, at tristique justo. Nam faucibus auctor mauris, et tempor turpis malesuada ut. Pellentesque et libero at velit pharetra sagittis. Aliquam aliquet tempor sollicitudin. Donec viverra rhoncus ultricies. Suspendisse tempor risus ac consequat dictum. Donec magna libero, sodales eget fringilla sed, facilisis sed dolor. Ut ac nulla pretium lacus ullamcorper varius et sed nunc. Nullam urna nulla, eleifend sit amet felis hendrerit, suscipit luctus enim. Pellentesque feugiat elementum quam ut faucibus. In hac habitasse platea dictumst. Nam vitae elementum elit. Vivamus non lorem placerat, pellentesque nulla eu, semper tortor. Pellentesque commodo vehicula eros vel pretium.                                       
                 </div>                               
             </div>
         </div>
@@ -257,11 +259,25 @@
 				        // check for success with: $(this[i]).data('loaded')
 				        // callback executes when all images are loaded				    		    			    			        
 				    }
-				});						
+				});
+                
+                <?php 
+                    if( !empty( $this->messages ) ) {
+                        $json = json_encode( $this->messages, true ); 
+                ?>
+					var template	= $.templates('#templateStatus');
+					var htmlOutput	= template.render( <?php echo $json; ?> );
+
+					$('#statusList').html( htmlOutput );
+					                
+                <?php
+                    }
+                ?> 										
 						    
 				$('body').imagesLoaded( function() {
 					$.unblockUI();
-				});																    
+				});
+																				    
 		    });	
 		    	    				    
 			// Google+
@@ -281,6 +297,18 @@
 		<!-- Bootbox -->							
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootbox/bootbox.js"></script>
 		
+		<!-- jRumble -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.jrumble.min.js"></script>
+		
+	    <!-- JsRender -->	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jsrender/jsrender.min.js"></script>		
+		
+		<!-- OpenFace -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface.js"></script>
+		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
+		
 	    <?php
 	        switch( $currentTheme ) {
 	            case 'faceboot':
@@ -293,6 +321,69 @@
 	    <?php
 	                break;
 	        }
-	    ?>				    
+	    ?>	
+	    
+	    <!-- START:    Templates -->
+	    <script id="templateStatus" type="text/x-jsrender">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="dropdown pull-right">
+                        <a id="statusAction-{{:id}}" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="fa fa-angle-down"></i>
+                        </a> 
+
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="statusAction-{{:id}}">
+                            <li role="presentation">
+                                <a data-action="delete" data-id="{{:id}}" role="menuitem" tabindex="-1" href="#"><?php echo translate('delete'); ?></a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation">
+                                <a data-action="edit" data-id="{{:id}}" role="menuitem" tabindex="-1" href="#"><?php echo translate('edit'); ?></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h4>{{:owner.first_name}} {{:owner.last_name}}</h4>
+
+                    <i class="fa fa-clock-o"></i> 
+                    <span data-livestamp="{{:date}}">
+                        <img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/preloader/action.png" border="0">
+                    </span>
+                </div>
+
+                <div class="panel-body">
+                    <img class="avatar-md img-circle pull-right" src="{{:owner.avatar_url}}"> 
+
+                    {{:status}}
+
+                    <div class="clearfix"></div>
+
+                    <hr>
+
+                    <p>
+                        <?php echo translate('like'); ?> &bull; <?php echo translate('comment'); ?>
+                    </p>
+                    
+                    <hr>
+                        
+                    <form>
+                        <div class="input-group">
+                            <input id="frmStatusResponse-{{:id}}" type="text" placeholder="<?php echo translate('prompt_write_comment'); ?>..." class="form-control">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default">
+                                    <i class="fa fa-camera"></i>
+                                </button>
+
+                                <button class="btn btn-default">
+                                    <i class="fa fa-smile-o"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>                                    
+                </div>
+            </div>
+        </script>	    
+	    <!-- END:      Templates -->
+	    			    
 	</body>	
 </html>

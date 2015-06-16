@@ -33,6 +33,6 @@ define('THIS_URL', curPageURL() );
 define('CURRENT_SCRIPT', ltrim( $_SERVER['SCRIPT_NAME'],'/' ) );
 define('DEFAULT_JQUERY_UI_THEME', 'Delta');
 define('INSTALL_SQL', ROOT_DIR.'/scripts/build/db/base.sql');
-define('DB_TABLE_PREFIX', 'base_');
+define('DB_TABLE_PREFIX', 'openface_');
 define('APP_NAME', 'BizLogic Base Framework');
 define('APP_LOGO_HTML', '<i style="font-size: xx-large; color: #007acc;" class="fa fa-magic" alt="'.APP_NAME.'" title="'.APP_NAME.'"></i>');

@@ -979,7 +979,7 @@ INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `c
 (2, 'site_default_preloader_image_path', '<i class="fa fa-spinner fa-spin"></i>', NULL, 'global', 'text', '1', NULL, NULL),
 (3, 'site_default_landing_page', '', NULL, 'global', 'text', '1', 'Local URL to redirect to after login, do not include the scheme, i.e. http://', NULL),
 (4, 'site_allow_template_change', '1', '0,1', 'global', 'radio', '1', 'Allow Template Change', NULL),
-(5, 'site_default_template', 'faceboot', NULL, 'global', 'text', '1', NULL, NULL),
+(5, 'site_default_template', 'openface', NULL, 'global', 'text', '1', NULL, NULL),
 (6, 'site_default_max_upload_size', '1073741824', NULL, 'upload', 'text', '1', 'Max upload size in bytes', 'in bytes'),
 (7, 'site_allowed_file_types', '*', NULL, 'upload', 'text', '1', 'File types allowed for upload. Separate entries with commas. Use * to allow all.', NULL),
 (8, 'site_default_avatar_url', '__BASEURL__/images/profiles/default.png', NULL, 'user', 'text', '1', 'Full URL of the default user avatar', NULL),

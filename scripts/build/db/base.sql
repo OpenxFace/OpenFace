@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 16, 2015 at 08:15 AM
+-- Generation Time: Jun 16, 2015 at 09:08 AM
 -- Server version: 5.5.42-cll
 -- PHP Version: 5.4.23
 
@@ -11,7 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `bizlogic_pmgd_info`
+-- Database: `bizlogic_openface_demo`
 --
 
 -- --------------------------------------------------------
@@ -975,11 +975,11 @@ CREATE TABLE IF NOT EXISTS `openface_site_config` (
 --
 
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES
-(1, 'site_name', 'OpenFace', NULL, 'global', 'text', '1', 'Site Name', NULL),
+(1, 'site_name', 'Product Media Holding — Intern', NULL, 'global', 'text', '1', 'Site Name', NULL),
 (2, 'site_default_preloader_image_path', '<i class="fa fa-spinner fa-spin"></i>', NULL, 'global', 'text', '1', NULL, NULL),
 (3, 'site_default_landing_page', '', NULL, 'global', 'text', '1', 'Local URL to redirect to after login, do not include the scheme, i.e. http://', NULL),
 (4, 'site_allow_template_change', '1', '0,1', 'global', 'radio', '1', 'Allow Template Change', NULL),
-(5, 'site_default_template', 'openface', NULL, 'global', 'text', '1', NULL, NULL),
+(5, 'site_default_template', 'faceboot', NULL, 'global', 'text', '1', NULL, NULL),
 (6, 'site_default_max_upload_size', '1073741824', NULL, 'upload', 'text', '1', 'Max upload size in bytes', 'in bytes'),
 (7, 'site_allowed_file_types', '*', NULL, 'upload', 'text', '1', 'File types allowed for upload. Separate entries with commas. Use * to allow all.', NULL),
 (8, 'site_default_avatar_url', '__BASEURL__/images/profiles/default.png', NULL, 'user', 'text', '1', 'Full URL of the default user avatar', NULL),
@@ -1141,7 +1141,7 @@ CREATE TABLE IF NOT EXISTS `openface_user` (
 --
 
 INSERT INTO `openface_user` (`id`, `uuid`, `email`, `username`, `first_name`, `last_name`, `password`, `avatar_url`, `site_language`, `site_status`, `date_created`, `signup_ip`, `last_upload`, `last_active`, `last_login_date`, `last_ip`) VALUES
-(1, '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'admin@openface.org', 'OpenFace', 'Site', 'Admin', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', NULL, 2, 'auto_confirmed', 1383254334, NULL, NULL, 1434463306, 1434381893, NULL);
+(1, '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'admin@openface.org', 'OpenFace', 'Site', 'Admin', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', NULL, 1, 'auto_confirmed', 1383254334, NULL, NULL, 1434467222, 1434381893, NULL);
 
 -- --------------------------------------------------------
 
@@ -1250,6 +1250,22 @@ CREATE TABLE IF NOT EXISTS `openface_user_confirm` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `openface_user_metadata`
+--
+
+CREATE TABLE IF NOT EXISTS `openface_user_metadata` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `value` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id`),
+  KEY `parent_uuid` (`parent_uuid`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `openface_user_status`
 --
 
@@ -1263,60 +1279,7 @@ CREATE TABLE IF NOT EXISTS `openface_user_status` (
   UNIQUE KEY `uuid` (`uuid`),
   KEY `user_uuid` (`user_uuid`),
   KEY `date` (`date`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=48 ;
-
---
--- Dumping data for table `openface_user_status`
---
-
-INSERT INTO `openface_user_status` (`id`, `uuid`, `user_uuid`, `status`, `date`) VALUES
-(1, '2b20d1d1-6a12-4d50-9872-adc4843d0038', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'test', 1434445811),
-(2, 'b67fb11b-50b4-4129-a833-db4ceb7b86e3', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'testing...', 1434445926),
-(3, '6e474e12-6e32-4e78-bb31-c70f9803a9c2', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdfdf', 1434446069),
-(4, '9e82a723-08d5-4279-af2f-4d9e597916d8', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdfdf', 1434446741),
-(5, 'f4314850-a47a-4cf3-adfc-5eaa20c10b9b', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdfdf', 1434446807),
-(6, '50b29bc1-25db-47e3-a5bd-e9a8e9af9fce', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfd', 1434446828),
-(7, '040b3420-6d52-4702-a9fe-95cc50d6b202', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdfd', 1434446919),
-(8, '95d833dc-8b9b-4bdb-9bf6-b665a1bb1e66', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdf', 1434448511),
-(9, '898c59ef-b282-42db-af10-bf1a383efabd', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'yo', 1434448647),
-(10, '271b6d70-ff98-4cce-8c18-a4147fbda3b2', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'fuck!', 1434456774),
-(11, 'cceaef97-2033-4cd8-beed-4a7157f17665', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdf', 1434456812),
-(12, '697b8a07-748e-447b-b7d6-c28ab355a12b', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdffd', 1434456815),
-(13, '6032bd4b-521e-4331-9089-a54931b33d6d', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'test', 1434456818),
-(14, '74e7c06c-847b-4359-9cf9-8d0503119c05', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdff', 1434456837),
-(15, '025d4631-a88e-4ced-9dbd-ed6af3ae8d7b', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'vvffffgfgfgf', 1434456842),
-(16, 'bb90aea0-7ab6-4e8c-a6af-0af7cb83e7e0', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'cdddfdfdfd', 1434456845),
-(17, 'e6572ae3-4d83-4a5b-a56b-60ae134bf292', '9e53acc0-e44f-11e3-ac10-0800200c9a66', ',,nnfjdlfdjlfljdfj', 1434456854),
-(18, '22753089-a15e-42f1-8028-4a7ad0c8266e', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'llpoonjjljjljljjlljjljljlkjljlljn,nbbhbhbhnnbmnmnn,,', 1434456864),
-(19, '1f92a375-27be-47da-a962-b03fce8b85fc', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'AAAAAA', 1434456892),
-(20, 'c6d239c4-3a86-4cdb-bca9-8fa7936447a7', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'test', 1434460242),
-(21, '4d48c17b-8f81-4070-a757-af6be22b2322', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfd', 1434460255),
-(22, 'e12f0c09-eb05-4742-a2f8-9cfe536f9269', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdff', 1434460265),
-(23, 'f629290a-bbbc-4f99-8980-671711ddb5db', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdf', 1434460351),
-(24, '14bdf355-4778-41f3-8175-641c06bb926c', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'test', 1434460356),
-(25, '52a472db-d48e-4bc3-a6ce-c40dfc8103d3', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'test', 1434460364),
-(26, 'e7a1b5fd-d81b-4bfc-99e4-eff150ab2f50', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdfd', 1434460451),
-(27, 'b2d8930e-7814-4116-b6ff-dce3c9127a83', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdf', 1434460534),
-(28, '037ddd1c-20ba-401e-b817-ea0181dbd4de', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'fddfddff', 1434460696),
-(29, 'd3adcca6-5875-49e9-b249-8ed5423744a9', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dffd', 1434460705),
-(30, 'edc76926-90c9-4b9d-9ad2-341f610281d8', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdf', 1434460750),
-(31, '001173b1-3920-4e28-815e-ba48fbf02fdf', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdf', 1434460807),
-(32, '04a033e2-29aa-442d-8461-4bf8a2aeb913', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'test', 1434460857),
-(33, 'fc2e690f-7f73-4621-b0ba-6f35fc58902b', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdf', 1434461031),
-(34, '24163df8-dfd0-441a-a991-7a4ad468318f', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdf', 1434461082),
-(35, '93508459-a8d8-4dfe-9752-39a9abb1c7ed', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdfd', 1434461121),
-(36, '11c7d68e-04ca-4504-8eb1-72e49569317e', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'deu', 1434461257),
-(37, 'ce1af227-d9ba-4c03-9f48-05df028b2a8d', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdf', 1434461366),
-(38, 'dbfd071e-e247-410e-b6a0-ecd174eb7ca4', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdf', 1434461690),
-(39, 'a0d481a5-7224-4014-b169-e202768924d5', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'sheeeshshh....', 1434461765),
-(40, '98fe6f7a-18d6-4f7f-93b4-321f9a3bd9e4', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'yo', 1434461771),
-(41, 'f26a16ed-51c1-47da-a2d0-3075dbc25c4e', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfdf', 1434461775),
-(42, '0f1d31d5-1452-4237-aacd-1c0cb767222e', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dfdfd', 1434461997),
-(43, '319aad53-8806-4338-ba93-8e19c2732f12', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'no', 1434462006),
-(44, 'ab50fa37-4450-492a-821b-c40b1976a477', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'LOL', 1434462014),
-(45, 'b38d3eaa-b49c-49a0-b053-38c5f53d6f66', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'test', 1434462076),
-(46, '3e9b7ebc-dbb0-4f6d-ae65-f767e55e5bc2', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'test', 1434463064),
-(47, '5b917ace-9fc9-4d27-8221-0779501dde29', '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'dlfdjlfdjfldsjlf', 1434463069);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

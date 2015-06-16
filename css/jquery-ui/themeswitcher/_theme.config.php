@@ -317,3 +317,23 @@ echo $str;
 */
 
 ?>
+ow=-5px&cornerRadiusShadow=5px
+
+
+$str = $texture_options;
+$str = preg_replace('/<option(.*?)value="([^"]*)"(.*?)data\-texturewidth="([^"]*)"(.*?)data\-textureheight="([^"]*)"(.*?)>(.*?)<\/option>/i',"array(\"value\"=>\"$2\",\"width\"=>\"$4\",\"height\"=>\"$6\",\"name\"=>\"$8\"),\n",$str);
+
+echo $str;
+*/
+
+?>
+ow=-5px&cornerRadiusShadow=5px
+
+
+$str = $texture_options;
+$str = preg_replace('/<option(.*?)value="([^"]*)"(.*?)data\-texturewidth="([^"]*)"(.*?)data\-textureheight="([^"]*)"(.*?)>(.*?)<\/option>/i',"array(\"value\"=>\"$2\",\"width\"=>\"$4\",\"height\"=>\"$6\",\"name\"=>\"$8\"),\n",$str);
+
+echo $str;
+*/
+
+?>

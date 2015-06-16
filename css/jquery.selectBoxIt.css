@@ -270,4 +270,12 @@
 
 .selectboxit-list > .selectboxit-disabled > .selectboxit-option-anchor {
   color: #999999;
+}0077b3);
+  background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+  background-repeat: repeat-x;
+}
+
+.selectboxit-list > .selectboxit-disabled > .selectboxit-option-anchor {
+  color: #999999;
 }

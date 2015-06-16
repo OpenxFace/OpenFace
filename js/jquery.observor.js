@@ -27,11 +27,11 @@ $(document).ready(function() {
 	
 	// the 'About' box...
 	$('#linkAbout').click(function(event) {
-		var text	= '<strong>BizLogic</strong> is a software development firm.';
-		text		= text + '<br>This is our base framework.';
+		var text	= '<strong>OpenFace</strong>';
+		text		= text + '<br>Open Source Decentralized Social Networking';
 		text		= text + '<br><br>&copy 2013 - ' + new Date().getFullYear();
 		text		= text + ' BizLogic';
-		text		= text + '<br><a href="http://bizlogicdev.com" target="_blank">http://bizlogicdev.com</a>';
+		text		= text + '<br><a href="http://openface.org" target="_blank">http://openface.org</a>';
 		
 		bootbox.alert(text, function() {
 			// ...
@@ -80,7 +80,7 @@ $(document).ready(function() {
 		} 					
     });
 	
-	$('#deleteOwnAvatar').live('click', function(event) {
+	$(document).on('click', '#deleteOwnAvatar', function(event) {
 		event.stopImmediatePropagation();
 		event.preventDefault();
 
@@ -212,7 +212,7 @@ $(document).ready(function() {
 		$('i.' + id).show();
 	});
 	
-	$('.removeMore').live('click', function(event) {
+	$(document).on('click', '.removeMore', function(event) {
 		var id		= $(this).data('id');
 		var name	= $('#' + id).attr('name');
 		var type	= $('#' + id).prop('tagName');
@@ -233,7 +233,7 @@ $(document).ready(function() {
 		}
 	});	
 			
-	$('.changeLang').live('click', function(event) {
+	$(document).on('click', '.changeLang', function(event) {
 		// close the menu on mobile
 		$('.navbar-collapse').removeClass('in');
 		
@@ -271,7 +271,7 @@ $(document).ready(function() {
 		});			
 	});
 	
-	$('.changeTheme').live('click', function(event) {
+	$(document).on('click', '.changeTheme', function(event) {
 		// close the menu on mobile
 		$('.navbar-collapse').removeClass('in');
 		
@@ -281,7 +281,7 @@ $(document).ready(function() {
 		if( theme.length > 0 ) {
 			$.blockUI({
 				overlayCSS:  { 
-			        backgroundColor: '#000', 
+			        backgroundColor: '#FFFFFF', 
 			        opacity:         0.9, 
 			        cursor:          'wait' 
 			    } 							
@@ -350,7 +350,7 @@ $(document).ready(function() {
 		scrollToTop();		
 	});
 			
-	$('.blockUI-trigger').live('click', function(event) {
+	$(document).on('click', '.blockUI-trigger', function(event) {
 		if( typeof USE_BLOCKUI === 'undefined' ) {
 			return;
 		} else if ( USE_BLOCKUI != 1 ) {
@@ -362,17 +362,17 @@ $(document).ready(function() {
 		}		
 		
 		$.blockUI({ 
-			message: '<img border="0" src="' + DEFAULT_PRELOADER_IMAGE + '" />', 
+			message: DEFAULT_PRELOADER_IMAGE, 
 			// styles for the overlay 
 	    	overlayCSS:  { 
-	    		backgroundColor: '#000000', 
+	    		backgroundColor: '#FFFFFF', 
 	    		opacity:         0.6, 
 	    		cursor:          'wait' 
 	    	} 		
 		});
 	});
 	
-	$('a').live('click', function(event) {
+	$(document).on('click', 'a', function(event) {
 		if( typeof USE_BLOCKUI === 'undefined' ) {
 			return;
 		} else if ( USE_BLOCKUI != 1 ) {
@@ -453,9 +453,9 @@ $(document).ready(function() {
 		// END:		check href
 		
 		$.blockUI({ 
-			message: '<img border="0" src="' + DEFAULT_PRELOADER_IMAGE + '" />', 
+			message: DEFAULT_PRELOADER_IMAGE, 
 			overlayCSS: { 
-				backgroundColor: '#000000' 
+				backgroundColor: '#FFFFFF' 
 			}
 		});
 	});
@@ -468,15 +468,20 @@ $(document).ready(function() {
 			return false;			
 		}
 		
-		$.blockUI({ baseZ: 2014, message: '<img border="0" src="' + BASEURL + '/images/preloader/168.gif">' });
+		$.blockUI({ 
+			baseZ: 2014, 
+			message: '<img border="0" src="' + BASEURL + '/images/preloader/168.gif">' 
+		});
+		
 		$.ajax({
 			type: 'POST',
 			url: BASEURL + '/users/ajax',
-			data: { method: 'changeLang',
-					langId: langId
+			data: { 
+				method: 'changeLang',
+				langId: langId
 			},
 			complete: function( jqXHR, textStatus ) {
-				
+				// ...
 			},
 			success: function( response, textStatus, jqXHRresponse ) {
 				if( response.status == 'OK' ) {
@@ -485,8 +490,8 @@ $(document).ready(function() {
 					$.unblockUI();
 				}
 			},
-			error: function(  jqXHR, textStatus, errorThrown ) {
-
+			error: function( jqXHR, textStatus, errorThrown ) {
+				// ...
 			},		
 			dataType: 'json'
 		});	
@@ -496,7 +501,11 @@ $(document).ready(function() {
 		var value = trim( $(this).val() );
 		if( value.length > 0 ) {
 			var id = $('#themeSelect').find('option:selected').data('id');
-			$.blockUI({ baseZ: 2014, message: '<img border="0" src="' + BASEURL + '/images/preloader/168.gif">' });
+			$.blockUI({ 
+				baseZ: 2014, 
+				message: '<img border="0" src="' + BASEURL + '/images/preloader/168.gif">' 
+			});
+			
 			$.ajax({
 				type: 'POST',
 				url: BASEURL + '/users/ajax',
@@ -506,6 +515,7 @@ $(document).ready(function() {
 					theme: value
 				},
 				complete: function( jqXHR, textStatus ) {
+					// ...
 				},
 				success: function( response, textStatus, jqXHRresponse ) {
 					if( response.status == 'OK' ) {
@@ -522,7 +532,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#btnLogin').live('click', function(event) {
+	$(document).on('click', '#btnLogin', function(event) {
 		event.preventDefault();
 		var username = trim( $('#username').val() );
 		var password = trim( $('#password').val() );
@@ -539,9 +549,10 @@ $(document).ready(function() {
 		$.ajax({
 			type: 'POST',
 			url: BASEURL + '/ajax',
-			data: { method: 'user-login',
-					username: $('#username').val(),
-					password: $('#loginPassword').val()
+			data: { 
+				method: 'user-login',
+				username: $('#username').val(),
+				password: $('#loginPassword').val()
 			},
 			complete: function( jqXHR, textStatus ) {
 				// ...

@@ -67,3 +67,7 @@ ul.tagit input[type="text"] {
     background-color: inherit;
     outline: none;
 }
+th: inherit;
+    background-color: inherit;
+    outline: none;
+}

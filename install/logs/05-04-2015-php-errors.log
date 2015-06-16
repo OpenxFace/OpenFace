@@ -1,0 +1,13 @@
+[04-May-2015 13:03:15 UTC] PHP Fatal error:  Class 'mysqli' not found in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 13:03:52 UTC] PHP Fatal error:  Class 'mysqli' not found in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 13:03:59 UTC] PHP Fatal error:  Class 'mysqli' not found in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 13:05:39 UTC] PHP Fatal error:  Class 'mysqli' not found in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 13:06:05 UTC] PHP Fatal error:  Class 'mysqli' not found in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 13:06:17 UTC] PHP Fatal error:  Class 'mysqli' not found in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 14:14:21 UTC] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'bizlogic_pmhinfo'@'localhost' (using password: YES) in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 14:15:00 UTC] PHP Notice:  A non well formed numeric value encountered in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 14:15:00 UTC] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'bizlogic_pmhinfo'@'localhost' (using password: YES) in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 14:18:41 UTC] PHP Notice:  A non well formed numeric value encountered in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 14:18:41 UTC] PHP Notice:  A non well formed numeric value encountered in /home/bizlogicdev/public_html/pmgd.info/install/index.php on line 77
+[04-May-2015 14:18:45 UTC] PHP Notice:  A non well formed numeric value encountered in /home/bizlogicdev/public_html/pmgd.info/install/includes/functions.php on line 74
+[04-May-2015 14:18:45 UTC] PHP Notice:  A non well formed numeric value encountered in /home/bizlogicdev/public_html/pmgd.info/install/index.php on line 77

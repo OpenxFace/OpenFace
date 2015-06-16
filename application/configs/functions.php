@@ -2975,3 +2975,46 @@ function getAllControllers( $namesOnly = true )
     
     return $controllers;    
 }
+
+/**
+ * Encrypt data w/ OpenSSL
+ * 
+ * @link    https://gist.github.com/glynrob/7059838#file-gistfile1-php
+ * @param   string  $string
+ * @param   string  $publicKeyPath
+ * @return  string
+*/
+function encrypt_openssl( $string, $publicKeyPath ) 
+{
+    $fp         = fopen( $publicKeyPath, 'r' );
+    $publicKey  = fread( $fp, 8192 );
+    
+    fclose( $fp );
+    
+    openssl_get_publickey( $publicKey );   
+    openssl_public_encrypt( $string, $encrypted, $publicKey );
+    
+    return( base64_encode( $encrypted ) );
+}
+
+/**
+ * Decrypt data w/ OpenSSL
+ *
+ * @link    https://gist.github.com/glynrob/7059838#file-gistfile1-php
+ * @param   string  $string
+ * @param   string  $privateKeyPath
+ * @return  string
+*/
+function decrypt_openssl( $string, $privateKeyPath ) 
+{
+    $fp         = fopen( $privateKeyPath, 'r' );
+    $privateKey = fread( $fp, 8192 );
+    
+    fclose( $fp );
+    
+    $privateKey = openssl_get_privatekey( $privateKey );
+    
+    openssl_private_decrypt( base64_decode( $string ), $decrypted, $privateKey );
+    
+    return $decrypted;
+}

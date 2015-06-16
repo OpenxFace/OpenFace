@@ -16,12 +16,14 @@
  * @category    Site Index
 */
 
-define('PATH', dirname(__FILE__));
+define( 'PATH', dirname( __FILE__ ) );
+
 set_include_path(   
     PATH.'/application/'.PATH_SEPARATOR.
     PATH.'/application/configs'.PATH_SEPARATOR.
     PATH.'/application/models'.PATH_SEPARATOR.
     PATH.'/library/'.PATH_SEPARATOR.
+    PATH.'/library/phpseclib/'.PATH_SEPARATOR.
     get_include_path()
 );
 

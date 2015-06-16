@@ -132,6 +132,12 @@
 	    <?php if( strlen( trim( SITE_WINDOWS_LIVE_CLIENT_ID ) ) AND strlen( trim( SITE_WINDOWS_LIVE_CLIENT_SECRET ) ) ): ?>   
 	       <script type="text/javascript" src="//js.live.net/v5.0/wl.debug.js"></script>
 	    <?php endif; ?>
+	    	    				
+		<!-- SmartMenus -->
+		<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/smartmenus/jquery.smartmenus.bootstrap.css" rel="stylesheet">
+	    
+        <!-- Sticky Footer -->
+        <link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/sticky-footer.css" rel="stylesheet">
 	    
 	    <?php echo SITE_GLOBAL_HTML_HEADER; ?>								     
 	</head>
@@ -309,33 +315,9 @@
 				  <?php endif; ?>
 				</div>
 	        </div>
-	      </div>
-	
-	      <footer>
-	        <div class="row">
-	          <div class="col-lg-12">
-	
-	            <ul class="list-unstyled">
-	              <li class="pull-right">
-					<a href="#top" class="backToTop noBlockUI">
-              			<i class="fa fa-chevron-up"></i>
-              		</a>&nbsp;
-					<a href="#top" class="backToTop noBlockUI">	              	
-						<?php echo translate('to_top'); ?>
-              		</a>	              
-	              </li>
-	            </ul>
-	            <p>&copy; <?php echo translate('copyright'); ?> <?php echo date('Y');?> <?php echo SITE_NAME; ?>. <?php echo translate('all_rights_reserved'); ?></a>.</p>
-	
-	          </div>
-	        </div>
-	
-	      </footer>
-	
-	
-	    </div>
-	
-	
+	      </div>	
+	    </div>	    
+		
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/facebook.js"></script>
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/googleplus.js"></script>
@@ -472,9 +454,6 @@
 		    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 		  	})();    				    
 		</script>	
-				
-		<!-- SmartMenus -->
-		<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/smartmenus/jquery.smartmenus.bootstrap.css" rel="stylesheet">
 		
 		<!-- SmartMenus jQuery plugin -->
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/smartmenus/jquery.smartmenus.js"></script>

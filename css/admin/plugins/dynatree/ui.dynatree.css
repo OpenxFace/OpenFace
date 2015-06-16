@@ -450,3 +450,72 @@ span.dynatree-drop-target.dynatree-drop-reject
 span.dynatree-drop-target.dynatree-drop-after a
 {
 }
+********************/
+
+span.dynatree-drop-target
+{
+	/*border: 1px solid gray;*/
+}
+span.dynatree-drop-target a
+{
+}
+span.dynatree-drop-target.dynatree-drop-accept a
+{
+	/*border: 1px solid green;*/
+	background-color: #3169C6 !important;
+	color: white !important; /* @ IE6 */
+	text-decoration: none;
+}
+span.dynatree-drop-target.dynatree-drop-reject
+{
+	/*border: 1px solid red;*/
+}
+span.dynatree-drop-target.dynatree-drop-after a
+{
+}
+********************/
+
+span.dynatree-drop-target
+{
+	/*border: 1px solid gray;*/
+}
+span.dynatree-drop-target a
+{
+}
+span.dynatree-drop-target.dynatree-drop-accept a
+{
+	/*border: 1px solid green;*/
+	background-color: #3169C6 !important;
+	color: white !important; /* @ IE6 */
+	text-decoration: none;
+}
+span.dynatree-drop-target.dynatree-drop-reject
+{
+	/*border: 1px solid red;*/
+}
+span.dynatree-drop-target.dynatree-drop-after a
+{
+}
+********************/
+
+span.dynatree-drop-target
+{
+	/*border: 1px solid gray;*/
+}
+span.dynatree-drop-target a
+{
+}
+span.dynatree-drop-target.dynatree-drop-accept a
+{
+	/*border: 1px solid green;*/
+	background-color: #3169C6 !important;
+	color: white !important; /* @ IE6 */
+	text-decoration: none;
+}
+span.dynatree-drop-target.dynatree-drop-reject
+{
+	/*border: 1px solid red;*/
+}
+span.dynatree-drop-target.dynatree-drop-after a
+{
+}

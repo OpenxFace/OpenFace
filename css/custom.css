@@ -254,4 +254,30 @@ img {
 .bs-callout-danger {
     background-color: #FDF7F7;
     border-color: #D9534F;
+}.bs-callout-info {
+    background-color: #F4F8FA;
+    border-color: #5BC0DE;
+}
+
+.bs-callout-warning {
+    background-color: #FCF8F2;
+    border-color: #F0AD4E;
+}
+
+.bs-callout-danger {
+    background-color: #FDF7F7;
+    border-color: #D9534F;
+}.bs-callout-info {
+    background-color: #F4F8FA;
+    border-color: #5BC0DE;
+}
+
+.bs-callout-warning {
+    background-color: #FCF8F2;
+    border-color: #F0AD4E;
+}
+
+.bs-callout-danger {
+    background-color: #FDF7F7;
+    border-color: #D9534F;
 }

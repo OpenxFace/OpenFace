@@ -81,4 +81,7 @@ html > body .ui-pnotify {
 .ui-pnotify-history-container .ui-pnotify-history-pulldown {
 	display: block;
 	margin: 0 auto;
+}ory-container .ui-pnotify-history-pulldown {
+	display: block;
+	margin: 0 auto;
 }

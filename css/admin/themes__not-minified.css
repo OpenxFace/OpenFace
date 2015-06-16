@@ -4233,3 +4233,283 @@ ul > li.grey-4, .label-grey-4 {
 .theme-grey-4 #main .box.box-bordered.box-color .box-content {
   border-color: #999999;
 }
+.single-step .title {
+  background: #999999;
+}
+.theme-grey-4 .btn.btn-primary {
+  background: #999999;
+}
+.theme-grey-4.login {
+  background: #999999;
+}
+.theme-grey-4 a {
+  color: #999999;
+}
+.theme-grey-4 .btn {
+  color: #333;
+}
+.theme-grey-4 .btn.btn-primary {
+  background: #999999;
+  color: #fff;
+}
+.theme-grey-4 .btn.btn-inverse, .theme-grey-4 .btn.btn-success, .theme-grey-4 .btn.btn-danger {
+  color: #fff;
+}
+.theme-grey-4.locked {
+  background: #999999 !important;
+}
+.theme-grey-4.locked .pull-left a {
+  background: #737373;
+}
+.theme-grey-4.locked .pull-left a:hover {
+  background: #595959;
+}
+.theme-grey-4 #navigation {
+  background: #999999;
+}
+.theme-grey-4 #navigation .toggle-mobile {
+  background: #737373;
+}
+.theme-grey-4 #navigation .mobile-nav.open {
+  background: #999999;
+}
+.theme-grey-4 #navigation .mobile-nav.open > li.active > a {
+  background: #595959;
+}
+.theme-grey-4 #navigation .mobile-nav.open > li.active > ul {
+  background: #595959;
+}
+.theme-grey-4 #navigation .mobile-nav.open > li > a {
+  background: #737373;
+}
+.theme-grey-4 #navigation .mobile-nav.open > li > ul {
+  background: #737373;
+}
+.theme-grey-4 #navigation .main-nav > li.active > a:hover {
+  background: #fff;
+}
+.theme-grey-4 #navigation .main-nav > li.active.open > a {
+  background: #fff;
+}
+.theme-grey-4 #navigation .main-nav > li.open > a {
+  background: #737373;
+}
+.theme-grey-4 #navigation .main-nav > li > a:hover {
+  background: #737373;
+}
+.theme-grey-4 #navigation .user .icon-nav > li > a:hover {
+  background: #737373;
+}
+.theme-grey-4 #navigation .user .dropdown.open {
+  background: #737373;
+}
+.theme-grey-4 #navigation .user .dropdown > a:hover {
+  background: #737373;
+}
+.theme-grey-4 #navigation .dropdown-menu {
+  border-color: #999999;
+}
+.theme-grey-4 #navigation .dropdown-menu > li > a:hover {
+  background: #999999;
+}
+.theme-grey-4 .search-form .search-pane button[type="submit"] {
+  background: #999999;
+}
+.theme-grey-4 .messages > li.insert .submit button {
+  background: #999999;
+}
+.theme-grey-4 .messages > li.right .name {
+  color: #333333;
+}
+.theme-grey-4 .messages > li.right .message {
+  background: white;
+}
+.theme-grey-4 .messages > li.right .message p {
+  color: #4d4d4d;
+}
+.theme-grey-4 .messages > li.right .message .time {
+  color: #4d4d4d;
+}
+.theme-grey-4 .messages > li.right .message .caret {
+  border-left: 7px solid white;
+}
+.theme-grey-4 .letterbox .letter > li.active {
+  background: #999999;
+}
+.theme-grey-4 .calendar .fc-content .fc-event .fc-event-inner {
+  background: #999999;
+}
+.theme-grey-4 .calendar .fc-button.fc-state-active {
+  background: #999999;
+}
+.theme-grey-4 .calendar .fc-button.fc-state-active:hover {
+  background: #999999;
+}
+.theme-grey-4 .table.table-user tr.alpha td.alpha-val span {
+  background: #999999;
+}
+.theme-grey-4 .tagsinput#textfield_tagsinput .tag, .theme-grey-4 .ms-container .multi-custom-header, .theme-grey-4 .slider .ui-slider-handle, .theme-grey-4 .form-wizard .wizard-steps li.active .single-step .title, .theme-grey-4 .user-list h4, .theme-grey-4 .nav.nav-pills > li.active > a, .theme-grey-4 .nav.nav-list > li.active > a, .theme-grey-4 .table.table-colored-header thead th, .theme-grey-4 .table.table-colored-header thead td, .theme-grey-4 .dataTables_wrapper .dataTables_paginate > span > a.paginate_active, .theme-grey-4 .elfinder-navbar .ui-state-active, .theme-grey-4 .pagination.pagination-custom li.active a:hover, .theme-grey-4 .pagination.pagination-custom li.active a {
+  background: #999999;
+}
+.theme-grey-4 .elfinder-navbar .ui-state-active {
+  border-color: #999999;
+}
+.theme-grey-4 #main .box .box-title .tabs > li.active > a {
+  background: #999999;
+}
+.theme-grey-4 #main .box.box-color .box-title {
+  background: #999999;
+}
+.theme-grey-4 #main .box.box-color .box-title .tabs > li.active > a {
+  background: #fff;
+  color: #999999;
+}
+.theme-grey-4 #main .box.box-color .box-title .tabs > li > a:hover {
+  color: #999999;
+}
+.theme-grey-4 #main .box.box-bordered.box-color .box-title {
+  border-color: #999999;
+}
+.theme-grey-4 #main .box.box-bordered.box-color .box-content {
+  border-color: #999999;
+}
+.single-step .title {
+  background: #999999;
+}
+.theme-grey-4 .btn.btn-primary {
+  background: #999999;
+}
+.theme-grey-4.login {
+  background: #999999;
+}
+.theme-grey-4 a {
+  color: #999999;
+}
+.theme-grey-4 .btn {
+  color: #333;
+}
+.theme-grey-4 .btn.btn-primary {
+  background: #999999;
+  color: #fff;
+}
+.theme-grey-4 .btn.btn-inverse, .theme-grey-4 .btn.btn-success, .theme-grey-4 .btn.btn-danger {
+  color: #fff;
+}
+.theme-grey-4.locked {
+  background: #999999 !important;
+}
+.theme-grey-4.locked .pull-left a {
+  background: #737373;
+}
+.theme-grey-4.locked .pull-left a:hover {
+  background: #595959;
+}
+.theme-grey-4 #navigation {
+  background: #999999;
+}
+.theme-grey-4 #navigation .toggle-mobile {
+  background: #737373;
+}
+.theme-grey-4 #navigation .mobile-nav.open {
+  background: #999999;
+}
+.theme-grey-4 #navigation .mobile-nav.open > li.active > a {
+  background: #595959;
+}
+.theme-grey-4 #navigation .mobile-nav.open > li.active > ul {
+  background: #595959;
+}
+.theme-grey-4 #navigation .mobile-nav.open > li > a {
+  background: #737373;
+}
+.theme-grey-4 #navigation .mobile-nav.open > li > ul {
+  background: #737373;
+}
+.theme-grey-4 #navigation .main-nav > li.active > a:hover {
+  background: #fff;
+}
+.theme-grey-4 #navigation .main-nav > li.active.open > a {
+  background: #fff;
+}
+.theme-grey-4 #navigation .main-nav > li.open > a {
+  background: #737373;
+}
+.theme-grey-4 #navigation .main-nav > li > a:hover {
+  background: #737373;
+}
+.theme-grey-4 #navigation .user .icon-nav > li > a:hover {
+  background: #737373;
+}
+.theme-grey-4 #navigation .user .dropdown.open {
+  background: #737373;
+}
+.theme-grey-4 #navigation .user .dropdown > a:hover {
+  background: #737373;
+}
+.theme-grey-4 #navigation .dropdown-menu {
+  border-color: #999999;
+}
+.theme-grey-4 #navigation .dropdown-menu > li > a:hover {
+  background: #999999;
+}
+.theme-grey-4 .search-form .search-pane button[type="submit"] {
+  background: #999999;
+}
+.theme-grey-4 .messages > li.insert .submit button {
+  background: #999999;
+}
+.theme-grey-4 .messages > li.right .name {
+  color: #333333;
+}
+.theme-grey-4 .messages > li.right .message {
+  background: white;
+}
+.theme-grey-4 .messages > li.right .message p {
+  color: #4d4d4d;
+}
+.theme-grey-4 .messages > li.right .message .time {
+  color: #4d4d4d;
+}
+.theme-grey-4 .messages > li.right .message .caret {
+  border-left: 7px solid white;
+}
+.theme-grey-4 .letterbox .letter > li.active {
+  background: #999999;
+}
+.theme-grey-4 .calendar .fc-content .fc-event .fc-event-inner {
+  background: #999999;
+}
+.theme-grey-4 .calendar .fc-button.fc-state-active {
+  background: #999999;
+}
+.theme-grey-4 .calendar .fc-button.fc-state-active:hover {
+  background: #999999;
+}
+.theme-grey-4 .table.table-user tr.alpha td.alpha-val span {
+  background: #999999;
+}
+.theme-grey-4 .tagsinput#textfield_tagsinput .tag, .theme-grey-4 .ms-container .multi-custom-header, .theme-grey-4 .slider .ui-slider-handle, .theme-grey-4 .form-wizard .wizard-steps li.active .single-step .title, .theme-grey-4 .user-list h4, .theme-grey-4 .nav.nav-pills > li.active > a, .theme-grey-4 .nav.nav-list > li.active > a, .theme-grey-4 .table.table-colored-header thead th, .theme-grey-4 .table.table-colored-header thead td, .theme-grey-4 .dataTables_wrapper .dataTables_paginate > span > a.paginate_active, .theme-grey-4 .elfinder-navbar .ui-state-active, .theme-grey-4 .pagination.pagination-custom li.active a:hover, .theme-grey-4 .pagination.pagination-custom li.active a {
+  background: #999999;
+}
+.theme-grey-4 .elfinder-navbar .ui-state-active {
+  border-color: #999999;
+}
+.theme-grey-4 #main .box .box-title .tabs > li.active > a {
+  background: #999999;
+}
+.theme-grey-4 #main .box.box-color .box-title {
+  background: #999999;
+}
+.theme-grey-4 #main .box.box-color .box-title .tabs > li.active > a {
+  background: #fff;
+  color: #999999;
+}
+.theme-grey-4 #main .box.box-color .box-title .tabs > li > a:hover {
+  color: #999999;
+}
+.theme-grey-4 #main .box.box-bordered.box-color .box-title {
+  border-color: #999999;
+}
+.theme-grey-4 #main .box.box-bordered.box-color .box-content {
+  border-color: #999999;
+}

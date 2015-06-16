@@ -193,4 +193,26 @@ footer p {
 
 .bsa .one .bsa_it_p {
   display:none;
+}_ad .bsa_it_t,
+.bsa .one .bsa_it_ad .bsa_it_d {
+  color:inherit !important;
+}
+
+.bsa .one .bsa_it_ad .bsa_it_i {
+  margin-bottom:0 !important;
+}
+
+.bsa .one .bsa_it_p {
+  display:none;
+}_ad .bsa_it_t,
+.bsa .one .bsa_it_ad .bsa_it_d {
+  color:inherit !important;
+}
+
+.bsa .one .bsa_it_ad .bsa_it_i {
+  margin-bottom:0 !important;
+}
+
+.bsa .one .bsa_it_p {
+  display:none;
 }

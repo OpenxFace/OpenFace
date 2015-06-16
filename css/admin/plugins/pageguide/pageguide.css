@@ -645,3 +645,41 @@
   animation-direction: normal;
   animation-timing-function: ease-out;
 }
+  -moz-animation-iteration-count: 1;
+  -moz-animation-direction: normal;
+  -moz-animation-timing-function: ease-out;
+  -o-animation-name: pg-pulse;
+  -o-animation-duration: 0.7s;
+  -o-animation-iteration-count: 1;
+  -o-animation-direction: normal;
+  -o-animation-timing-function: ease-out;
+  -ms-animation-name: pg-pulse;
+  -ms-animation-duration: 0.7s;
+  -ms-animation-iteration-count: 1;
+  -ms-animation-direction: normal;
+  -ms-animation-timing-function: ease-out;
+  animation-name: pg-pulse;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-timing-function: ease-out;
+}
+  -moz-animation-iteration-count: 1;
+  -moz-animation-direction: normal;
+  -moz-animation-timing-function: ease-out;
+  -o-animation-name: pg-pulse;
+  -o-animation-duration: 0.7s;
+  -o-animation-iteration-count: 1;
+  -o-animation-direction: normal;
+  -o-animation-timing-function: ease-out;
+  -ms-animation-name: pg-pulse;
+  -ms-animation-duration: 0.7s;
+  -ms-animation-iteration-count: 1;
+  -ms-animation-direction: normal;
+  -ms-animation-timing-function: ease-out;
+  animation-name: pg-pulse;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-timing-function: ease-out;
+}

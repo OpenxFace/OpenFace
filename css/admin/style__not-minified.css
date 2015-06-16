@@ -8688,3 +8688,719 @@ a:focus {
 .basic-margin > li, .basic-margin > a {
   margin: 0 5px 5px 0;
 }
+ width: 25%;
+}
+.form-wizard .wizard-steps.steps-5 li {
+  width: 20%;
+}
+
+#gritter-notice-wrapper {
+  right: auto;
+  left: 50%;
+  margin-left: -150.5px;
+}
+
+#map1, #map2, #map3, #map4 {
+  height: 400px;
+}
+#map1 img, #map2 img, #map3 img, #map4 img {
+  max-width: none;
+}
+
+.cluster {
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+.cluster.cluster-1 {
+  background: url(http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m1.png);
+  width: 53px;
+  height: 52px;
+  line-height: 52px;
+}
+.cluster.cluster-2 {
+  background: url(http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m2.png);
+  width: 56px;
+  height: 55px;
+  line-height: 55px;
+}
+.cluster.cluster-5 {
+  background: url(http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m3.png);
+  width: 66px;
+  height: 65px;
+  line-height: 65px;
+}
+
+.ms-container .ms-list {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.ms-container .multi-custom-header {
+  background: #368ee0;
+  color: #fff;
+  padding: 2px 8px;
+}
+
+.plupload .plupload_container {
+  padding: 0;
+}
+.plupload .plupload_container .plupload_filelist_header {
+  display: none;
+}
+.plupload .plupload_container .plupload_filelist {
+  background: #fff;
+}
+.plupload .plupload_container .plupload_filelist > li {
+  background: #fff;
+}
+.plupload .plupload_container .plupload_filelist_footer {
+  height: 30px;
+  background: #fff;
+}
+.plupload .plupload_container .plupload_filelist_footer .pl_add {
+  margin-right: 5px;
+}
+
+.plupload.pl-sidebar .plupload_filelist_footer {
+  border-top: 0;
+  height: auto;
+  padding: 0;
+}
+.plupload.pl-sidebar .plupload_filelist_footer .plupload_add {
+  border: 1px solid #ccc;
+  border-top: 0;
+  padding: 4px;
+  margin: 0;
+  text-align: center;
+  background: #ddd;
+  display: block;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.plupload.pl-sidebar .plupload_filelist_footer .plupload_add:hover {
+  background: #bbb;
+}
+.plupload.pl-sidebar .plupload_filelist_footer .plupload_file_name {
+  float: none;
+}
+.plupload.pl-sidebar .plupload_filelist_footer .plupload_total_status, .plupload.pl-sidebar .plupload_filelist_footer .plupload_file_status, .plupload.pl-sidebar .plupload_filelist_footer .plupload_file_action, .plupload.pl-sidebar .plupload_filelist_footer .plupload_progress, .plupload.pl-sidebar .plupload_filelist_footer .plupload_file_size {
+  display: none;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist {
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_delete .plupload_file_status, .plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_failed .plupload_file_status {
+  display: none;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_delete .plupload_file_name, .plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_failed .plupload_file_name {
+  width: 100px;
+  line-height: 18px;
+  font-size: 11px;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_delete .plupload_file_size, .plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_failed .plupload_file_size {
+  display: none;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_droptext {
+  position: relative;
+  color: #333;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_droptext span {
+  z-index: 99;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-weight: bold;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_droptext:after {
+  content: "\f0ee";
+  font-size: 128px;
+  color: #e6e6e6;
+  position: absolute;
+  font-family: "FontAwesome";
+  top: 10px;
+  z-index: 98;
+  left: 13px;
+}
+
+.ui-resizable-handle.ui-resizable-e {
+  cursor: col-resize;
+}
+
+#ascrail2000 div {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+
+.slimScrollBar.ui-draggable {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+
+.select2-container .select2-choice {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background-image: none;
+  background: #fff;
+}
+.select2-container .select2-choice div {
+  border-left: 0;
+  background: none;
+}
+.select2-container.select2-drop-above .select2-choice {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background-image: none;
+}
+.select2-container .select2-search-choice-close {
+  top: 3px;
+}
+.select2-container .select2-choices {
+  background-image: none;
+}
+
+.select2-results, .select2-search, .select2-with-searchbox {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+
+.slider {
+  margin: 10px 0 20px 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  height: 6px;
+  position: relative;
+  *zoom: 1;
+}
+.slider:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.slider .amount {
+  position: absolute;
+  left: 0;
+  top: -20px;
+}
+.slider .amount_min {
+  position: absolute;
+  left: 0;
+  bottom: -25px;
+}
+.slider .amount_max {
+  position: absolute;
+  right: 0;
+  bottom: -25px;
+}
+.slider .ui-slider-handle {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background: #368ee0;
+  width: 14px;
+  height: 14px;
+}
+
+.ui-spinner {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+  border-color: #ccc;
+}
+.ui-spinner .spinner {
+  border: 0;
+  margin-top: 0;
+}
+.ui-spinner .ui-spinner-button {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  opacity: 0.6;
+}
+
+.tagsinput[id$="_tagsinput"] {
+  padding-bottom: 0;
+}
+.tagsinput[id$="_tagsinput"] .tag {
+  background: #368ee0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  color: #fff;
+  border: 0;
+}
+.tagsinput[id$="_tagsinput"] .tag a {
+  color: #fff;
+}
+
+.bootstrap-timepicker-widget.dropdown-menu, .colorpicker.dropdown-menu {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.bootstrap-timepicker-widget.dropdown-menu:before, .bootstrap-timepicker-widget.dropdown-menu:after, .colorpicker.dropdown-menu:before, .colorpicker.dropdown-menu:after {
+  border: 0 !important;
+}
+
+.editable-input .datepicker-inline {
+  width: 260px;
+}
+.editable-input .datepicker table tr td {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.editable-input .datepicker table tr td:hover {
+  background: #bbb;
+}
+.editable-input .datepicker table tr td.active {
+  background: #368ee0;
+}
+.editable-input .datepicker table tr td.active:hover {
+  background: #1b67af;
+}
+
+.editable-address {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.editable-address span {
+  width: 70px;
+  display: inline-block;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px !important;
+}
+
+a {
+  color: #368ee0;
+}
+a:focus {
+  outline: none;
+  text-decoration: none;
+}
+
+.ulreset, #navigation .user .icon-nav, #navigation .main-nav, .letterbox .letter, .blog-widget-recent-posts, .blog-widget-latest-photos, .blog-widget-categories, .blog-widget-tags, .user-list > ul, .statistic-big .stats-overview, .pagestats, .userlist, .quickstats, .tags, .bestseller, .tabs, .stats, .minitiles, .timeline, .timeline > li .timeline-content .activity .timeline-images, .search-results ul, .shop-items, .colors {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nopadding {
+  padding: 0 !important;
+}
+
+.row-fluid.margin-top {
+  margin-top: 30px;
+}
+
+.visible-480 {
+  display: none;
+}
+
+.box-sortable {
+  background: #eee;
+  border: 1px dotted #333;
+}
+
+.colors.small > li {
+  height: 20px;
+  width: 20px;
+}
+.colors.small > li > a, .colors.small > li > span {
+  height: 20px;
+  width: 20px;
+}
+.colors > li {
+  height: 40px;
+  margin: 0 5px 5px 0;
+  width: 40px;
+  float: left;
+}
+.colors > li > a, .colors > li > span {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.basic-margin > li, .basic-margin > a {
+  margin: 0 5px 5px 0;
+}
+ width: 25%;
+}
+.form-wizard .wizard-steps.steps-5 li {
+  width: 20%;
+}
+
+#gritter-notice-wrapper {
+  right: auto;
+  left: 50%;
+  margin-left: -150.5px;
+}
+
+#map1, #map2, #map3, #map4 {
+  height: 400px;
+}
+#map1 img, #map2 img, #map3 img, #map4 img {
+  max-width: none;
+}
+
+.cluster {
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+.cluster.cluster-1 {
+  background: url(http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m1.png);
+  width: 53px;
+  height: 52px;
+  line-height: 52px;
+}
+.cluster.cluster-2 {
+  background: url(http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m2.png);
+  width: 56px;
+  height: 55px;
+  line-height: 55px;
+}
+.cluster.cluster-5 {
+  background: url(http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/images/m3.png);
+  width: 66px;
+  height: 65px;
+  line-height: 65px;
+}
+
+.ms-container .ms-list {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.ms-container .multi-custom-header {
+  background: #368ee0;
+  color: #fff;
+  padding: 2px 8px;
+}
+
+.plupload .plupload_container {
+  padding: 0;
+}
+.plupload .plupload_container .plupload_filelist_header {
+  display: none;
+}
+.plupload .plupload_container .plupload_filelist {
+  background: #fff;
+}
+.plupload .plupload_container .plupload_filelist > li {
+  background: #fff;
+}
+.plupload .plupload_container .plupload_filelist_footer {
+  height: 30px;
+  background: #fff;
+}
+.plupload .plupload_container .plupload_filelist_footer .pl_add {
+  margin-right: 5px;
+}
+
+.plupload.pl-sidebar .plupload_filelist_footer {
+  border-top: 0;
+  height: auto;
+  padding: 0;
+}
+.plupload.pl-sidebar .plupload_filelist_footer .plupload_add {
+  border: 1px solid #ccc;
+  border-top: 0;
+  padding: 4px;
+  margin: 0;
+  text-align: center;
+  background: #ddd;
+  display: block;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.plupload.pl-sidebar .plupload_filelist_footer .plupload_add:hover {
+  background: #bbb;
+}
+.plupload.pl-sidebar .plupload_filelist_footer .plupload_file_name {
+  float: none;
+}
+.plupload.pl-sidebar .plupload_filelist_footer .plupload_total_status, .plupload.pl-sidebar .plupload_filelist_footer .plupload_file_status, .plupload.pl-sidebar .plupload_filelist_footer .plupload_file_action, .plupload.pl-sidebar .plupload_filelist_footer .plupload_progress, .plupload.pl-sidebar .plupload_filelist_footer .plupload_file_size {
+  display: none;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist {
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_delete .plupload_file_status, .plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_failed .plupload_file_status {
+  display: none;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_delete .plupload_file_name, .plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_failed .plupload_file_name {
+  width: 100px;
+  line-height: 18px;
+  font-size: 11px;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_delete .plupload_file_size, .plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_failed .plupload_file_size {
+  display: none;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_droptext {
+  position: relative;
+  color: #333;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_droptext span {
+  z-index: 99;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-weight: bold;
+}
+.plupload.pl-sidebar .plupload_content .plupload_filelist .plupload_droptext:after {
+  content: "\f0ee";
+  font-size: 128px;
+  color: #e6e6e6;
+  position: absolute;
+  font-family: "FontAwesome";
+  top: 10px;
+  z-index: 98;
+  left: 13px;
+}
+
+.ui-resizable-handle.ui-resizable-e {
+  cursor: col-resize;
+}
+
+#ascrail2000 div {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+
+.slimScrollBar.ui-draggable {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+
+.select2-container .select2-choice {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background-image: none;
+  background: #fff;
+}
+.select2-container .select2-choice div {
+  border-left: 0;
+  background: none;
+}
+.select2-container.select2-drop-above .select2-choice {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background-image: none;
+}
+.select2-container .select2-search-choice-close {
+  top: 3px;
+}
+.select2-container .select2-choices {
+  background-image: none;
+}
+
+.select2-results, .select2-search, .select2-with-searchbox {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+
+.slider {
+  margin: 10px 0 20px 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  height: 6px;
+  position: relative;
+  *zoom: 1;
+}
+.slider:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.slider .amount {
+  position: absolute;
+  left: 0;
+  top: -20px;
+}
+.slider .amount_min {
+  position: absolute;
+  left: 0;
+  bottom: -25px;
+}
+.slider .amount_max {
+  position: absolute;
+  right: 0;
+  bottom: -25px;
+}
+.slider .ui-slider-handle {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background: #368ee0;
+  width: 14px;
+  height: 14px;
+}
+
+.ui-spinner {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+  border-color: #ccc;
+}
+.ui-spinner .spinner {
+  border: 0;
+  margin-top: 0;
+}
+.ui-spinner .ui-spinner-button {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  opacity: 0.6;
+}
+
+.tagsinput[id$="_tagsinput"] {
+  padding-bottom: 0;
+}
+.tagsinput[id$="_tagsinput"] .tag {
+  background: #368ee0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  color: #fff;
+  border: 0;
+}
+.tagsinput[id$="_tagsinput"] .tag a {
+  color: #fff;
+}
+
+.bootstrap-timepicker-widget.dropdown-menu, .colorpicker.dropdown-menu {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.bootstrap-timepicker-widget.dropdown-menu:before, .bootstrap-timepicker-widget.dropdown-menu:after, .colorpicker.dropdown-menu:before, .colorpicker.dropdown-menu:after {
+  border: 0 !important;
+}
+
+.editable-input .datepicker-inline {
+  width: 260px;
+}
+.editable-input .datepicker table tr td {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.editable-input .datepicker table tr td:hover {
+  background: #bbb;
+}
+.editable-input .datepicker table tr td.active {
+  background: #368ee0;
+}
+.editable-input .datepicker table tr td.active:hover {
+  background: #1b67af;
+}
+
+.editable-address {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.editable-address span {
+  width: 70px;
+  display: inline-block;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px !important;
+}
+
+a {
+  color: #368ee0;
+}
+a:focus {
+  outline: none;
+  text-decoration: none;
+}
+
+.ulreset, #navigation .user .icon-nav, #navigation .main-nav, .letterbox .letter, .blog-widget-recent-posts, .blog-widget-latest-photos, .blog-widget-categories, .blog-widget-tags, .user-list > ul, .statistic-big .stats-overview, .pagestats, .userlist, .quickstats, .tags, .bestseller, .tabs, .stats, .minitiles, .timeline, .timeline > li .timeline-content .activity .timeline-images, .search-results ul, .shop-items, .colors {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nopadding {
+  padding: 0 !important;
+}
+
+.row-fluid.margin-top {
+  margin-top: 30px;
+}
+
+.visible-480 {
+  display: none;
+}
+
+.box-sortable {
+  background: #eee;
+  border: 1px dotted #333;
+}
+
+.colors.small > li {
+  height: 20px;
+  width: 20px;
+}
+.colors.small > li > a, .colors.small > li > span {
+  height: 20px;
+  width: 20px;
+}
+.colors > li {
+  height: 40px;
+  margin: 0 5px 5px 0;
+  width: 40px;
+  float: left;
+}
+.colors > li > a, .colors > li > span {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.basic-margin > li, .basic-margin > a {
+  margin: 0 5px 5px 0;
+}

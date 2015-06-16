@@ -3106,7 +3106,6 @@ textarea.input-lg,select[multiple].input-lg {
     user-select:none;
     background-image:none;
     border:1px solid transparent;
-    border-radius:4px
 }
 
 .btn:focus,.btn:active:focus,.btn.active:focus {
@@ -3324,21 +3323,18 @@ textarea.input-lg,select[multiple].input-lg {
     padding:10px 16px;
     font-size:18px;
     line-height:1.33;
-    border-radius:6px
 }
 
 .btn-sm,.btn-group-sm>.btn {
     padding:5px 10px;
     font-size:12px;
     line-height:1.5;
-    border-radius:3px
 }
 
 .btn-xs,.btn-group-xs>.btn {
     padding:1px 5px;
     font-size:12px;
     line-height:1.5;
-    border-radius:3px
 }
 
 .btn-block {

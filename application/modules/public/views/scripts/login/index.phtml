@@ -62,8 +62,7 @@
 	    	</script>
 	    <?php endif; ?>	
 	    
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js"></script>	    		   
-	    
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js"></script>	    		   	    
 		<script type="text/javascript">
 			var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
 			var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
@@ -169,7 +168,7 @@
 	          		<ul class="nav navbar-nav">
 			            <?php if( (int)SITE_ALLOW_TEMPLATE_CHANGE == 1 ): ?>        
 	            		<li class="dropdown">
-			              <a id="themes" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo translate('themes');?> </a>
+			              <a id="themes" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo translate('themes');?> <span class="caret"></span></a>
 			              <ul aria-labelledby="themes" class="dropdown-menu">
 							<li>
 								<a id="linkThemeCurrent" href="#" class="changeTheme" data-name="<?php echo strtolower( $currentTheme ); ?>">
@@ -200,7 +199,7 @@
 			            <?php if( (int)SITE_ALLOW_LANGUAGE_CHANGE == 1 ): ?> 
 			            	<?php if( !empty( $GLOBALS['SITE_LANGUAGES'] ) ): ?>			            	       
 			            		<li class="dropdown">
-					              <a id="changeLang" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo translate('language'); ?> </a>
+					              <a id="changeLang" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo translate('language'); ?> <span class="caret"></span></a>
 					              <ul aria-labelledby="changeLang" class="dropdown-menu">
 									<li>
 										<a id="linkLanguageCurrent" href="#" class="changeLang" data-name="<?php echo strtolower( $currentTheme ); ?>">
@@ -230,7 +229,7 @@
 	
 	          		<ul class="nav navbar-nav navbar-right">
 	            		<li class="dropdown">
-	              			<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dropdown-help"> <i class="fa fa-question-circle"></i> </a>
+	              			<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dropdown-help"> <i class="fa fa-question-circle"></i> <span class="caret"></span></a>
 	              			<ul class="dropdown-menu" aria-labelledby="dropdown-help">
 		            			<li>
 		            				<a id="linkAbout" href="#">
@@ -240,7 +239,7 @@
 	              			</ul>
 	            		</li>	          		
 	            		<li class="dropdown">
-	              			<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dropdown-user"><i class="fa fa-life-ring"></i> <?php echo translate('help'); ?> </a>
+	              			<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dropdown-user"><i class="fa fa-life-ring"></i> <?php echo translate('help'); ?> <span class="caret"></span></a>
 	              			<ul class="dropdown-menu" aria-labelledby="dropdown-user">
 								<li>
 		            				<a href="#" id="forgotPass">

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 16, 2015 at 09:08 AM
+-- Generation Time: Jun 17, 2015 at 01:59 AM
 -- Server version: 5.5.42-cll
 -- PHP Version: 5.4.23
 
@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `openface_phrase` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `language_id_2` (`language_id`,`name`),
   KEY `language_id` (`language_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=828 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=831 ;
 
 --
 -- Dumping data for table `openface_phrase`
@@ -944,7 +944,10 @@ INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES
 (820, 2, 'prompt_whats_new', 'Wie läuft''s bei dir?'),
 (823, 1, 'like', 'Like'),
 (824, 2, 'like', 'Gefällt mir'),
-(825, 2, 'comment', 'Kommentieren');
+(825, 2, 'comment', 'Kommentieren'),
+(828, 1, 'deletion_confirmation', 'Deletion Confirmation'),
+(829, 1, 'prompt_message_deletion_confirmation', 'Are you sure that you want to delete this message?'),
+(830, 2, 'post', 'Absenden');
 
 -- --------------------------------------------------------
 
@@ -975,11 +978,11 @@ CREATE TABLE IF NOT EXISTS `openface_site_config` (
 --
 
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES
-(1, 'site_name', 'Product Media Holding — Intern', NULL, 'global', 'text', '1', 'Site Name', NULL),
+(1, 'site_name', 'OpenFace', NULL, 'global', 'text', '1', 'Site Name', NULL),
 (2, 'site_default_preloader_image_path', '<i class="fa fa-spinner fa-spin"></i>', NULL, 'global', 'text', '1', NULL, NULL),
 (3, 'site_default_landing_page', '', NULL, 'global', 'text', '1', 'Local URL to redirect to after login, do not include the scheme, i.e. http://', NULL),
 (4, 'site_allow_template_change', '1', '0,1', 'global', 'radio', '1', 'Allow Template Change', NULL),
-(5, 'site_default_template', 'faceboot', NULL, 'global', 'text', '1', NULL, NULL),
+(5, 'site_default_template', 'openface', NULL, 'global', 'text', '1', NULL, NULL),
 (6, 'site_default_max_upload_size', '1073741824', NULL, 'upload', 'text', '1', 'Max upload size in bytes', 'in bytes'),
 (7, 'site_allowed_file_types', '*', NULL, 'upload', 'text', '1', 'File types allowed for upload. Separate entries with commas. Use * to allow all.', NULL),
 (8, 'site_default_avatar_url', '__BASEURL__/images/profiles/default.png', NULL, 'user', 'text', '1', 'Full URL of the default user avatar', NULL),
@@ -1141,7 +1144,7 @@ CREATE TABLE IF NOT EXISTS `openface_user` (
 --
 
 INSERT INTO `openface_user` (`id`, `uuid`, `email`, `username`, `first_name`, `last_name`, `password`, `avatar_url`, `site_language`, `site_status`, `date_created`, `signup_ip`, `last_upload`, `last_active`, `last_login_date`, `last_ip`) VALUES
-(1, '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'admin@openface.org', 'OpenFace', 'Site', 'Admin', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', NULL, 1, 'auto_confirmed', 1383254334, NULL, NULL, 1434467222, 1434381893, NULL);
+(1, '9e53acc0-e44f-11e3-ac10-0800200c9a66', 'admin@openface.org', 'OpenFace', 'Site', 'Admin', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', NULL, 1, 'auto_confirmed', 1383254334, NULL, NULL, 1434527615, 1434527615, NULL);
 
 -- --------------------------------------------------------
 
@@ -1274,11 +1277,15 @@ CREATE TABLE IF NOT EXISTS `openface_user_status` (
   `uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
   `user_uuid` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` text COLLATE utf8_unicode_ci,
+  `privacy` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date` int(10) unsigned NOT NULL,
+  `ip` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   KEY `user_uuid` (`user_uuid`),
-  KEY `date` (`date`)
+  KEY `date` (`date`),
+  KEY `ip` (`ip`),
+  KEY `privacy` (`privacy`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

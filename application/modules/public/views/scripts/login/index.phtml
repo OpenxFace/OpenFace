@@ -271,7 +271,7 @@
 						case 'yahoo':
 						case 'youtube':
 							$.blockUI({
-								message: '<img border="0" src="'+ BASEURL + '/images/preloader/168.gif">'
+								message: '<i class="fa fa-spinner fa-spin"></i>'
 							});
 							
 							window.location.assign( BASEURL + '/login/' + network );
@@ -298,7 +298,7 @@
 					}					
 						
 					$.blockUI({
-						message: '<img border="0" src="'+ BASEURL + '/images/preloader/168.gif">'
+						message: '<i class="fa fa-spinner fa-spin"></i>'
 					});
 					
 					$.ajax({
@@ -317,7 +317,7 @@
 								$('#frmErrors').html('');
 								window.location.reload();			
 							} else {
-								$('#frmErrors').html('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> '+ translate('authentication_failure') +'</div>')
+								$('#frmErrors').html('<div class="alert alert-danger"><i class="fa fa-warning"></i> '+ translate('authentication_failure') +'</div>')
 								$.unblockUI();
 							}
 						},

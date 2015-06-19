@@ -56,12 +56,26 @@ class StatusController extends Zend_Controller_Action
 					$result	= $this->_User_Status->insert( $_POST );
 						
 					if( (int)$result > 0 ) {
-						$json['status'] = 'OK';
+						$json['status']   = 'OK';
+						$json['data']     = array(
+						    'id' => $result
+						);
 					} else {
 						$json['status'] = 'ERROR';
 					}
 					
 					break;
+					
+				case 'delete':
+ 				    $result	= $this->_User_Status->deleteById( $_POST['statusId'] );
+				
+				    if( (int)$result > 0 ) {
+				        $json['status'] = 'OK';
+				    } else {
+				        $json['status'] = 'ERROR';
+				    }
+				    	
+				    break;			
 
 				default:
 					$json['status'] = 'ERROR';

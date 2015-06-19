@@ -194,7 +194,13 @@
                         </div>
                         
                         <div style="position: absolute; top: 0; left: 42px;">
-                            <?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>
+                            <div style="font-size: small;">
+                                <?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>
+                            </div>
+                            
+                            <div style="font-size: x-small;">
+                                <?php echo $_SESSION['user']['email']; ?>
+                            </div>
                         </div>                      
                     </div>                                       
                 </div>
@@ -325,7 +331,7 @@
 	    
 	    <!-- START:    Templates -->
 	    <script id="templateStatus" type="text/x-jsrender">
-            <div class="panel panel-default">
+            <div id="statusContainer-{{:id}}" class="panel panel-default">
                 <div class="panel-heading">
                     <div class="dropdown pull-right">
                         <a id="statusAction-{{:id}}" data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -334,11 +340,13 @@
 
                         <ul class="dropdown-menu" role="menu" aria-labelledby="statusAction-{{:id}}">
                             <li role="presentation">
-                                <a data-action="delete" data-id="{{:id}}" role="menuitem" tabindex="-1" href="#"><?php echo translate('delete'); ?></a>
+                                <a class="actionStatus" data-action="delete" data-id="{{:id}}" role="menuitem" tabindex="-1" href="#"><?php echo translate('delete'); ?></a>
                             </li>
+
                             <li role="presentation" class="divider"></li>
+
                             <li role="presentation">
-                                <a data-action="edit" data-id="{{:id}}" role="menuitem" tabindex="-1" href="#"><?php echo translate('edit'); ?></a>
+                                <a class="actionStatus" data-action="edit" data-id="{{:id}}" role="menuitem" tabindex="-1" href="#"><?php echo translate('edit'); ?></a>
                             </li>
                         </ul>
                     </div>
@@ -354,7 +362,9 @@
                 <div class="panel-body">
                     <img class="avatar-md img-circle pull-right" src="{{:owner.avatar_url}}"> 
 
-                    {{:status}}
+                    <div id="statusText-{{:id}}">
+                        {{:status}}
+                    </div>
 
                     <div class="clearfix"></div>
 

@@ -154,7 +154,10 @@
 	    <?php
 	                break;
 	        }
-	    ?>							     
+	    ?>	
+	    
+        <!-- Bootstrap Datepicker -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker3.min.css" type="text/css">						     
 	</head>
 
 	<body>
@@ -212,46 +215,54 @@
                                 <textarea class="form-control" rows="5" id="frmNewStatus" name="status" placeholder="<?php echo translate('prompt_whats_new'); ?>"></textarea>
                             </div>
                             
-                            <button class="btn btn-primary pull-right" id="btnNewStatus" type="button">
-                                <i class="fa fa-pencil"></i> <?php echo translate('post'); ?>
-                            </button>
-                            
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="">
-                                        <i class="glyphicon glyphicon-upload"></i>
-                                    </a>
-                                </li>
-                                
-                                <li>
-                                    <a href="">
-                                        <i class="glyphicon glyphicon-camera"></i>
-                                    </a>
-                                </li>
-                                
-                                <!-- li>
-                                    <a href="">
-                                        <i class="glyphicon glyphicon-map-marker"></i>
-                                    </a>
-                                </li -->
-                            </ul>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!-- ul class="list-inline">
+                                        <li>
+                                            <a href="">
+                                                <i class="glyphicon glyphicon-upload"></i>
+                                            </a>
+                                        </li>
+                                        
+                                        <li>
+                                            <a href="">
+                                                <i class="glyphicon glyphicon-camera"></i>
+                                            </a>
+                                        </li>
+                                        
+                                        <li>
+                                            <a href="">
+                                                <i class="glyphicon glyphicon-map-marker"></i>
+                                            </a>
+                                        </li>
+                                    </ul -->
+                                </div>
+                                                            
+                                <div class="col-lg-6">
+                                    <button class="btn btn-primary pull-right" id="btnNewStatus" type="button">
+                                        <i class="fa fa-pencil"></i> <?php echo translate('post'); ?>
+                                    </button>                                
+                                </div>                            
+                            </div>
                         </form>
                     </div> 
                     
                     <div id="statusList"></div>                                 
                 </div> 
                 
+                <!-- START:     Sidebar (Right) -->
                 <div class="col-lg-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque pulvinar ut mi sit amet ultricies. Fusce lacinia erat metus, eu consectetur purus egestas sed. Quisque sed porta lacus, et vehicula nibh. Nam maximus fringilla tortor. Etiam sit amet tristique nibh. Nunc ornare lorem vel erat lacinia vulputate. Vestibulum molestie mi vitae ex auctor, quis fermentum mi mollis. Cras ut sollicitudin justo. Sed venenatis dolor lacus, rutrum euismod justo hendrerit sed. Vivamus maximus, ipsum ac viverra tristique, risus diam viverra urna, bibendum congue massa libero eget augue. Integer nec tellus orci.
-                    <br><br>
-                    Curabitur sit amet elit odio. Proin vel pharetra augue, at tristique justo. Nam faucibus auctor mauris, et tempor turpis malesuada ut. Pellentesque et libero at velit pharetra sagittis. Aliquam aliquet tempor sollicitudin. Donec viverra rhoncus ultricies. Suspendisse tempor risus ac consequat dictum. Donec magna libero, sodales eget fringilla sed, facilisis sed dolor. Ut ac nulla pretium lacus ullamcorper varius et sed nunc. Nullam urna nulla, eleifend sit amet felis hendrerit, suscipit luctus enim. Pellentesque feugiat elementum quam ut faucibus. In hac habitasse platea dictumst. Nam vitae elementum elit. Vivamus non lorem placerat, pellentesque nulla eu, semper tortor. Pellentesque commodo vehicula eros vel pretium.                                       
-                </div>                               
+                    <?php echo $this->partial('partials/sidebar/right.phtml'); ?>                                                           
+                </div>   
+                <!-- END:       Sidebar (Right) -->
+                                            
             </div>
         </div>
 	    
 		<script type="text/javascript">
-		    $(document).ready(function() {	
-		    			    				    							    		    		   			     			   
+		    $(document).ready(function() {
+
+				// image preloading    							    		    		   			     			   
 				$.imgpreload([
 					BASEURL + '/images/preloader/168.gif'
 					], {
@@ -371,14 +382,19 @@
                     <hr>
 
                     <p>
-                        <?php echo translate('like'); ?> &bull; <?php echo translate('comment'); ?>
+                        <a href="#" class="linkLike" data-id="{{:id}}"><?php echo translate('like'); ?></a> &bull; <a href="#" class="linkComment" data-id="{{:id}}"><?php echo translate('comment'); ?></a>
                     </p>
                     
                     <hr>
                         
-                    <form>
-                        <div class="input-group">
-                            <input id="frmStatusResponse-{{:id}}" type="text" placeholder="<?php echo translate('prompt_write_comment'); ?>..." class="form-control">
+                    <form id="frmStatusResponse-{{:id}}" name="frmStatusResponse-{{:id}}" role="form">
+                        <div class="form-group">
+                            <input id="inputStatusResponse-{{:id}}" name="inputStatusResponse-{{:id}}" class="form-control" type="text" placeholder="<?php echo translate('prompt_write_comment'); ?>...">
+                            <p class="help-block"><?php echo translate('status_reply_help'); ?></p>
+                        </div>
+
+                        <!-- div class="input-group">
+                            <input id="inputStatusResponse-{{:id}}" class="form-control" type="text" placeholder="<?php echo translate('prompt_write_comment'); ?>...">
                             <div class="input-group-btn">
                                 <button class="btn btn-default">
                                     <i class="fa fa-camera"></i>
@@ -388,12 +404,21 @@
                                     <i class="fa fa-smile-o"></i>
                                 </button>
                             </div>
-                        </div>
+                        </div -->
                     </form>                                    
                 </div>
             </div>
+        </script>
+        
+        <script id="templateNotifyImage" type="text/x-jsrender">
+        	<img id="notifyImage-{{:id}}" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/preloader/action.png" border="0">
         </script>	    
 	    <!-- END:      Templates -->
-	    			    
+	    
+	    <!-- jsTimezoneDetect -->
+	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstz-1.0.4.min.js"></script>
+	
+        <!-- Bootstrap Datepicker -->	   
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>	    			    
 	</body>	
 </html>

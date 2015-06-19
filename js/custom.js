@@ -16,44 +16,32 @@
  * @package     Priceless PHP Base
 */
 
-function display_error_dialog( text )
+function display_error_dialog( message, title )
 {
-	if( typeof text === 'undefined' ) {
-		var text = 'An error has occurred. <br>Contact Technical Support if this issue persists.';
+	if( typeof title === 'undefined' ) {
+		var title = translate('error');
 	}
 	
-	// START:	Error Display	
-	var html	= text;
-	var $dialog = $('<div></div>')
-	.html( html )
-	.dialog({
-		title: '<i class="icon-warning-sign"></i> ERROR',
-		minWidth: percentOfWindowWidth( 50 ),
-		minHeight: percentOfWindowHeight( 40 ),
-		modal: true,
-		autoOpen: true,
-		zIndex: 2147483640,
-		buttons: {
-			 OK: function() {
-				 $(this).dialog('close');
-			 }
-		},
-		open: function() {
-			// http://stackoverflow.com/questions/4103964/icons-in-jquery-ui-dialog-title
-			$('.ui-dialog .ui-dialog-title .ui-icon').css({
-				'float': 'left',
-			    'margin-right': '4px'
-			});
-	        
-	        $('.ui-dialog-buttonpane').
-	        	find('button:contains("OK")').button({
-	        		icons: {
-	        			primary: 'ui-icon-circle-close'
-	        		}
-	        });				                
-		}
-	});				
-	// END:		Error Display	
+	if( typeof message === 'undefined' ) {
+		var message = translate('error_occurred');
+	}
+	
+    bootbox.dialog({
+        title: title,
+        message: message,
+        onShow: function( obj ) {
+        	// ...
+        },
+        buttons: {
+            'OK': {
+                label: translate('ok'),
+                className: 'btn-primary',
+                callback: function () {
+                	// ...
+                }
+            }	                
+        }	            
+    });		
 }
 
 function bytesToSize(bytes) 
@@ -559,46 +547,6 @@ function unixTimestampToDate(timestamp)
 	return date;
 }
 
-function display_error_dialog( text )
-{
-	if( typeof text === 'undefined' ) {
-		var text = 'An error has occurred. <br>Contact Technical Support if this issue persists.';
-	}
-	
-	// START:	Error Display	
-	var html	= text;
-	var $dialog = $('<div></div>')
-	.html( html )
-	.dialog({
-		title: '<i class="fa fa-exclamation-triangle"></i> ERROR',
-		minWidth: percentOfWindowWidth( 50 ),
-		minHeight: percentOfWindowHeight( 40 ),
-		modal: true,
-		autoOpen: true,
-		zIndex: 2147483640,
-		buttons: {
-			 OK: function() {
-				 $(this).dialog('close');
-			 }
-		},
-		open: function() {
-			// http://stackoverflow.com/questions/4103964/icons-in-jquery-ui-dialog-title
-			$('.ui-dialog .ui-dialog-title .ui-icon').css({
-				'float': 'left',
-			    'margin-right': '4px'
-			});
-	        
-	        $('.ui-dialog-buttonpane').
-	        	find('button:contains("OK")').button({
-	        		icons: {
-	        			primary: 'ui-icon-circle-close'
-	        		}
-	        });				                
-		}
-	});				
-	// END:		Error Display	
-}
-
 function noHover() 
 {
     return this.is(':hover') ? this.wait('mouseleave') : this;
@@ -675,6 +623,77 @@ function getRandomArbitrary(min, max) {
 */
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getCurrentDate()
+{
+    var today	= new Date();
+	var dd		= today.getDate();
+	var mm		= today.getMonth() + 1;
+	var yyyy	= today.getFullYear();
+
+	if( dd < 10 ) {
+	    dd = '0' + dd;
+	} 
+
+	if( mm < 10 ) {
+	    mm = '0' + mm;
+	} 
+
+	currentDate = dd + '.' + mm + '.' + yyyy;
+	
+	return currentDate;	
+}
+
+function getCurrentDateAndTime()
+{
+    var today		= new Date();
+	var dd			= today.getDate();
+	var mm			= today.getMonth() + 1;
+	var yyyy		= today.getFullYear();
+	var hours		= today.getHours();
+	var minutes		= today.getMinutes();
+	var seconds		= today.getSeconds();	
+	var timezone	= jstz.determine();
+    var timezone	= timezone.name();
+    
+    switch( timezone ) {
+    	case 'Europe/Berlin':
+    		timezone = 'Köln';
+    		
+    		break;
+    }
+
+	if( dd < 10 ) {
+	    dd = '0' + dd;
+	} 
+
+	if( mm < 10 ) {
+	    mm = '0' + mm;
+	} 
+	
+	if( hours < 10 ) {
+		hours = '0' + hours;
+	}	
+	
+	if( minutes < 10 ) {
+		minutes = '0' + minutes;
+	}
+	
+	if( seconds < 10 ) {
+		seconds = '0' + seconds;
+	}
+
+	var currentDate = dd + '.' + mm + '.' + yyyy;	
+	var currentTime = hours + ':' + minutes + ':' + seconds + ' ' + timezone;
+	
+	return currentDate + ' ' + currentTime;	
+}
+
+function momentGetCurrentDateAndTime()
+{
+	var momentNow = moment();
+	momentNow.format('DD.MM.YYYY HH:mm:ss');	
 }
 
 Array.prototype.remove = function(value) {

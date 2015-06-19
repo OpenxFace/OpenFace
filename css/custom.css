@@ -281,3 +281,18 @@ img {
     background-color: #FDF7F7;
     border-color: #D9534F;
 }
+
+.datepicker-inline-styled {
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    list-style: outside none none;
+    margin: 1px 0 0;
+    min-width: 160px;
+    padding: 8px 0;
+}
+
+#currentDate {
+	padding-left: 5px;
+}

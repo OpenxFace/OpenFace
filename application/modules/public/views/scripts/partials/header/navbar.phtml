@@ -9,7 +9,7 @@
     $_SESSION['current_theme'] = $currentTheme;
 ?>
 
-<div class="navbar <?php if( $currentTheme == 'faceboot'): ?> navbar-inverse <?php else: ?> navbar-default <?php endif; ?>  navbar-fixed-top">
+<div class="navbar <?php if( $currentTheme == 'faceboot' OR $currentTheme == 'ios7' ): ?> navbar-inverse <?php else: ?> navbar-default <?php endif; ?>  navbar-fixed-top">
 	<div class="container-fluid">
     	<div class="navbar-header">
 			<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>" class="blockUI-trigger navbar-brand" alt="<?php echo SITE_NAME; ?>" title="<?php echo SITE_NAME; ?>"><i class="fa fa-magic"></i></a>

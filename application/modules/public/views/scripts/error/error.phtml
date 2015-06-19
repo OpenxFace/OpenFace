@@ -7,7 +7,6 @@
 	    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 	    <meta name="apple-mobile-web-app-capable" content="yes" />	    
 	    	    
-	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/bootswatch.min.css">
 	    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	    <!--[if lt IE 9]>
 	      <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/html5shiv.js"></script>
@@ -88,7 +87,7 @@
 	    <meta name="robots" content="noimageindex" />
 	    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/favicon.ico" />
 	        
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.8.3.min.js"></script>	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.9.1.min.js"></script>	
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootswatch.js"></script>		
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
@@ -121,8 +120,8 @@
 		<!-- START:		blockUI -->
 		<?php if( (int)SITE_USE_BLOCKUI == 1 AND (int)IS_MOBILE != 1 ): ?>
 			<div style="display: block" class="blockUI"></div>
-			<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
-			<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><img src="<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>"></div>
+			<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
+			<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?></div>
 		<?php endif; ?>		
 		<!-- END:		blockUI -->	
 		<div id="fb-root"></div>
@@ -144,121 +143,9 @@
 	    </script>
 	    <?php echo SITE_GLOBAL_HTML_BODY_START; ?>		
 		
-	    <div class="navbar navbar-default navbar-fixed-top">
-			<div class="container-fluid">
-	        	<div class="navbar-header">
-					<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>" class="blockUI-trigger navbar-brand" alt="<?php echo SITE_NAME; ?>" title="<?php echo SITE_NAME; ?>">
-					   <i class="fa fa-magic"></i>
-					</a>
-	          		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-	            		<span class="icon-bar"></span>
-	            		<span class="icon-bar"></span>
-	            		<span class="icon-bar"></span>
-	          		</button>
-	        	</div>
-	        	<div class="navbar-collapse collapse" id="navbar-main">
-	          		<ul class="nav navbar-nav">	
-			            <?php if( (int)SITE_ALLOW_TEMPLATE_CHANGE == 1 ): ?>        
-			            <li class="dropdown">
-			              <a id="themes" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo translate('themes');?> </a>
-			              <ul aria-labelledby="themes" class="dropdown-menu" id="dropdownThemes">
-							<li style="position: relative;">
-								<a id="linkThemeCurrent" href="#" class="changeTheme" data-name="<?php echo strtolower( $currentTheme ); ?>">
-									<?php foreach( $GLOBALS['SITE_THEMES'] AS $key => $value ): ?>
-									    <?php if( $value['name'] == $currentTheme ): ?>
-									        <?php echo $value['display_name']; break; ?>
-									    <?php endif; ?>
-									<?php endforeach; ?>
-								</a>
-			              	</li>
-			              	<li class="divider"></li>
-			              	<?php foreach( $GLOBALS['SITE_THEMES'] AS $key => $value ): ?>
-		                		<li>
-		                			<?php if( array_key_exists( $key, $GLOBALS['BOOTSTRAP_THEMES'] ) ): 
-		                				$isBootstrap = true;
-		                			else:
-		                				$isBootstrap = false;
-		                			endif; ?>
-		                			<a href="#" class="changeTheme <?php echo strtolower( $key ); ?>" data-bootstrap="<?php echo $isBootstrap; ?>" data-name="<?php echo strtolower( $key ); ?>">
-		                				<?php echo $value['display_name']; ?>
-									</a>                			
-								</li>
-			              	<?php endforeach; ?>
-			              </ul>
-			            </li>
-			            <?php endif; ?>
-			            			            			            
-			            <?php if( (int)SITE_ALLOW_LANGUAGE_CHANGE == 1 ): ?> 
-			            	<?php if( !empty( $GLOBALS['SITE_LANGUAGES'] ) ): ?>			            	       
-			            		<li class="dropdown">
-					              <a id="changeLang" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo translate('language'); ?> </a>
-					              <ul aria-labelledby="changeLang" class="dropdown-menu">
-									<li>
-										<a id="linkLanguageCurrent" href="#" class="changeLang" data-name="<?php echo strtolower( $currentTheme ); ?>">
-											<?php $Language = new Language; ?>
-											<?php echo $Language->fetchFriendlyNameById( $_SESSION['user']['site_language'] ); ?>
-										</a>
-					              	</li>
-				                		<li class="divider"></li>
-						              	<?php foreach( $GLOBALS['SITE_LANGUAGES'] AS $key => $value ): ?>
-					                		<li>
-					                			<?php if( $value['id'] != $_SESSION['user']['site_language'] ): ?>
-						                			<a href="#" class="changeLang" id="changeLang-<?php echo $value['id']; ?>" data-id="<?php echo $value['id']; ?>" data-name="<?php echo $value['iso_3166_1']; ?>">
-						                				<?php echo $value['friendly_name']; ?>
-													</a>
-												<?php else: ?>
-													<a class="noBlockUI">
-														<?php echo $value['friendly_name']; ?>
-													</a>																										
-												<?php endif; ?>               			
-											</li>              	
-						              	<?php endforeach; ?>
-			              			</ul>
-			            		</li>
-			            	<?php endif; ?>			            		
-			            <?php endif; ?>			             		             
-	          		</ul>
-
-					<!-- START:	Search Form -->
-					<form class="navbar-form navbar-left">
-	                	<input type="text" placeholder="<?php echo translate('search'); ?>" class="form-control col-lg-8">
-	                </form>
-					<!-- END:	Search Form -->
-	
-	          		<ul class="nav navbar-nav navbar-right">
-	            		<li class="dropdown">
-	              			<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dropdown-help"> <i class="fa fa-question-circle"></i> </a>
-	              			<ul class="dropdown-menu" aria-labelledby="dropdown-help">
-		            			<li>
-		            				<a id="linkAbout" href="#">
-		            				    <?php echo translate('about'); ?>
-		            				</a>
-		            			</li>
-	              			</ul>
-	            		</li>
-	          			<?php if( (int)$_SESSION['user']['logged_in'] == 1 ): ?>
-	            		<li class="dropdown">
-	              			<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="dropdown-user"><?php if( isset( $_SESSION['user']['external']['network'] ) ):?> <i class="fa fa-<?php echo $_SESSION['user']['external']['network']; ?>"></i> <?php endif;?><?php echo $_SESSION['user']['email']; ?> </a>
-	              			<ul class="dropdown-menu" aria-labelledby="dropdown-user">
-		            			<li>
-		            				<a class="noBlockUI" id="linkLogout" href="<?php PROTOCOL_RELATIVE_URL; ?>/logout">
-		            				    <i class="fa fa-user"></i> <?php echo translate('logout'); ?>
-		            				</a>
-		            			</li>
-	              			</ul>
-	            		</li>	
-	            		<?php else: ?>       
-            			<li>
-            				<a href="<?php PROTOCOL_RELATIVE_URL; ?>/login"><i class="fa fa-user"></i> <?php echo translate('login'); ?></a>
-            			</li>	            		
-	            		<?php endif; ?>   		
-	          		</ul>
-	        	</div>
-			</div>
-		</div>
-	
-	
-	    <div class="container">		      	
+        <?php echo $this->partial('partials/header/navbar.phtml'); ?>
+		
+	    <div class="container-fluid">		      	
 	      	<div>
 		        <div class="row">
 		          <div class="col-lg-12">
@@ -316,7 +203,6 @@
 		    $(document).ready(function() {	
 		    			    				    							    		    		   			     			   
 				$.imgpreload([
-					DEFAULT_PRELOADER_IMAGE, 
 					BASEURL + '/images/preloader/168.gif'
 					], {
 				    each: function() {

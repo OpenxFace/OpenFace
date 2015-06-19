@@ -1,11 +1,11 @@
 /**
- * Priceless PHP Base
+ * OpenFace
  * jQuery Observor
  *
  * @author      BizLogic <hire@bizlogicdev.com>
  * @copyright   2012 - 2015 BizLogic
  * @link        http://bizlogicdev.com
- * @link		http://pricelessphp.com
+ * @link		http://openface.org
  * @license     GNU Affero General Public License v3
  *
  * @since  	    Wednesday, July 10, 2013, 20:18 GMT+1
@@ -13,7 +13,7 @@
  * @version     $Id$
  *
  * @category    JavaScript
- * @package     Priceless PHP Base
+ * @package     Openface
 */
 
 $(document).ready(function() {	
@@ -88,7 +88,7 @@ $(document).ready(function() {
 		var $dialog = $('<div></div>')
 						.html('Are you sure that you want to delete your avatar?')
 						.dialog({
-							title: '<i class="icon-warning-sign"></i> Delete Your Avatar?',
+							title: '<i class="fa fa-warning"></i> Delete Your Avatar?',
 							minWidth: 600,
 							minHeight: 200,
 							modal: true,
@@ -244,7 +244,7 @@ $(document).ready(function() {
 		
 		$.blockUI({ 
 			baseZ: 16777271, 
-			message: '<img border="0" src="' + BASEURL + '/images/preloader/168.gif">' 
+			message: '<i class="fa fa-cog fa-spin"></i>' 
 		});
 		
 		$.ajax({
@@ -305,7 +305,7 @@ $(document).ready(function() {
 					case 'uw-clone-v2':
 						$.blockUI({ 
 							baseZ: 2014, 
-							message: '<img border="0" src="' + BASEURL + '/images/preloader/168.gif">' 
+							message: '<i class="fa fa-cog fa-spin"></i>' 
 						});
 						
 						$.cookie('theme', theme, { 
@@ -470,7 +470,7 @@ $(document).ready(function() {
 		
 		$.blockUI({ 
 			baseZ: 2014, 
-			message: '<img border="0" src="' + BASEURL + '/images/preloader/168.gif">' 
+			message: '<i class="fa fa-cog fa-spin"></i>' 
 		});
 		
 		$.ajax({
@@ -503,7 +503,7 @@ $(document).ready(function() {
 			var id = $('#themeSelect').find('option:selected').data('id');
 			$.blockUI({ 
 				baseZ: 2014, 
-				message: '<img border="0" src="' + BASEURL + '/images/preloader/168.gif">' 
+				message: '<i class="fa fa-cog fa-spin"></i>' 
 			});
 			
 			$.ajax({
@@ -567,14 +567,14 @@ $(document).ready(function() {
 						window.location.reload();
 					} else {
 						$.unblockUI();
-						$('#login-errors').html('<i class="icon-warning-sign"></i> Login error').show();
+						$('#login-errors').html('<i class="fa fa-warning"></i> Login error').show();
 						$('#username').addClass('error');
 						$('#password').addClass('error');
 						$('.lblCustom').addClass('error');						
 					}
 				} else {
 					$.unblockUI();
-					$('#login-errors').html('<i class="icon-warning-sign"></i> Login error').show();
+					$('#login-errors').html('<i class="fa fa-warning"></i> Login error').show();
 					$('#username').addClass('error');
 					$('#password').addClass('error');
 					$('.lblCustom').addClass('error');

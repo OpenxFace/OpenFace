@@ -34,10 +34,10 @@ $(document).ready(function() {
 	$(document).on('click', '.linkLike', function(event) {
 		event.preventDefault();
 		
-		var statusId	= $(this).data('id');
+		var statusUUID	= $(this).data('uuid');
 		var ME			= $(this);
 		
-		if( typeof statusId !== 'undefined' ) {	
+		if( typeof statusUUID !== 'undefined' ) {	
 			// START:	Visual Cue
 			
 			var randId = rand();
@@ -49,67 +49,156 @@ $(document).ready(function() {
 			
 			// template
 			var template	= $.templates('#templateNotifyImage');
-			var htmlOutput	= template.render( data );
+			var htmlOutput	= $.trim( template.render( data ) );
 
-			// render
-			ME.prepend( htmlOutput );
-			
-			// hide the clicked element
-			ME.hide();
-			// END:		Visual cue
-			
-			// START:	AJAX Request
-			$.ajax({
-				type: 'POST',
-				url: BASEURL + '/status/ajax',
-				data: { 
-					method: 'like', 				
-					statusId: statusId 
-				},
-				complete: function( jqXHR, textStatus ) {
-					// ...
-				},
-				success: function( response, textStatus, jqXHRresponse ) {				
-					if( response.status == 'OK' ) {
-						// visual cue
-						$('#notifyImage-' + randId).remove();
-						ME.show();
-						
-						// remove the status
-						$('#statusContainer-' + statusId).remove();
-						
-						// unblock the interface
-						$.unblockUI();
-					} else {
+			Q.when(
+				// render
+				ME.prepend( htmlOutput )
+			).then(function( result ) {
+				// hide the clicked element
+				ME.hide();				
+			}).then(function( result ) {
+				// START:	AJAX Request
+				$.ajax({
+					type: 'POST',
+					url: BASEURL + '/status/ajax',
+					data: { 
+						method: 'like', 				
+						parent_uuid: statusUUID 
+					},
+					complete: function( jqXHR, textStatus ) {
+						// ...
+					},
+					success: function( response, textStatus, jqXHRresponse ) {				
+						if( response.status == 'OK' ) {
+							// visual cue
+							$('#notifyImage-' + randId).remove();
+							ME.show();
+							
+							// remove the status
+							$('#statusContainer-' + statusId).remove();
+							
+							// unblock the interface
+							$.unblockUI();
+						} else {
+							// visual cue
+							$('#notifyImage-' + randId).remove();
+							ME.show();
+							
+							// display error dialog
+							display_error_dialog( translate('error_occurred'), '<i class="fa fa-warning"></i> ' + translate('error') );
+							
+							// unblock the interface
+							$.unblockUI();
+						}								
+					},
+					error: function( jqXHR, textStatus, errorThrown ) {
 						// visual cue
 						$('#notifyImage-' + randId).remove();
 						ME.show();
 						
 						// display error dialog
-						display_error_dialog( translate('error_occurred'), '<i class="fa fa-warning"></i> ' + translate('error') );
+						display_error_dialog( errorThrown, '<i class="fa fa-warning"></i> ' + translate('error') );
 						
 						// unblock the interface
 						$.unblockUI();
-					}								
-				},
-				error: function( jqXHR, textStatus, errorThrown ) {
-					// visual cue
-					$('#notifyImage-' + randId).remove();
-					ME.show();
-					
-					// display error dialog
-					display_error_dialog( errorThrown, '<i class="fa fa-warning"></i> ' + translate('error') );
-					
-					// unblock the interface
-					$.unblockUI();
-				},		
-				dataType: 'json'
+					},		
+					dataType: 'json'
+				});			
+				// END:		AJAX Request								
 			});			
-			// END:		AJAX Request
+			
+			// END:		Visual cue
+			
 		}
 
 		return false;
 	});
+	
+	// Status Unliking
+	$(document).on('click', '.linkUnlike', function(event) {
+		event.preventDefault();
+		
+		var statusUUID	= $(this).data('uuid');
+		var ME			= $(this);
+		
+		if( typeof statusUUID !== 'undefined' ) {	
+			// START:	Visual Cue
+			
+			var randId = rand();
+			
+			// the data
+			var data = [{
+				id: randId
+			}];
+			
+			// template
+			var template	= $.templates('#templateNotifyImage');
+			var htmlOutput	= $.trim( template.render( data ) );
+
+			Q.when(
+				// render
+				ME.prepend( htmlOutput )
+			).then(function( result ) {
+				// hide the clicked element
+				ME.hide();				
+			}).then(function( result ) {
+				// START:	AJAX Request
+				$.ajax({
+					type: 'POST',
+					url: BASEURL + '/status/ajax',
+					data: { 
+						method: 'unlike', 				
+						parent_uuid: statusUUID 
+					},
+					complete: function( jqXHR, textStatus ) {
+						// ...
+					},
+					success: function( response, textStatus, jqXHRresponse ) {				
+						if( response.status == 'OK' ) {
+							// visual cue
+							$('#notifyImage-' + randId).remove();
+							ME.show();
+							
+							// remove the status
+							$('#statusContainer-' + statusId).remove();
+							
+							// unblock the interface
+							$.unblockUI();
+						} else {
+							// visual cue
+							$('#notifyImage-' + randId).remove();
+							ME.show();
+							
+							// display error dialog
+							display_error_dialog( translate('error_occurred'), '<i class="fa fa-warning"></i> ' + translate('error') );
+							
+							// unblock the interface
+							$.unblockUI();
+						}								
+					},
+					error: function( jqXHR, textStatus, errorThrown ) {
+						// visual cue
+						$('#notifyImage-' + randId).remove();
+						ME.show();
+						
+						// display error dialog
+						display_error_dialog( errorThrown, '<i class="fa fa-warning"></i> ' + translate('error') );
+						
+						// unblock the interface
+						$.unblockUI();
+					},		
+					dataType: 'json'
+				});			
+				// END:		AJAX Request								
+			});			
+			
+			// END:		Visual cue
+			
+		}
+
+		return false;
+	});	
 
 	// Status Deletion
 	$(document).on('click', '.actionStatus', function(event) {
@@ -118,7 +207,7 @@ $(document).ready(function() {
 		
 		// dialog
 		bootbox.dialog({
-			message: translate('prompt_message_deletion_confirmation') + '<div style="background-color: #f6e890; padding: 10px; border: 1px solid #CCCCCC; margin-top: 10px;">' + statusHtml + '</div>',
+			message: translate('prompt_message_deletion_confirmation') + '<div class="alert alert-warning" style="padding: 10px; margin-top: 10px;">' + statusHtml + '</div>',
 			title: '<i class="fa fa-warning"></i> ' + translate('deletion_confirmation'),
 			buttons: {
 				'delete': {

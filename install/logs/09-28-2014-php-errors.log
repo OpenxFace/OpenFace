@@ -1,0 +1,2 @@
+[28-Sep-2014 20:05:21 UTC] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'cloneui_ofdemo'@'localhost' (using password: YES) in /home/cloneui/public_html/demo.openface.org/install/includes/functions.php on line 73
+[28-Sep-2014 20:05:25 UTC] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'cloneui_ofdemo'@'localhost' (using password: YES) in /home/cloneui/public_html/demo.openface.org/install/includes/functions.php on line 73

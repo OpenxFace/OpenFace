@@ -25,6 +25,12 @@ $(document).ready(function() {
 	}
 	// END:		remove address bar on mobile
 	
+	$(document).on('click', '#scrollUp', function( event ) {
+		setTimeout(function() { 
+			$.unblockUI(); 
+		}, 300);
+	});
+	
 	// the 'About' box...
 	$('#linkAbout').click(function(event) {
 		var text	= '<strong>OpenFace</strong>';

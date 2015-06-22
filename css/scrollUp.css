@@ -1,0 +1,9 @@
+#scrollUp {
+    background: url("../images/icons/top.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    bottom: 20px;
+    height: 38px;
+    right: 20px;
+    width: 38px;
+	text-decoration: none;
+	border: 0;
+}

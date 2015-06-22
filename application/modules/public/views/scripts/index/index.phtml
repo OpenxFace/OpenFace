@@ -142,6 +142,9 @@
 	    <!-- Custom CSS -->	
 	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/newsfeed.css" type="text/css" />	
 	    
+	    <!-- scrollUp -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/scrollUp.css" />
+	    
 	    <?php
 	        switch( $currentTheme ) {
 	            case 'faceboot':
@@ -262,6 +265,24 @@
 		<script type="text/javascript">
 		    $(document).ready(function() {
 
+		    	// scrollUp
+		        $.scrollUp({
+		            scrollName: 'scrollUp',      // Element ID
+		            scrollDistance: 300,         // Distance from top/bottom before showing element (px)
+		            scrollFrom: 'top',           // 'top' or 'bottom'
+		            scrollSpeed: 300,            // Speed back to top (ms)
+		            easingType: 'linear',        // Scroll to top easing (see http://easings.net/)
+		            animation: 'fade',           // Fade, slide, none
+		            animationSpeed: 200,         // Animation speed (ms)
+		            scrollTrigger: false,        // Set a custom triggering element. Can be an HTML string or jQuery object
+		            scrollTarget: false,         // Set a custom target element for scrolling to. Can be element or number
+		            scrollText: 'Scroll to top', // Text for element, can contain HTML
+		            scrollTitle: false,          // Set a custom <a> title if required.
+		            scrollImg: true,            // Set true to use image
+		            activeOverlay: false,        // Set CSS color to display scrollUp active point, e.g '#00FFFF'
+		            zIndex: 2147483647           // Z-Index for the overlay                    
+		        });
+		        
 				// image preloading    							    		    		   			     			   
 				$.imgpreload([
 					BASEURL + '/images/preloader/168.gif'
@@ -382,10 +403,37 @@
                     <hr>
 
                     <p>
-                        <a href="#" class="linkLike" data-id="{{:id}}"><?php echo translate('like'); ?></a> &bull; <a href="#" class="linkComment" data-id="{{:id}}"><?php echo translate('comment'); ?></a>
+                        {{if has_liked}}
+                            <a href="#" class="linkUnlike" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('unlike'); ?></a>
+                        {{else}}
+                            <a href="#" class="linkLike" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('like'); ?></a>
+                        {{/if}}                        
+                        &bull; 
+                        <a href="#" class="linkComment" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('comment'); ?></a>
                     </p>
                     
                     <hr>
+
+                    {{if like_data.count > 0 }}
+                        <div class="likeBlock">
+                            {{if like_data.count == 1 && has_liked}}
+                                <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you_like_this'); ?>
+                            {{else like_data.count == 1}}
+                                <i class="fa fa-thumbs-o-up"></i> {{:like.data.users[0]['name']}} <?php echo translate('likes_this'); ?>
+                            {{else has_liked}}
+                                <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you'); ?>, 
+                                {{for like_data.users}}				                    
+				                    {{:name}}, 
+                                {{/for}}
+                            {{else}}
+                                <i class="fa fa-thumbs-o-up"></i>  
+                                {{for like_data.users}}				                    
+				                    {{:name}}, 
+                                {{/for}}
+                                <?php echo translate('you_like_this'); ?>
+                            {{/if}}
+                        </div>
+                    {{/if}}
                         
                     <form id="frmStatusResponse-{{:id}}" name="frmStatusResponse-{{:id}}" role="form">
                         <div class="form-group">
@@ -414,6 +462,12 @@
         	<img id="notifyImage-{{:id}}" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/preloader/action.png" border="0">
         </script>	    
 	    <!-- END:      Templates -->
+
+        <!-- Q -->	   
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/q.min.js"></script>
+                
+	    <!-- scrollUp -->
+	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/scrollUp/jquery.scrollUp.min.js"></script>
 	    
 	    <!-- jsTimezoneDetect -->
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstz-1.0.4.min.js"></script>

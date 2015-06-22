@@ -59,7 +59,7 @@
 							<li>
 								<a id="linkLanguageCurrent" href="#" class="changeLang" data-name="<?php echo strtolower( $currentTheme ); ?>">
 									<?php $Language = new Language; ?>
-									<?php echo $Language->fetchNativeNameById( $_SESSION['user']['site_language'] ); ?>
+									<?php echo $Language->fetchNativeNameById( $_SESSION['user']['language_id'] ); ?>
 								</a>
 			              	</li>
 		                		<li class="divider"></li>
@@ -77,8 +77,8 @@
       		</ul>
 
 			<!-- START:	Search Form -->
-			<form class="navbar-form navbar-left">
-            	<input id="frmSearch" class="form-control col-lg-8" type="text" style="width: 100%;" placeholder="<?php echo translate('search'); ?>">
+			<form class="navbar-form navbar-left" method="GET" action="<?php PROTOCOL_RELATIVE_URL; ?>/search">
+            	<input id="frmSearch" class="form-control col-lg-8" name="q" type="text" style="width: 100%;" placeholder="<?php echo translate('search'); ?>">
             </form>
 			<!-- END:	Search Form -->
 

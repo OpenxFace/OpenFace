@@ -22,12 +22,15 @@ class StatusController extends Zend_Controller_Action
 	private $_requestObj;
 	private $_requestUri;
 	private $_User_Status;
+	private $_User_Status_Likes;
 	
     public function __call( $method, $args ) {}
 
     public function init()
     {    	    	
-    	$this->_User_Status = new User_Status;    	    	    	
+    	$this->_User_Status        = new User_Status;
+    	$this->_User_Status_Likes  = new User_Status_Likes;
+    	
         $this->_requestObj = $this->getRequest();
         $this->_requestUri = $this->_requestObj->getRequestUri();
         
@@ -75,7 +78,35 @@ class StatusController extends Zend_Controller_Action
 				        $json['status'] = 'ERROR';
 				    }
 				    	
-				    break;			
+				    break;
+
+			    case 'like':
+			        $result	= $this->_User_Status_Likes->insert( $_POST );
+			    
+			        if( (int)$result > 0 ) {
+			            $json['status']   = 'OK';
+			            $json['data']     = array(
+			                'id' => $result
+			            );
+			        } else {
+			            $json['status'] = 'ERROR';
+			        }
+			        	
+			        break;	
+
+			    case 'unlike':
+			        $result	= $this->_User_Status_Likes->deleteBy( 
+			            'uuid', 
+			            $_POST['uuid']
+			        );
+			        
+			        if( (int)$result > 0 ) {
+			            $json['status'] = 'OK';
+			        } else {
+			            $json['status'] = 'ERROR';
+			        }			        
+			        			        
+			        break;			        
 
 				default:
 					$json['status'] = 'ERROR';

@@ -1,0 +1,25 @@
+<div id="currentDate"></div>
+
+<hr>
+
+<div id="calendarRightSidebar"></div>
+
+<script type="text/javascript">
+    $(document).ready(function() {    
+        // datepicker
+    	$('#calendarRightSidebar').datepicker({
+        	'calendarWeeks': true,
+    	    'todayHighlight': true
+    	}).on('show', function( event ) {
+            console.log( event );
+        });
+
+		// set the date & time
+		$('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
+
+	    // update the date & time
+		setInterval( function() {			        
+	        $('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
+		}, 1000);	        
+    });
+</script>

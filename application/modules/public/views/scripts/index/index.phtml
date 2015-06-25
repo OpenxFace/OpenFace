@@ -387,7 +387,7 @@
 
                     <i class="fa fa-clock-o"></i> 
                     <span data-livestamp="{{:date}}">
-                        <img src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/preloader/action.png" border="0">
+                        <i id="notifyHtml-{{:id}}" class="fa fa fa-spinner fa-spin"></i>
                     </span>
                 </div>
 
@@ -402,7 +402,8 @@
 
                     <hr>
 
-                    <p>
+                    <p id="actionBar-{{:id}}">
+                        <span id="userReaction-{{:id}}"></span>
                         {{if has_liked}}
                             <a href="#" class="linkUnlike" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('unlike'); ?></a>
                         {{else}}
@@ -414,26 +415,24 @@
                     
                     <hr>
 
-                    {{if like_data.count > 0 }}
-                        <div class="likeBlock">
-                            {{if like_data.count == 1 && has_liked}}
-                                <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you_like_this'); ?>
-                            {{else like_data.count == 1}}
-                                <i class="fa fa-thumbs-o-up"></i> {{:like.data.users[0]['name']}} <?php echo translate('likes_this'); ?>
-                            {{else has_liked}}
-                                <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you'); ?>, 
-                                {{for like_data.users}}				                    
-				                    {{:name}}, 
-                                {{/for}}
-                            {{else}}
-                                <i class="fa fa-thumbs-o-up"></i>  
-                                {{for like_data.users}}				                    
-				                    {{:name}}, 
-                                {{/for}}
-                                <?php echo translate('you_like_this'); ?>
-                            {{/if}}
-                        </div>
+                    <div id="likeBlock-{{:id}}" class="likeBlock" {{if like_data.count > 0 }} style="display: block;"{{/if}}>
+                    {{if like_data.count == 1 && has_liked}}
+                        <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you_like_this'); ?>
+                    {{else like_data.count == 1}}
+                        <i class="fa fa-thumbs-o-up"></i> {{:like.data.users[0]['name']}} <?php echo translate('likes_this'); ?>
+                     {{else has_liked}}
+                        <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you'); ?>, 
+                        {{for like_data.users}}				                    
+				            {{:name}}, 
+                        {{/for}}
+                     {{else}}
+                        <i class="fa fa-thumbs-o-up"></i>  
+                        {{for like_data.users}}				                    
+				            {{:name}}, 
+                        {{/for}}
+                        <?php echo translate('you_like_this'); ?>
                     {{/if}}
+                    </div>
                         
                     <form id="frmStatusResponse-{{:id}}" name="frmStatusResponse-{{:id}}" role="form">
                         <div class="form-group">
@@ -458,8 +457,8 @@
             </div>
         </script>
         
-        <script id="templateNotifyImage" type="text/x-jsrender">
-        	<img id="notifyImage-{{:id}}" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/preloader/action.png" border="0">
+        <script id="templateNotifyHtml" type="text/x-jsrender">
+            <i id="notifyHtml-{{:id}}" class="fa fa-spinner fa-pulse"></i>
         </script>	    
 	    <!-- END:      Templates -->
 

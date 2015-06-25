@@ -63,6 +63,10 @@ class StatusController extends Zend_Controller_Action
 						$json['data']     = array(
 						    'id' => $result
 						);
+						
+						if( isset( $_POST['uuid'] ) ) {
+						    $json['data']['uuid'] = $_POST['uuid'];
+						}
 					} else {
 						$json['status'] = 'ERROR';
 					}
@@ -96,8 +100,8 @@ class StatusController extends Zend_Controller_Action
 
 			    case 'unlike':
 			        $result	= $this->_User_Status_Likes->deleteBy( 
-			            'uuid', 
-			            $_POST['uuid']
+			            'parent_uuid', 
+			            $_POST['parent_uuid']
 			        );
 			        
 			        if( (int)$result > 0 ) {

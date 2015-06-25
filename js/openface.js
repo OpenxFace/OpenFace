@@ -34,6 +34,7 @@ $(document).ready(function() {
 	$(document).on('click', '.linkLike', function(event) {
 		event.preventDefault();
 		
+		var statusId	= $(this).data('id');
 		var statusUUID	= $(this).data('uuid');
 		var ME			= $(this);
 		
@@ -48,12 +49,12 @@ $(document).ready(function() {
 			}];
 			
 			// template
-			var template	= $.templates('#templateNotifyImage');
+			var template	= $.templates('#templateNotifyHtml');
 			var htmlOutput	= $.trim( template.render( data ) );
 
 			Q.when(
 				// render
-				ME.prepend( htmlOutput )
+				$('#userReaction-' + statusId).append( htmlOutput )
 			).then(function( result ) {
 				// hide the clicked element
 				ME.hide();				
@@ -64,25 +65,34 @@ $(document).ready(function() {
 					url: BASEURL + '/status/ajax',
 					data: { 
 						method: 'like', 				
-						parent_uuid: statusUUID 
+						parent_uuid: statusUUID
 					},
 					complete: function( jqXHR, textStatus ) {
 						// ...
 					},
 					success: function( response, textStatus, jqXHRresponse ) {				
 						if( response.status == 'OK' ) {
-							// visual cue
-							$('#notifyImage-' + randId).remove();
-							ME.show();
+							// show the like block
+							$('#likeBlock-' + statusId).show();
 							
-							// remove the status
-							$('#statusContainer-' + statusId).remove();
+							// visual cue
+							$('#notifyHtml-' + randId).remove();
+							
+							// change the URL's text
+							ME.text( translate('unlike') );
+							
+							// change the URL's class
+							ME.removeClass('linkLike');
+							ME.addClass('linkUnlike');
+							
+							// display the URL
+							ME.show();
 							
 							// unblock the interface
 							$.unblockUI();
 						} else {
 							// visual cue
-							$('#notifyImage-' + randId).remove();
+							$('#notifyHtml-' + randId).remove();
 							ME.show();
 							
 							// display error dialog
@@ -94,7 +104,7 @@ $(document).ready(function() {
 					},
 					error: function( jqXHR, textStatus, errorThrown ) {
 						// visual cue
-						$('#notifyImage-' + randId).remove();
+						$('#notifyHtml-' + randId).remove();
 						ME.show();
 						
 						// display error dialog
@@ -119,12 +129,12 @@ $(document).ready(function() {
 	$(document).on('click', '.linkUnlike', function(event) {
 		event.preventDefault();
 		
+		var statusId	= $(this).data('id');
 		var statusUUID	= $(this).data('uuid');
 		var ME			= $(this);
 		
 		if( typeof statusUUID !== 'undefined' ) {	
-			// START:	Visual Cue
-			
+			// START:	Visual Cue			
 			var randId = rand();
 			
 			// the data
@@ -133,12 +143,12 @@ $(document).ready(function() {
 			}];
 			
 			// template
-			var template	= $.templates('#templateNotifyImage');
+			var template	= $.templates('#templateNotifyHtml');
 			var htmlOutput	= $.trim( template.render( data ) );
 
 			Q.when(
 				// render
-				ME.prepend( htmlOutput )
+				$('#userReaction-' + statusId).append( htmlOutput )
 			).then(function( result ) {
 				// hide the clicked element
 				ME.hide();				
@@ -149,25 +159,34 @@ $(document).ready(function() {
 					url: BASEURL + '/status/ajax',
 					data: { 
 						method: 'unlike', 				
-						parent_uuid: statusUUID 
+						parent_uuid: statusUUID
 					},
 					complete: function( jqXHR, textStatus ) {
 						// ...
 					},
 					success: function( response, textStatus, jqXHRresponse ) {				
 						if( response.status == 'OK' ) {
-							// visual cue
-							$('#notifyImage-' + randId).remove();
-							ME.show();
+							// hide the like block
+							$('#likeBlock-' + statusId).hide();
 							
-							// remove the status
-							$('#statusContainer-' + statusId).remove();
+							// visual cue
+							$('#notifyHtml-' + randId).remove();
+							
+							// change the URL's text
+							ME.text( translate('like') );
+							
+							// change the URL's class
+							ME.removeClass('linkUnlike');
+							ME.addClass('linkLike');
+							
+							// display the URL							
+							ME.show();
 							
 							// unblock the interface
 							$.unblockUI();
 						} else {
 							// visual cue
-							$('#notifyImage-' + randId).remove();
+							$('#notifyHtml-' + randId).remove();
 							ME.show();
 							
 							// display error dialog
@@ -179,7 +198,7 @@ $(document).ready(function() {
 					},
 					error: function( jqXHR, textStatus, errorThrown ) {
 						// visual cue
-						$('#notifyImage-' + randId).remove();
+						$('#notifyHtml-' + randId).remove();
 						ME.show();
 						
 						// display error dialog
@@ -264,6 +283,7 @@ $(document).ready(function() {
 		var formEl	= $('#frmNewStatus');
 		var status	= $.trim( formEl.val() );
 		var ME		= $(this);
+		var myUUID	= uuid();
 		
 		// disable the button
 		ME.prop('disabled', true);
@@ -281,7 +301,8 @@ $(document).ready(function() {
 				url: BASEURL + '/status/ajax',
 				data: { 
 					method: 'add', 				
-					status: status 
+					status: status,
+					uuid: myUUID
 				},
 				complete: function( jqXHR, textStatus ) {
 					// ...
@@ -310,7 +331,9 @@ $(document).ready(function() {
 							'id': response.data.id,
 							'date': time(),
 							'status': status,
-							'owner': owner 
+							'owner': owner,
+							'like_data': {},
+							'uuid': myUUID
 						}];
 						
 						// template

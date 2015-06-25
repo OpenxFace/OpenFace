@@ -1,8 +1,8 @@
 # OpenFace
-Open Source Social Networking
+Decentralized Social Networking written in PHP
 
 # License 
 GNU Affero General Public License v3
 
 # Demo
-http://openface.org
+http://demo.openface.org

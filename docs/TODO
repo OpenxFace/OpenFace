@@ -1,4 +1,26 @@
 REQUIRED
 ==============
 
-1. News Feeds
+1. News Feeds [DONE]
+2. Comments
+3. Change Password
+4. Infinite Scroll
+
+
+NICE TO HAVE
+==============
+1. Like [DONE]
+2. Unlike [DONE]
+3. User Profiles
+4. Image Upload
+5. Video Upload
+6. Video Conversion (FFmpeg)
+7. Auto-Embed of URLs such as YouTube, Dailymotion, SoundCloud et al
+8. Fluid or Fixed Layout
+9. Avatar Change
+10. User Follow 
+11. User Unfollow
+12. User Block
+13. Chat
+14. XMPP Integration
+15. Account Deletion (Self)

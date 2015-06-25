@@ -32,12 +32,12 @@ class User extends Db
 		$this->_Site_Permission   = new Site_Permission;		
 	}
 	
-	/*
+	/**
 	 * Fetch DB Data for DataTables
-	*
-	* @link	http://datatables.net/release-datatables/examples/data_sources/server_side.html
-	* @param	array	$params
-	* @return	array
+	 *
+	 * @link	http://datatables.net/release-datatables/examples/data_sources/server_side.html
+	 * @param	array	$params
+	 * @return	array
 	*/
 	public function fetchDataForDataTables( $params )
 	{
@@ -47,12 +47,12 @@ class User extends Db
 	
 		extract( $params );
 	
-		/* Array of database columns which should be read and sent back to DataTables. Use a space where
+		/**
+		 * Array of database columns which should be read and sent back to DataTables. Use a space where
 		 * you want to insert a non-database field (for example a counter or static image)
 		*/
 		$aColumns = array(	
 		    'email',
-            'username',
             'site_language',
             'site_status',
             'date_created',
@@ -305,7 +305,7 @@ class User extends Db
 		return mysqli_affected_rows( $this->db );		
 	}
 	
-	public function fetchAllUsers( $columns = '*', $offset = 0, $limit = 20, $orderBy = 'username', $sortOrder = 'ASC' )
+	public function fetchAllUsers( $columns = '*', $offset = 0, $limit = 20, $orderBy = 'last_name', $sortOrder = 'ASC' )
 	{
 		$data		= array();		
 		$columns	= ( is_array( $columns ) ) ? implode(',', $columns ) : '*';
@@ -409,11 +409,7 @@ class User extends Db
 		
 		if( $this->emailExists( $data['email'] ) ) {
 			return 'EMAIL_EXISTS';			
-		}
-		
-		if( $this->usernameExists( $data['username'] ) ) {
-			return 'USERNAME_EXISTS';
-		}		
+		}	
 		
 		// START:	set user status
 		if( (int)SITE_MODERATE_NEW_USERS == 1 ) {
@@ -478,7 +474,7 @@ class User extends Db
 		return 'OK';		
 	}
 	
-	public function resetOwnPassword( $username, $recaptchaChallenge, $recaptchaResponse )
+	public function resetOwnPassword( $email, $recaptchaChallenge, $recaptchaResponse )
 	{
 		require_once('recaptcha-php/recaptchalib.php');
 		
@@ -493,8 +489,8 @@ class User extends Db
 			return $response->error;
 		}
 				
-		if( $this->usernameExists( $username ) ) {
-			$this->sendPasswordResetEmail( $username );
+		if( $this->emailExists( $email ) ) {
+			$this->sendPasswordResetEmail( $email );
 			return 'OK';	
 		}	
 
@@ -516,7 +512,7 @@ class User extends Db
 		$mail->WordWrap = 50;
 		$mail->isHTML( true );
 	
-		$mail->Subject	= '['.SITE_NAME.'] Your New Account ('.$user['username'].')';
+		$mail->Subject	= '['.SITE_NAME.'] Your New Account ('.$user['first_name'].' '.$user['last_name'].')';
 	
 		$body			= 'Hello '.$user['first_name'].' '.$user['last_name'].', ';
 		$body    	   .= '<br><br>Please confirm your new account by following this URL:  ';
@@ -537,12 +533,12 @@ class User extends Db
 		return true;
 	}
 		
-	private function sendPasswordResetEmail( $username )
+	private function sendPasswordResetEmail( $email )
 	{
 		require_once('PHPMailer/PHPMailerAutoload.php');
 		
 		$mail = new PHPMailer;
-		$user = $this->fetchUserDetailsByUsername( $username );
+		$user = $this->fetchUserDetailsBy( 'email', $email );
 		
 		$code = randomString( 60 );
 		$this->addPasswordResetCode( $user['id'], $code );
@@ -723,20 +719,18 @@ class User extends Db
     /**
      * User Login
      *
-     * @param   string  $username
+     * @param   string  $email
      * @param	string	$password
      * @return  string
     */
-    public function login( $username, $password )
+    public function login( $email, $password )
     {
-    	if( !$this->usernameExists( $username ) ) {
-    		return 'LOGIN_USERNAME_DOES_NOT_EXIST';	
+    	if( !$this->emailExists( $email ) ) {
+    		return 'ACCOUNT_DOES_NOT_EXIST';	
     	} 
     		    	
         $sql    = "SELECT * FROM `".DB_TABLE_PREFIX."user` ";
-        $sql   .= "WHERE `username` = '".mysqli_real_escape_string( $this->db, $username )."' ";
-        $sql   .= "AND `password` = '".mysqli_real_escape_string( $this->db, $password )."' ";
-        $sql   .= "OR `email` = '".mysqli_real_escape_string( $this->db, $username )."' ";
+        $sql   .= "WHERE `email` = '".mysqli_real_escape_string( $this->db, $email )."' ";
         $sql   .= "AND `password` = '".mysqli_real_escape_string( $this->db, $password )."' ";
         $sql   .= "LIMIT 1 ";
 
@@ -780,7 +774,7 @@ class User extends Db
             } elseif ( !urlExists(  $_SESSION['user']['avatar_url'] ) ) {
             	 $_SESSION['user']['avatar_url'] = SITE_DEFAULT_AVATAR_URL;
             }
-            $_SESSION['user']['profile_url'] 	= BASEURL.'/'.$_SESSION['user']['username'];
+            $_SESSION['user']['profile_url'] 	= BASEURL.'/'.$_SESSION['user']['url_slug'];
             $_SESSION['user']['full_name'] 		= $_SESSION['user']['first_name'].' '.$_SESSION['user']['last_name'];
             
             // remove the user's password from the session
@@ -863,16 +857,18 @@ class User extends Db
     } 
     
     /**
-     * Fetch User Data via Username
+     * Fetch User Data via 
+     * Custom Criteria
      *
-     * @param   string  $username
+     * @param   string  $key
+     * @param	string	$value
      * @return  array
      */
-    public function fetchUserDetailsByUsername( $username )
+    public function fetchUserDetailsBy( $key, $value )
     {    		
     	$sql    = "SELECT * FROM `".DB_TABLE_PREFIX."user` ";
-    	$sql   .= "WHERE `username` = '".mysqli_real_escape_string( $this->db, $username )."' ";
-    	$sql   .= "OR `email` = '".mysqli_real_escape_string( $this->db, $username )."' ";
+    	$sql   .= "WHERE `".mysqli_real_escape_string( $this->db, $key )." ";
+    	$sql   .= " = '".mysqli_real_escape_string( $this->db, $value )."' ";
     	$sql   .= "LIMIT 1";
     
     	$res    = mysqli_query( $this->db, $sql ) OR die( mysqli_error( $this->db ).'<br>'.$sql );
@@ -894,14 +890,15 @@ class User extends Db
     }
 
     /**
-     * Fetch Username via User ID
+     * Fetch a User's Name 
+     * via User ID
      *
      * @param   string  $userId
      * @return  string
      */
     public function fetchUsernameById( $userId )
     {
-    	$sql    = "SELECT `username` FROM `".DB_TABLE_PREFIX."user` ";
+    	$sql    = "SELECT `first_name`, `last_name`  FROM `".DB_TABLE_PREFIX."user` ";
     	$sql   .= "WHERE `id` = '".mysqli_real_escape_string( $this->db, $userId )."' ";
     	$sql   .= "LIMIT 1 ";
     
@@ -909,7 +906,7 @@ class User extends Db
     
     	if( mysqli_num_rows( $res ) > 0 ) {
     		$data = mysqli_fetch_assoc( $res );
-    		return $data['username'];
+    		return $data['first_name'].' '.$data['last_name'];
     	}
     }
 
@@ -934,16 +931,18 @@ class User extends Db
     }    
 
     /**
-     * Determine if a username exists or not
+     * Determine if a specific
+     * key & value exists or not
      *
-     * @param   string	$username
+     * @param   string	$key
+     * @param	string	$value
      * @return  boolean	
     */
-    public function usernameExists( $username )
+    public function valueExists( $key, $value )
     {
         $sql    = "SELECT * FROM `".DB_TABLE_PREFIX."user` ";
-        $sql   .= "WHERE `username` = '".mysqli_real_escape_string( $this->db, $username )."' ";
-        $sql   .= "OR `email` = '".mysqli_real_escape_string( $this->db, $username )."' ";
+        $sql   .= "WHERE `".mysqli_real_escape_string( $this->db, $key )."` ";
+        $sql   .= " = '".mysqli_real_escape_string( $this->db, $value )."' ";
         $sql   .= "LIMIT 1 ";
 
         $res    = mysqli_query( $this->db, $sql ) OR die( mysqli_error( $this->db ).'<br>'.$sql );
@@ -1010,7 +1009,7 @@ class User extends Db
             	 $_SESSION['user']['avatar_url'] = SITE_DEFAULT_AVATAR_URL;
             }            
                         
-            $_SESSION['user']['profile_url']	= BASEURL.'/'.$_SESSION['user']['username'];
+            $_SESSION['user']['profile_url']	= BASEURL.'/'.$_SESSION['user']['url_slug'];
             $_SESSION['user']['full_name'] 		= $_SESSION['user']['first_name'].' '.$_SESSION['user']['last_name'];
             
             // remove the user's password from the session

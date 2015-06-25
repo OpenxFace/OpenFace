@@ -59,7 +59,9 @@ class User_Status extends Db
 	    }
 	    
 	    // UUID
-	    $data['uuid'] = uuid();
+	    if( !strlen( trim( @$data['uuid'] ) ) ) {
+	        $data['uuid'] = uuid();	        
+	    }
 	    
 	    // User UUID
 	    $data['user_uuid'] = $_SESSION['user']['uuid'];

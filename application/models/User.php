@@ -848,7 +848,12 @@ class User extends Db
     			$data['avatar_url'] = SITE_DEFAULT_AVATAR_URL;
     		} elseif ( !urlExists( $data['avatar_url'] ) ) {
     			$data['avatar_url'] = SITE_DEFAULT_AVATAR_URL;
-    		}    		
+    		}  
+    		
+    		$User_Preferences = new User_Preferences();
+    		$data['user_prefs'] = $User_Preferences->getGroupedByUserId( 
+                $userId
+    		);    		
     		
     		return $data;
     	} else {
@@ -882,7 +887,12 @@ class User extends Db
     		} elseif ( !urlExists( $data['avatar_url'] ) ) {
     			$data['avatar_url'] = SITE_DEFAULT_AVATAR_URL;
     		}     		
-    		    		
+    		
+    		$User_Preferences = new User_Preferences();
+    		$data['user_prefs'] = $User_Preferences->getGroupedByUserId(
+    		    $userId
+    		);
+    		
     		return $data;
     	} else {
     		return array();	
@@ -1046,6 +1056,74 @@ class User extends Db
 			}
 		}   	
     }
+    
+    /**
+     * Update Own Profile
+     * 
+     * @param   array   $data
+     * @return  mixed   boolean or int
+    */
+    public function updateSelf( $data = array() )
+    {
+        $affectedRows   = 0; 
+        $userPrefs      = array();  
+        
+        if( !empty( $data ) ) {
+            // START:   user preferences
+            if( isset( $data['user_prefs'] ) ) {
+                $userPrefs = $data['user_prefs'];
+                
+                if( !empty( $userPrefs ) ) {
+                    $User_Prefs = new User_Preferences();
+                    $affectedRows += $User_Prefs->updateSelf( $userPrefs );
+                }                
+            }            
+            // END:     user preferences
+            
+            // User ID
+            $id = (int)$_SESSION['user']['id'];
+            
+            $columnNames = fetchColumnNames( $this->tableName );
+            
+            // START:	filter input
+            foreach( $data AS $key => $value ) {
+                if( !in_array( $key, $columnNames ) ) {
+                    unset( $data[$key] );
+                }
+            }
+            // END:		filter input
+    
+            // check the data array again after filtering
+            if( empty( $data ) ) {
+                return $affectedRows;
+            }
+    
+            $count	= count( $data );
+    
+            $sql    = "UPDATE `".DB_TABLE_PREFIX.".$this->tableName.` ";
+            $sql   .= "SET ";
+            $i		= 0;
+            
+            foreach( $data AS $key => $value ) {
+                $i++;
+                if( !is_numeric( $key ) ) {
+                    $sql .= "`".mysqli_real_escape_string( $this->db, $key )."` = '".mysqli_real_escape_string( $this->db, $value )."' ";
+                    if( $i < $count ) {
+                        $sql .= ", ";
+                    }
+                }
+            }
+             
+            $sql .= "WHERE `id` = ".mysqli_real_escape_string( $this->db, (int)$id )." ";
+            $sql .= "LIMIT 1 ";
+    
+            $res = mysqli_query( $this->db, $sql ) OR die( mysqli_error( $this->db ).'<br>'.$sql );
+             
+            $affectedRows += mysqli_affected_rows( $this->db );
+        }
+
+        return (int)$affectedRows;
+    }     
     
     public function updateUserById($id, $data)
     {

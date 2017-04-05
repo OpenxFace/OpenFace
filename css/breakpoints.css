@@ -1,0 +1,90 @@
+/*==========  Mobile First Method  ==========*/
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+    
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+
+}
+
+
+/*==========  Non-Mobile First Method  ==========*/
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 1726px) {
+
+}
+
+@media only screen and (min-width : 1727px) {
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+
+}
+
+@media only screen and (max-width : 1184px) {
+
+}
+
+@media only screen and (min-width : 1185px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+
+}
+
+@media only screen and (max-width : 680px) {
+	.comment-thumbnail-column {
+		display: none;
+	}
+	
+	.comment-panel > .comment-panel-heading::after, .comment-panel > .comment-panel-heading::before {
+		border-style: none;
+	}
+}
+
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 499px) {
+
+}
+
+@media only screen and (max-width : 480px) {
+
+}
+
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 365px) {
+
+}
+
+@media only screen and (max-width : 320px) {
+   
+}

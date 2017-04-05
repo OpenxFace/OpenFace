@@ -659,7 +659,7 @@ function getCurrentDateAndTime()
     
     switch( timezone ) {
     	case 'Europe/Berlin':
-    		timezone = 'Köln';
+    		timezone = translate('europe');
     		
     		break;
     }

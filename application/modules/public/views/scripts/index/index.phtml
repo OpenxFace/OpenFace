@@ -71,12 +71,16 @@
 			var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
 			var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
 			var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
-			var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['username']; ?>';
+			var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>';
 			var SITE_NAME				= '<?php echo SITE_NAME; ?>';		
 			var CURRENT_USER			= new Array();
 			var UUID					= uuid();		
 			var USE_BLOCKUI				= <?php echo (int)SITE_USE_BLOCKUI; ?>;
-			var IS_MOBILE				= <?php echo (int)IS_MOBILE; ?>;	
+			var IS_MOBILE				= <?php echo (int)IS_MOBILE; ?>;
+			var DEFAULT_AVATAR			= '<?php echo SITE_DEFAULT_AVATAR_URL; ?>';	
+			var TOTAL_MEDIA_COUNT		= <?php echo (int)$this->countTotal; ?>;
+			var DISPLAYED_MEDIA_COUNT	= <?php echo (int)$this->countFetched; ?>;
+			var AJAX_REQ				= false;
 					
 			<?php foreach( $_SESSION['user'] AS $key => $value ): ?>
 				<?php if( !is_array( $value ) ): ?>
@@ -84,8 +88,6 @@
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</script>     
-	
-	    <meta name="robots" content="noimageindex" />
 	    
 	    <!-- START:    Favicon -->
 	    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon.ico" /><base>
@@ -122,9 +124,6 @@
 		
 		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/custom.css" type="text/css" />				
 		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/font-awesome.min.css">
-		
-		<!-- jQuery UI -->
-		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/jquery-ui/themes/base/jquery-ui.css">
 			    
 	    <link rel="stylesheet" id="bootstrapCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/bootstrap.min.css">
         <link id="themeCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/bootstrap.min.css" rel="stylesheet">									     
@@ -142,8 +141,17 @@
 	    <!-- Custom CSS -->	
 	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/newsfeed.css" type="text/css" />	
 	    
+	    <!-- Indicator -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/indicator.css" type="text/css" />    
+	    
 	    <!-- scrollUp -->
 	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/scrollUp.css" />
+	    
+	    <!-- Responsive Calendar -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/responsive-calendar/responsive-calendar.css" type="text/css" />
+	    
+	    <!-- Breakpoints -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/breakpoints.css" type="text/css">
 	    
 	    <?php
 	        switch( $currentTheme ) {
@@ -160,7 +168,20 @@
 	    ?>	
 	    
         <!-- Bootstrap Datepicker -->
-	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker3.min.css" type="text/css">						     
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker3.min.css" type="text/css">
+	    
+        <!-- Comments -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/comment.css" type="text/css">	    
+	    
+        <?php 
+			$layoutType = '';
+
+            if( @$_SESSION['user']['user_prefs']['site_layout_type'] == 'fluid' ) {
+                $layoutType = '-fluid';
+            } elseif ( SITE_DEFAULT_LAYOUT_TYPE == 'fluid' ) {
+                $layoutType = '-fluid';
+            }
+        ?>
 	</head>
 
 	<body>
@@ -189,9 +210,16 @@
 	       }(document, 'script', 'facebook-jssdk'));
 	    </script>		
 		
-        <?php echo $this->partial('partials/header/navbar.phtml'); ?>
+        <?php 
+			echo $this->partial(
+				'partials/header/navbar.phtml', 
+				array(
+    				'type' => $layoutType
+				)
+			); 
+		?>
 		
-	    <div class="container-fluid">
+	    <div class="container<?php echo $layoutType; ?>">
             <div class="row">
                 <div class="col-lg-2" style="padding-bottom: 10px;">
                     <div style="position: relative;">
@@ -250,7 +278,21 @@
                         </form>
                     </div> 
                     
-                    <div id="statusList"></div>                                 
+                    <!-- START:     No Messages Notice -->
+                    <div id="noticeNoMessages" class="text-center">
+                        <?php echo translate('no_messages'); ?>
+                    </div>                    
+                    <!-- END:       No Messages Notice -->
+                    
+                    <div id="statusList"></div> 
+                    
+					<div id="indicator-loading" class="indicator-custom text-center">
+                    	Loading <i class="fa fa-spinner fa-pulse"></i>
+                	</div>
+                
+					<div id="indicator-finished" class="indicator-custom text-center">
+						<i class="fa fa-check"></i> All items loaded                
+					</div>                                                                                   
                 </div> 
                 
                 <!-- START:     Sidebar (Right) -->
@@ -261,7 +303,7 @@
                                             
             </div>
         </div>
-	    
+   	    
 		<script type="text/javascript">
 		    $(document).ready(function() {
 
@@ -309,13 +351,25 @@
 					$('#statusList').html( htmlOutput );
 					                
                 <?php
-                    }
-                ?> 										
+                    } else {
+                ?>
+                    $('#noticeNoMessages').show();
+                <?php 
+                    }                       
+                ?> 
+
+                // START:   Auto-link URLs
+                $('.statusText').linky({
+                    mentions: true,
+                    hashtags: true,
+                    urls: true,
+                    linkTo: 'local'
+                });                
+                // END:     Auto-link URLs									
 						    
 				$('body').imagesLoaded( function() {
 					$.unblockUI();
-				});
-																				    
+				});																				    
 		    });	
 		    	    				    
 			// Google+
@@ -342,9 +396,19 @@
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jsrender/jsrender.min.js"></script>		
 		
 		<!-- OpenFace -->
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/create.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/delete.js"></script>
+        
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/create.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/delete.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/like.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/unlike.js"></script>		
 		
+		<!-- moment.js -->
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
+        
+        <!-- Livestamp.js -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
 		
 	    <?php
@@ -362,104 +426,8 @@
 	    ?>	
 	    
 	    <!-- START:    Templates -->
-	    <script id="templateStatus" type="text/x-jsrender">
-            <div id="statusContainer-{{:id}}" class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="dropdown pull-right">
-                        <a id="statusAction-{{:id}}" data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="fa fa-angle-down"></i>
-                        </a> 
-
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="statusAction-{{:id}}">
-                            <li role="presentation">
-                                <a class="actionStatus" data-action="delete" data-id="{{:id}}" role="menuitem" tabindex="-1" href="#"><?php echo translate('delete'); ?></a>
-                            </li>
-
-                            <li role="presentation" class="divider"></li>
-
-                            <li role="presentation">
-                                <a class="actionStatus" data-action="edit" data-id="{{:id}}" role="menuitem" tabindex="-1" href="#"><?php echo translate('edit'); ?></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <h4>{{:owner.first_name}} {{:owner.last_name}}</h4>
-
-                    <i class="fa fa-clock-o"></i> 
-                    <span data-livestamp="{{:date}}">
-                        <i id="notifyHtml-{{:id}}" class="fa fa fa-spinner fa-spin"></i>
-                    </span>
-                </div>
-
-                <div class="panel-body">
-                    <img class="avatar-md img-circle pull-right" src="{{:owner.avatar_url}}"> 
-
-                    <div id="statusText-{{:id}}">
-                        {{:status}}
-                    </div>
-
-                    <div class="clearfix"></div>
-
-                    <hr>
-
-                    <p id="actionBar-{{:id}}">
-                        <span id="userReaction-{{:id}}"></span>
-                        {{if has_liked}}
-                            <a href="#" class="linkUnlike" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('unlike'); ?></a>
-                        {{else}}
-                            <a href="#" class="linkLike" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('like'); ?></a>
-                        {{/if}}                        
-                        &bull; 
-                        <a href="#" class="linkComment" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('comment'); ?></a>
-                    </p>
-                    
-                    <hr>
-
-                    <div id="likeBlock-{{:id}}" class="likeBlock" {{if like_data.count > 0 }} style="display: block;"{{/if}}>
-                    {{if like_data.count == 1 && has_liked}}
-                        <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you_like_this'); ?>
-                    {{else like_data.count == 1}}
-                        <i class="fa fa-thumbs-o-up"></i> {{:like.data.users[0]['name']}} <?php echo translate('likes_this'); ?>
-                     {{else has_liked}}
-                        <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you'); ?>, 
-                        {{for like_data.users}}				                    
-				            {{:name}}, 
-                        {{/for}}
-                     {{else}}
-                        <i class="fa fa-thumbs-o-up"></i>  
-                        {{for like_data.users}}				                    
-				            {{:name}}, 
-                        {{/for}}
-                        <?php echo translate('you_like_this'); ?>
-                    {{/if}}
-                    </div>
-                        
-                    <form id="frmStatusResponse-{{:id}}" name="frmStatusResponse-{{:id}}" role="form">
-                        <div class="form-group">
-                            <input id="inputStatusResponse-{{:id}}" name="inputStatusResponse-{{:id}}" class="form-control" type="text" placeholder="<?php echo translate('prompt_write_comment'); ?>...">
-                            <p class="help-block"><?php echo translate('status_reply_help'); ?></p>
-                        </div>
-
-                        <!-- div class="input-group">
-                            <input id="inputStatusResponse-{{:id}}" class="form-control" type="text" placeholder="<?php echo translate('prompt_write_comment'); ?>...">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default">
-                                    <i class="fa fa-camera"></i>
-                                </button>
-
-                                <button class="btn btn-default">
-                                    <i class="fa fa-smile-o"></i>
-                                </button>
-                            </div>
-                        </div -->
-                    </form>                                    
-                </div>
-            </div>
-        </script>
-        
-        <script id="templateNotifyHtml" type="text/x-jsrender">
-            <i id="notifyHtml-{{:id}}" class="fa fa-spinner fa-pulse"></i>
-        </script>	    
+        <?php echo $this->partial('partials/newsfeed/newsfeed.phtml'); ?>  
+        <?php echo $this->partial('partials/newsfeed/comment.phtml'); ?>  
 	    <!-- END:      Templates -->
 
         <!-- Q -->	   
@@ -472,6 +440,25 @@
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstz-1.0.4.min.js"></script>
 	
         <!-- Bootstrap Datepicker -->	   
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>	    			    
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+                
+        <!-- jQuery AutoLink -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-autolink/jquery.autolink.js"></script>	        			    
+	
+		<!-- jQuery Scroll Stop -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.scrollstop.js"></script>	
+
+		<!-- Newsfeed:  Infinite Scroll -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/newsfeed/scroll.js"></script>	
+	
+		<!-- Responsive Calendar -->	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/responsive-calendar/responsive-calendar.min.js"></script>
+			
+		<!-- JsViews -->	    
+		<script type="text/javascript">
+            $.views.converters('nltobr', function(val) {
+                return val.replace(/\\n/g, '<br />')
+            });  
+		</script> 	
 	</body>	
 </html>

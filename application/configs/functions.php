@@ -3032,3 +3032,48 @@ function forceError( $errorMessage = null, $httpErrorCode = '404' )
     $errorMessage = ( !strlen( trim( $errorMessage ) ) ) ? translate('error') : $errorMessage;
     throw new Zend_Controller_Action_Exception( $errorMessage, (int)$httpErrorCode );
 }
+
+function embed_instagram( $string )
+{
+    if( contains_instagram_url( $string ) ) {
+        $url = extract_instagram_url( $string );
+        
+        if( !empty( $url ) ) {
+            $json = file_get_contents( 'https://api.instagram.com/oembed/?url='.$url['0'] );  
+            $json = json_decode( $json, true );
+            
+            if( isset( $json['html'] ) ) {
+                $string = str_replace( $url[0], $json['html'], $string );
+            }
+        }       
+    }
+    
+    return $string;
+}
+
+function contains_instagram_url( $string )
+{
+    $pattern = '#(https?://)?(www\.)?instagr(\.am|am\.com)/p/.*#i';
+    if( preg_match( $pattern, $string, $matches ) ) {
+        return true;
+    }
+}
+
+function extract_instagram_url( $string )
+{
+    $matches = array();
+    $pattern = '#(https?://)?(www\.)?instagr(\.am|am\.com)/p/.*#i';
+    
+    preg_match( $pattern, $string, $matches );
+    
+    if( !empty( $matches ) ) {
+        return array_values( array_filter( $matches ) );
+    }
+    
+    return $matches;    
+}
+
+function user()
+{
+    return @$_SESSION['user'];
+}

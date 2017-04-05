@@ -79,8 +79,6 @@
 				CURRENT_USER['<?php echo $key; ?>'] = '<?php echo $value; ?>';
 			<?php endforeach; ?>
 		</script>     
-	
-	    <meta name="robots" content="noimageindex" />
 	    
 	    <!-- START:    Favicon -->
 	    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon.ico" /><base>
@@ -156,17 +154,33 @@
 		
         <?php echo $this->partial('partials/header/navbar.phtml'); ?>
 		
-	    <div class="container-fluid">	
-	      <!-- Login
-	      ================================================== -->
-	      <div>
-	        <div class="row">
-	          <div class="col-lg-12">
-	            <div class="page-header">
-	              <h1 id="type"><?php echo translate('login'); ?></h1>
-	            </div>
-	          </div>
-	        </div>
+	    <div class="container-fluid" style="margin-top: 50px;">
+	    
+	    	<!-- START:   Demo User Credentials -->
+            <div class="alert alert-info">
+            	<table style="width: 100%;">
+            		<tr>
+            			<td style="width: 20%">
+            			<?php echo translate('username'); ?>
+            			</td>
+
+            			<td>
+            			demo@openface.org
+            			</td>
+            		</tr>
+
+            		<tr>
+            			<td style="width: 20%">
+            			<?php echo translate('password'); ?>
+            			</td>
+
+            			<td>
+            			password
+            			</td>
+            		</tr>
+            	</table>
+            </div>	    	
+	    	<!-- END:     Demo User Credentials -->	
 	
 	        <!-- Headings -->
 	

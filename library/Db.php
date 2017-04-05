@@ -56,7 +56,7 @@ class Db
 	
 	    $res = mysqli_query( $this->db, $sql ) OR die( '<pre>SQL Error:  '.mysqli_error( $this->db ).'<br>SQL:  '.$sql.'<br>File:  '.__FILE__.'<br>Line:  '.__LINE__ );
 	
-	    return mysqli_fetch_assoc( $this->db, $res );
+	    return mysqli_fetch_assoc( $res );
 	}
 
 	/**

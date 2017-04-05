@@ -3,3 +3,11 @@
 	left: 180px; 
 	top: 0;
 }
+
+#noticeNoMessages {
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+	opacity: 0.4; 
+	display: none;
+}

@@ -2,17 +2,50 @@
 
 <hr>
 
-<div id="calendarRightSidebar"></div>
+<!-- Responsive calendar - START -->
+<div id="calendarRightSidebar" class="responsive-calendar">
+	<div class="controls">
+		<a class="pull-left" data-go="prev"><div class=""><i class="fa fa-chevron-left"></i></div></a>
+		<h4><span data-head-year></span> <span data-head-month></span></h4>
+		<a class="pull-right" data-go="next"><div class=""><i class="fa fa-chevron-right"></i></div></a>
+	</div>
+	
+	<hr/>
+  
+	<div class="day-headers">
+    	<div class="day header">M</div>
+    	<div class="day header">T</div>
+    	<div class="day header">W</div>
+    	<div class="day header">T</div>
+    	<div class="day header">F</div>
+    	<div class="day header">S</div>
+    	<div class="day header">S</div>
+	</div>
+	
+	<div class="days" data-group="days">
+    <!-- the place where days will be generated -->
+	</div>
+</div>
+<!-- Responsive calendar - END -->
 
 <script type="text/javascript">
     $(document).ready(function() {    
+    	$('.responsive-calendar').responsiveCalendar({
+    		monthChangeAnimation: false,
+    		onDayClick: function( event ) { 
+    			setTimeout( function() { 
+            		$.unblockUI(); 
+        		}, 500);        		
+        	}
+    	});
+    	
         // datepicker
-    	$('#calendarRightSidebar').datepicker({
+    	/*$('#calendarRightSidebar').datepicker({
         	'calendarWeeks': true,
     	    'todayHighlight': true
     	}).on('show', function( event ) {
             console.log( event );
-        });
+        }); */
 
 		// set the date & time
 		$('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );

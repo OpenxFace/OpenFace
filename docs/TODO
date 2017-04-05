@@ -2,10 +2,10 @@ REQUIRED
 ==============
 
 1. News Feeds [DONE]
-2. Comments
-3. Change Password
-4. Infinite Scroll
-
+2. Comments [DONE]
+3. Delete Comments [DONE]
+4. Infinite Scroll [DONE]
+5. Change Password
 
 NICE TO HAVE
 ==============
@@ -15,7 +15,7 @@ NICE TO HAVE
 4. Image Upload
 5. Video Upload
 6. Video Conversion (FFmpeg)
-7. Auto-Embed of URLs such as YouTube, Dailymotion, SoundCloud et al
+7. Auto-Embed of URLs such as YouTube, Dailymotion, SoundCloud et al [DONE]
 8. Fluid or Fixed Layout
 9. Avatar Change
 10. User Follow 
@@ -24,3 +24,17 @@ NICE TO HAVE
 13. Chat
 14. XMPP Integration
 15. Account Deletion (Self)
+16. User Igonre
+17. Report Inappropriate Content
+18. Instagram Auto-Embed
+19. User Profiles
+20. Follow
+21. Unfollow
+22. Block
+23. Search
+24. User Registration
+25. Private Messages
+26. Polls
+27. Praise
+28. Groups
+29. External Networks

@@ -1,0 +1,118 @@
+	    <script id="templateStatus" type="text/x-jsrender">
+            <div id="statusContainer-{{:id}}" class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="dropdown pull-right">
+                        {{if current_user.uuid == owner.uuid}}
+                        <a id="statusAction-{{:id}}" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
+                            <i class="fa fa-angle-down"></i>
+                        </a> 
+
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="statusAction-{{:id}}">
+                            <li role="presentation">
+                                <a class="actionStatus" data-action="delete" data-id="{{:id}}" role="menuitem" tabindex="-1" href="javascript:void(0);"><?php echo translate('delete'); ?></a>
+                            </li>
+
+                            <!--li role="presentation" class="divider"></li>
+
+                            <li role="presentation">
+                                <a class="actionStatus" data-action="edit" data-id="{{:id}}" role="menuitem" tabindex="-1" href="javascript:void(0);"><?php echo translate('edit'); ?></a>
+                            </li-->
+                        </ul>
+                        {{/if}}
+                    </div>
+
+                    <div class="row">
+                        <div class="container-fluid">
+                            <div class="pull-left" style="margin-right: 10px;">
+                                {{if owner.avatar_url}}
+                                    <img class="avatar-sm img-responsive" src="{{:owner.avatar_url}}">
+                                {{else}}
+                                    <img class="avatar-sm img-responsive" src="<?php echo SITE_DEFAULT_AVATAR_URL; ?>">
+                                {{/if}}
+                            </div>
+
+                            <div class="pull-left" style="vertical-align: middle;">
+                                {{:owner.first_name}} {{:owner.last_name}}
+                                <br>
+                                <i style="font-size: small;" class="fa fa-clock-o"></i> 
+                                <span style="font-size: small;" data-livestamp="{{:date}}">
+                                    <i id="notifyHtml-{{:id}}" class="fa fa fa-spinner fa-spin"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div id="statusText-{{:id}}" class="statusText">
+                        {{nltobr:status}}
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <hr>
+
+                    <p id="actionBar-{{:id}}">
+                        <span id="likeBlock-{{:id}}" class="likeBlock" {{if like_data.count > 0 }} style="display: inline;"{{/if}}>
+                        {{if like_data.count == 1 && has_liked}}
+                            <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you_like_this'); ?> &bull; 
+                        {{else like_data.count == 1}}
+                            <i class="fa fa-thumbs-o-up"></i> {{:like_data.users[0]['name']}} <?php echo translate('likes_this'); ?> &bull; 
+                        {{else has_liked}}
+                            <i class="fa fa-thumbs-o-up"></i> <?php echo translate('you'); ?>, 
+                            {{for like_data.users}}				                    
+				                {{:name}}, 
+                            {{/for}} &bull; 
+                        {{else}}
+                            <i class="fa fa-thumbs-o-up"></i>  
+                        {{for like_data.users}}				                    
+				            {{:name}}, 
+                        {{/for}}
+                        <?php echo translate('you_like_this'); ?> &bull; 
+                        {{/if}}
+                        </span>
+
+                        <span id="userReaction-{{:id}}"></span>
+                        {{if has_liked}}
+                            <a href="javascript:void(0);" class="linkUnlike" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('unlike'); ?></a>
+                        {{else}}
+                            <a href="javascript:void(0);" class="linkLike" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('like'); ?></a>
+                        {{/if}}                        
+                        &bull; 
+                        <a href="javascript:void(0);" class="linkComment" data-id="{{:id}}" data-uuid="{{:uuid}}"><?php echo translate('comment'); ?></a>
+                    </p>
+                    
+                    <hr>
+
+                    {{for comments tmpl='#templateComment'}}{{/for}}
+                        
+                    <form id="frmStatusResponse-{{:id}}" class="statusResponseForm" name="frmStatusResponse-{{:id}}" role="form">
+                        <div class="form-group">
+                            <input id="inputStatusResponse-{{:id}}" name="inputStatusResponse-{{:id}}" class="statusResponse form-control" data-id="{{:id}}" data-parent="{{:uuid}}" data-replyto="{{:uuid}}" type="text" placeholder="<?php echo translate('prompt_write_comment'); ?>...">
+                            <p class="help-block"><?php echo translate('status_reply_help'); ?></p>
+                        </div>
+
+                        <!-- div class="input-group">
+                            <input id="inputStatusResponse-{{:id}}" class="form-control" type="text" placeholder="<?php echo translate('prompt_write_comment'); ?>...">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default">
+                                    <i class="fa fa-camera"></i>
+                                </button>
+
+                                <button class="btn btn-default">
+                                    <i class="fa fa-smile-o"></i>
+                                </button>
+                            </div>
+                        </div -->
+                    </form> 
+
+                    <div id="statusComments-{{:id}}" class="statusComments">
+                        <hr id="comment-breakpoint-{{:id}}">
+                    </div>                                   
+                </div>
+            </div>
+        </script>
+        
+        <script id="templateNotifyHtml" type="text/x-jsrender">
+            <i id="notifyHtml-{{:id}}" class="fa fa-spinner fa-pulse"></i>
+        </script>	

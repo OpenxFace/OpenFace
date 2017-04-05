@@ -20,15 +20,11 @@
 class User_Status extends Db
 {
 	// START OF THIS CLASS	
-	
-    protected $_Likes;
     
 	public function __construct()
 	{
 	    $this->tableName = DB_TABLE_PREFIX.'user_status';
 	    parent::__construct( $this->tableName );
-	    
-	    $this->_Likes = new User_Status_Likes;
 	} 
 	
 	/**
@@ -168,10 +164,6 @@ class User_Status extends Db
 	        $User = new User;
 	        
 	        while( $row = mysqli_fetch_assoc( $res ) ) {
-	            // like data
-	            $row['has_liked'] = $this->_Likes->fetchLikeByUserId( $row['uuid'], $_SESSION['user']['uuid'] );
-	            $row['like_data'] = $this->_Likes->fetchAllLikesByParentUUID( $row['uuid'] );
-	            	            
 	            // get the owner
 	            $row['owner'] = $User->fetchUserDetailsByUUID( $row['user_uuid'] );
 	            

@@ -885,9 +885,8 @@ skin_open();
       
       // update the admin account
       $adminData = array(
-          'username'    => $_SESSION['adminUsername'],
-          'password'    => $_SESSION['adminPassword'],
-          'email'       => $_SESSION['adminEmail']      
+            'password'    => $_SESSION['adminPassword'],
+            'email'       => $_SESSION['adminEmail']
       );
       
       updateAdminAccount( $adminData );
@@ -1159,5 +1158,3 @@ function create_ajax_script()
 
 <?php
 }
-
-?>

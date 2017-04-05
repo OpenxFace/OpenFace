@@ -1281,15 +1281,37 @@ CREATE TABLE IF NOT EXISTS `openface_user_metadata` (
 -- Table structure for table `openface_user_preferences`
 --
 
-CREATE TABLE IF NOT EXISTS `openface_user_preferences` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `parent_uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
+CREATE TABLE `openface_user_preferences` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `value` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `parent_uuid` (`parent_uuid`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  `value` text COLLATE utf8_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `openface_user_preferences`
+--
+ALTER TABLE `openface_user_preferences`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parent_uuid` (`user_id`),
+  ADD KEY `name` (`name`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `openface_user_preferences`
+--
+ALTER TABLE `openface_user_preferences`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- Constraints for dumped tables
+--
 
 -- --------------------------------------------------------
 
@@ -1302,7 +1324,7 @@ CREATE TABLE IF NOT EXISTS `openface_user_status` (
   `uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
   `user_uuid` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` text COLLATE utf8_unicode_ci,
-  `privacy` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `privacy` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'public',
   `date` int(10) unsigned NOT NULL,
   `ip` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -1417,4 +1439,4 @@ ALTER TABLE `openface_user_confirm`
 -- Constraints for table `openface_user_preferences`
 --
 ALTER TABLE `openface_user_preferences`
-  ADD CONSTRAINT `openface_user_preferences_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `openface_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD FOREIGN KEY (`user_id`) REFERENCES `openface_user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

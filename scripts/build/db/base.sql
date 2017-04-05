@@ -954,6 +954,12 @@ INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(836, 
 INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(837, 2, 'unlike', 'Gefällt mir nicht mehr');
 INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(838, 1, 'you_like_this', 'You like this');
 INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(839, 2, 'you_like_this', 'Dir gefällt das');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(840, 1, 'no_messages', 'No messages');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(841, 2, 'no_messages', 'keine Nachrichten');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(842, 1, 'reply', 'Reply');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(843, 1, 'europe', 'Europe');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(844, 2, 'europe', 'Europa');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(845, 2, 'reply', 'Antworten');
 
 -- --------------------------------------------------------
 
@@ -1014,7 +1020,7 @@ INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `c
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(77, 'site_facebook_app_id', '324640691020497', NULL, 'social', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(78, 'site_twitter_api_key', 'KS0tMXGV1jBPHcr9B2NsxplmU', NULL, 'social', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(79, 'site_twitter_api_secret', '4SaA3aauMozDQqJIbEZIiwmJTYj1hBmaF6Ql0PILnBFHi604By', NULL, 'social', 'text', '1', NULL, NULL);
-INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(80, 'site_allow_social_login', '1', '0,1', 'social', 'radio', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(80, 'site_allow_social_login', '0', '0,1', 'social', 'radio', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(81, 'site_yahoo_consumer_key', 'dj0yJmk9RlBPU09OTXZxY3hPJmQ9WVdrOVZuVkRWWGRHTXpZbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD04Mg--', NULL, 'social', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(82, 'site_yahoo_consumer_secret', 'e15419d9ab06e7cd727a252c16f03877e68cc7eb', NULL, 'social', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(83, 'site_yahoo_app_id', 'VuCUwF36', NULL, 'social', 'text', '1', NULL, NULL);
@@ -1030,6 +1036,8 @@ INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `c
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(93, 'site_global_html_body_end', NULL, NULL, 'global', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(94, 'site_default_status_fetch_limit', '50', NULL, 'global', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(95, 'site_default_layout_type', 'fluid', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(96, 'site_logo_html', '<img src="__BASEURL__/images/logo/small.png" border="0">', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(97, 'site_default_avatar_url_small', '__BASEURL__/images/profiles/default/male/nobody_m.32x32.jpg', NULL, 'global', 'text', '1', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1308,6 +1316,26 @@ CREATE TABLE IF NOT EXISTS `openface_user_status` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `openface_user_status_comment`
+--
+
+CREATE TABLE IF NOT EXISTS `openface_user_status_comment` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
+  `parent_uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
+  `user_uuid` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reply_to` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `text` text COLLATE utf8_unicode_ci,
+  `ip` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `date` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`),
+  KEY `parent_uuid` (`parent_uuid`),
+  KEY `user_uuid` (`user_uuid`),
+  KEY `date` (`date`),
+  KEY `reply_to` (`reply_to`),
+  KEY `ip` (`ip`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 -- Table structure for table `openface_user_status_likes`
 --
 
@@ -1316,13 +1344,15 @@ CREATE TABLE IF NOT EXISTS `openface_user_status_likes` (
   `uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
   `parent_uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
   `user_uuid` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ip` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uuid` (`uuid`),
   UNIQUE KEY `parent_user_pair` (`parent_uuid`,`user_uuid`),
   KEY `parent_uuid` (`parent_uuid`),
   KEY `user_uuid` (`user_uuid`),
-  KEY `date` (`date`)
+  KEY `date` (`date`),
+  KEY `ip` (`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1382,3 +1412,9 @@ ALTER TABLE `openface_usergroup_permission`
 --
 ALTER TABLE `openface_user_confirm`
   ADD CONSTRAINT `openface_user_confirm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `openface_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `openface_user_preferences`
+--
+ALTER TABLE `openface_user_preferences`
+  ADD CONSTRAINT `openface_user_preferences_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `openface_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

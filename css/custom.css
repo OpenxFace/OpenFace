@@ -1,3 +1,7 @@
+body {
+	overflow-x: hidden;
+}
+
 #fileList {
 	max-height: 100px;
 	overflow-x: hidden;

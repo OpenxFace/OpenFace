@@ -155,82 +155,65 @@
         <?php echo $this->partial('partials/header/navbar.phtml'); ?>
 		
 	    <div class="container-fluid" style="margin-top: 50px;">
-	    
-	    	<!-- START:   Demo User Credentials -->
-            <div class="alert alert-info">
-            	<table style="width: 100%;">
-            		<tr>
-            			<td style="width: 20%">
-            			<?php echo translate('username'); ?>
-            			</td>
-
-            			<td>
-            			demo@openface.org
-            			</td>
-            		</tr>
-
-            		<tr>
-            			<td style="width: 20%">
-            			<?php echo translate('password'); ?>
-            			</td>
-
-            			<td>
-            			password
-            			</td>
-            		</tr>
-            	</table>
-            </div>	    	
-	    	<!-- END:     Demo User Credentials -->	
-	
 	        <!-- Headings -->
 	
 	        <div class="row">
-	        	<div id="frmErrors"></div>
-				<ul class="nav nav-tabs">
-				  	<li class="active">
-				  		<a href="#tabLocal" data-toggle="tab"><i class="fa fa-home"></i> Local</a>
-				  	</li>
-				  	<?php if( (int)SITE_ALLOW_SOCIAL_LOGIN == 1 ): ?>
-				  	<li>
-				  		<a href="#tabFederated" data-toggle="tab"><i class="fa fa-paper-plane-o"></i> Federated</a>
-				  	</li>
-				  	<?php endif; ?>
-				</ul>
-				<!-- Tab panes -->
-				<div class="tab-content">
-				  <div class="tab-pane active" id="tabLocal">
-				  	<div style="margin-top: 20px;">
-				<form class="col-md-12" action="" method="POST" name="frmUserLogin" id="frmUserLogin">
-				    <div class="form-group">
-				        <input autocomplete="off" type="text" class="form-control input-lg" placeholder="<?php echo translate('email'); ?>" id="frmEmail" name="email" data-required="1" data-type="email">
-				    </div>
-				    <div class="form-group">
-				        <input autocomplete="off" type="password" class="form-control input-lg" placeholder="<?php echo translate('password'); ?>" id="frmPassword" name="password" data-required="1">
-				    </div>
-				    <div class="form-group">
-				        <button id="btnUserLogin" class="btn btn-primary btn-lg btn-block"><?php echo translate('login'); ?></button>
-				    </div>
-				</form>
-				  	</div>					        				  
-				  </div>
-				  <?php if( (int)SITE_ALLOW_SOCIAL_LOGIN == 1 ): ?>
-				  <div class="tab-pane" id="tabFederated">
-					<div id="tabFederated-content" style="margin-top: 20px;">					
-				    	<a class="zocial facebook" href="#" style="margin: 10px;" data-network="facebook">Facebook</a> 
-				    	<a class="zocial googleplus" href="#" style="margin: 10px;" data-network="googleplus">Google+</a>  
-				    	<a class="zocial twitter" href="#" style="margin: 10px;" data-network="twitter">Twitter</a> 				    	
-				    	<!--a class="zocial linkedin" href="#" style="margin: 10px;" data-network="linkedin">LinkedIn</a--> 
-				    	<a class="zocial openid" href="#" style="margin: 10px;" data-network="openid">OpenID</a> 
-				    	<!--a class="zocial instagram" href="#" style="margin: 10px;" data-network="instagram">Instagram</a> 
-				    	<a class="zocial vk" href="#" style="margin: 10px;" data-network="vkontakte">VKontakte</a-->	
-				    	<a class="zocial windows" href="#" style="margin: 10px;" data-network="windows">Windows Live</a> 
-				    	<a class="zocial yahoo" href="#" style="margin: 10px;" data-network="yahoo">Yahoo!</a>
-				  	</div>		  				  
-				  </div>
-				  <?php endif; ?>
-				</div>
+                <div class="col-lg-12">
+                    <div class="page-header">
+                        <h1>
+                            <?php echo translate('login'); ?>
+                        </h1>
+                    </div>
+
+                    <div id="frmErrors"></div>
+
+                    <?php if( (int)SITE_ALLOW_SOCIAL_LOGIN == 1 ): ?>
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tabLocal" data-toggle="tab"><i class="fa fa-home"></i> Local</a>
+                        </li>
+
+                        <li>
+                            <a href="#tabFederated" data-toggle="tab"><i class="fa fa-paper-plane-o"></i> Federated</a>
+                        </li>
+                    </ul>
+                    <?php endif; ?>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabLocal">
+                            <div style="margin-top: 20px;">
+                                <form class="col-md-12" action="" method="POST" name="frmUserLogin" id="frmUserLogin">
+                                    <div class="form-group">
+                                        <input autocomplete="off" type="text" class="form-control input-lg" placeholder="<?php echo translate('email'); ?>" id="frmEmail" name="email" data-required="1" data-type="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <input autocomplete="off" type="password" class="form-control input-lg" placeholder="<?php echo translate('password'); ?>" id="frmPassword" name="password" data-required="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <button id="btnUserLogin" class="btn btn-primary btn-lg btn-block"><?php echo translate('login'); ?></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <?php if( (int)SITE_ALLOW_SOCIAL_LOGIN == 1 ): ?>
+                            <div class="tab-pane" id="tabFederated">
+                                <div id="tabFederated-content" style="margin-top: 20px;">
+                                    <a class="zocial facebook" href="#" style="margin: 10px;" data-network="facebook">Facebook</a>
+                                    <a class="zocial googleplus" href="#" style="margin: 10px;" data-network="googleplus">Google+</a>
+                                    <a class="zocial twitter" href="#" style="margin: 10px;" data-network="twitter">Twitter</a>
+                                    <!--a class="zocial linkedin" href="#" style="margin: 10px;" data-network="linkedin">LinkedIn</a-->
+                                    <a class="zocial openid" href="#" style="margin: 10px;" data-network="openid">OpenID</a>
+                                    <!--a class="zocial instagram" href="#" style="margin: 10px;" data-network="instagram">Instagram</a>
+                                    <a class="zocial vk" href="#" style="margin: 10px;" data-network="vkontakte">VKontakte</a-->
+                                    <a class="zocial windows" href="#" style="margin: 10px;" data-network="windows">Windows Live</a>
+                                    <a class="zocial yahoo" href="#" style="margin: 10px;" data-network="yahoo">Yahoo!</a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
 	        </div>
-	      </div>	
 	    </div>	    
 		
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>

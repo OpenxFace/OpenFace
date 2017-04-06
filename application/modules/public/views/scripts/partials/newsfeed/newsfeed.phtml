@@ -25,14 +25,18 @@
                         <div class="container-fluid">
                             <div class="pull-left" style="margin-right: 10px;">
                                 {{if owner.avatar_url}}
-                                    <img class="avatar-sm img-responsive" src="{{:owner.avatar_url}}">
+                                    <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/{{:owner.url_slug}}">
+                                        <img class="avatar-sm img-responsive" src="{{:owner.avatar_url}}">
+                                    </a>
                                 {{else}}
-                                    <img class="avatar-sm img-responsive" src="<?php echo SITE_DEFAULT_AVATAR_URL; ?>">
+                                    <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/{{:owner.url_slug}}">
+                                        <img class="avatar-sm img-responsive" src="<?php echo SITE_DEFAULT_AVATAR_URL; ?>">
+                                    </a>
                                 {{/if}}
                             </div>
 
                             <div class="pull-left" style="vertical-align: middle;">
-                                {{:owner.first_name}} {{:owner.last_name}}
+                                <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/{{:owner.url_slug}}">{{:owner.first_name}} {{:owner.last_name}}</a>
                                 <br>
                                 <i style="font-size: small;" class="fa fa-clock-o"></i> 
                                 <span style="font-size: small;" data-livestamp="{{:date}}">

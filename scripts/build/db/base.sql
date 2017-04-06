@@ -1144,7 +1144,6 @@ CREATE TABLE IF NOT EXISTS `openface_user` (
   KEY `last_ip` (`last_ip`),
   KEY `last_login_date` (`last_login_date`),
   KEY `password` (`password`),
-  KEY `username_password` (`password`),
   KEY `date_created` (`date_created`),
   KEY `last_upload` (`last_upload`),
   KEY `last_active` (`last_active`),

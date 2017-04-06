@@ -224,12 +224,16 @@
                 <div class="col-lg-2" style="padding-bottom: 10px;">
                     <div style="position: relative;">
                         <div>
-                            <img class="avatar-sm img-responsive" src="<?php echo $_SESSION['user']['avatar_url']; ?>">
+                            <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['url_slug']; ?>">
+                                <img class="avatar-sm img-responsive" src="<?php echo $_SESSION['user']['avatar_url']; ?>">
+                            </a>
                         </div>
                         
                         <div style="position: absolute; top: 0; left: 42px;">
                             <div style="font-size: small;">
-                                <?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>
+                                <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['url_slug']; ?>">
+                                    <?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>
+                                </a>
                             </div>
                             
                             <div style="font-size: x-small;">

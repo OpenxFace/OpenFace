@@ -22,7 +22,7 @@
 			}  
 		?> 
 		
-		<?php $siteThemes		= $GLOBALS['SITE_THEMES']; ?>
+		<?php $siteThemes	= $GLOBALS['SITE_THEMES']; ?>
 		<?php $bootstrapThemes	= $GLOBALS['BOOTSTRAP_THEMES']; ?>    	 
 				
 		<?php if( !empty( $siteThemes ) ): ?>
@@ -70,7 +70,7 @@
 			var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
 			var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
 			var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
-			var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['username']; ?>';
+			var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['email']; ?>';
 			var SITE_NAME				= '<?php echo SITE_NAME; ?>';		
 			var CURRENT_USER			= new Array();
 			var UUID					= uuid();		
@@ -84,15 +84,13 @@
 			<?php endforeach; ?>
 		</script>     
 	
-	    <meta name="robots" content="noimageindex" />
 	    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/favicon.ico" />
-	        
+		
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.9.1.min.js"></script>	
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootswatch.js"></script>		
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstorage.min.js"></script>	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstorage.min.js"></script>
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>	
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
@@ -102,9 +100,6 @@
 		
 		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/custom.css?<?php echo rand(); ?>" type="text/css" />				
 		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/font-awesome.min.css">
-		
-		<!-- jQuery UI -->
-		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/jquery-ui/themes/base/jquery-ui.css">
 			    
 	    <link id="bootstrapCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/bootstrap.min.css" rel="stylesheet"  media="screen">
         <link id="themeCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/bootstrap.min.css" rel="stylesheet">									     

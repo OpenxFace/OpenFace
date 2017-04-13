@@ -551,5 +551,76 @@ class Db
 
 	    return '';
 	}
+
+    /**
+     * Get by Columns & Values
+     * using RegEx
+     *
+     * @param	array	$attribues
+     * @param	int		$limit
+     * @param	int		$offset
+     * @param	array	$orderBy
+     * @return	array
+     */
+    public function getByRegex( $attributes = array(), $limit = 1, $offset = 0, $orderBy = array() )
+    {
+        if( empty( $attributes ) OR !is_array( $attributes ) ) {
+            return false;
+        }
+
+        // escape
+        foreach( $attributes AS $key => $value ) {
+            $attributes[$key] = mysqli_real_escape_string( $this->db, $value );
+        }
+
+        $i      = 0;
+        $count  = count( $attributes );
+        $query = "SELECT * FROM `".mysqli_real_escape_string( $this->db, $this->tableName )."` ";
+        $query .= "WHERE ";
+
+        foreach( $attributes AS $key => $value ) {
+            $i++;
+            $query .= "`".$key."` REGEXP '".$value."' ";
+            if( $i < $count ) {
+                $query .= " AND ";
+            }
+        }
+
+        if( !empty( $orderBy ) ) {
+            $count 	= count( $orderBy );
+            $i		= 0;
+            $query .= "ORDER BY ";
+            foreach( $orderBy AS $orderKey => $orderValue ) {
+                $i++;
+                $query .= "`".mysqli_real_escape_string( $this->db, $orderKey )."` ";
+                $query .= mysqli_real_escape_string( $this->db, $orderValue )." ";
+                if( $i < $count ) {
+                    $query .= ", ";
+                }
+            }
+        }
+
+        $limit	= (int)$limit;
+        $offset = (int)$offset;
+        $data	= array();
+
+        if( ( $limit > 0 ) AND ( $offset >= 0 ) ) {
+            $query .= "LIMIT ".$offset.", ".$limit;
+        } elseif ( $limit == 1 ) {
+            $query .= "LIMIT 1 ";
+        }
+
+        $res = mysqli_query( $this->db, $query ) OR die( '<pre>SQL Error:  '.mysqli_error( $this->db ).'<br>SQL:  '.$query.'<br>File:  '.__FILE__.'<br>Line:  '.__LINE__ );
+
+        if( mysqli_num_rows( $res ) > 0 ) {
+            while( $row = mysqli_fetch_assoc( $res ) ) {
+                $data[] = $row;
+            }
+        }
+
+        $data = ( ( $limit == 1 ) AND isset( $data[0] ) ) ? $data[0] : $data;
+
+        return $data;
+    }
 	
 }

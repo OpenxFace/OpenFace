@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><?php echo $this->user['first_name'].' '.$this->user['last_name']; ?> - <?php echo SITE_NAME; ?></title>
+
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/html5shiv.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/respond.min.js"></script>
+        <![endif]-->
+
+        <?php
+        if( (int)SITE_ALLOW_TEMPLATE_CHANGE == 1 ) {
+            $currentTheme = ( strlen( @$_COOKIE['theme'] ) ) ? $_COOKIE['theme'] : SITE_DEFAULT_TEMPLATE;
+        } else {
+            $currentTheme = SITE_DEFAULT_TEMPLATE;
+            setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+        }
+
+        $_SESSION['current_theme'] = $currentTheme;
+        ?>
+
+        <?php $siteThemes		= $GLOBALS['SITE_THEMES']; ?>
+        <?php $bootstrapThemes	= $GLOBALS['BOOTSTRAP_THEMES']; ?>
+
+        <?php if( !empty( $siteThemes ) ): ?>
+
+            <?php
+            if( $currentTheme != SITE_DEFAULT_TEMPLATE ) {
+                if( !array_key_exists( $currentTheme, $siteThemes ) ) {
+                    $currentTheme = SITE_DEFAULT_TEMPLATE;
+                    setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+                }
+            }
+            ?>
+
+            <script type="text/javascript">
+                var BOOTSTRAP_THEMES	= new Array();
+                var SITE_THEMES			= new Array();
+
+                <?php foreach( $siteThemes AS $key => $value ): ?>
+                SITE_THEMES['<?php echo $key; ?>'] = '<?php echo $value['display_name']; ?>';
+                <?php endforeach; ?>
+
+                <?php foreach( $bootstrapThemes AS $key => $value ): ?>
+                BOOTSTRAP_THEMES['<?php echo $key; ?>'] = '<?php echo $value['display_name']; ?>';
+                <?php endforeach; ?>
+            </script>
+        <?php else: ?>
+            <script type="text/javascript">
+                var BOOTSTRAP_THEMES	= new Array();
+                var SITE_THEMES			= new Array();
+            </script>
+        <?php endif; ?>
+
+        <?php if( !empty( $_SESSION['site']['phrases'] ) ): ?>
+            <script type="text/javascript">
+                var SITE_PHRASES = new Array();
+                <?php foreach( $_SESSION['site']['phrases'] AS $key => $value ): ?>
+                SITE_PHRASES['<?php echo $key; ?>'] = '<?php echo addslashes( str_replace( "\r\n", '<br>', $value ) ); ?>';
+                <?php endforeach; ?>
+            </script>
+        <?php endif; ?>
+
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js"></script>
+        <script type="text/javascript">
+            var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+            var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
+            var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
+            var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>';
+            var SITE_NAME				= '<?php echo SITE_NAME; ?>';
+            var CURRENT_USER			= new Array();
+            var UUID					= uuid();
+            var USE_BLOCKUI				= <?php echo (int)SITE_USE_BLOCKUI; ?>;
+            var IS_MOBILE				= <?php echo (int)IS_MOBILE; ?>;
+            var DEFAULT_AVATAR			= '<?php echo SITE_DEFAULT_AVATAR_URL; ?>';
+            var TOTAL_MEDIA_COUNT		= <?php echo (int)$this->countTotal; ?>;
+            var DISPLAYED_MEDIA_COUNT	= <?php echo (int)$this->countFetched; ?>;
+            var AJAX_REQ				= false;
+
+            <?php foreach( $_SESSION['user'] AS $key => $value ): ?>
+            <?php if( !is_array( $value ) ): ?>
+            CURRENT_USER['<?php echo $key; ?>'] = '<?php echo base64_encode( $value ); ?>';
+            <?php endif; ?>
+            <?php endforeach; ?>
+        </script>
+
+        <!-- START:    Favicon -->
+        <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon.ico" /><base>
+        <link rel="apple-touch-icon" sizes="57x57" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <!-- END:      Favicon -->
+
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstorage.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.defaults.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.observor.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/custom.js"></script>
+
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/custom.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/font-awesome.min.css">
+
+        <link rel="stylesheet" id="bootstrapCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/bootstrap.min.css">
+        <link id="themeCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/bootstrap.min.css" rel="stylesheet">
+
+        <!-- SmartMenus -->
+        <link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/smartmenus/jquery.smartmenus.bootstrap.css" rel="stylesheet">
+
+        <!-- Sticky Footer -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/sticky-footer-navbar.css" type="text/css" />
+
+        <!-- Custom CSS (OpenFace) -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/openface.css" type="text/css" />
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/newsfeed.css" type="text/css" />
+
+        <!-- Indicator -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/indicator.css" type="text/css" />
+
+        <!-- scrollUp -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/scrollUp.css" />
+
+        <!-- Responsive Calendar -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/responsive-calendar/responsive-calendar.css" type="text/css" />
+
+        <!-- Breakpoints -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/breakpoints.css" type="text/css">
+
+        <?php
+        switch( $currentTheme ) {
+            case 'faceboot':
+                ?>
+
+                <!-- Custom CSS (Faceboot) -->
+                <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/extensions.min.css" type="text/css" />
+                <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/app.min.css" type="text/css" />
+
+                <?php
+                break;
+        }
+        ?>
+
+        <!-- Bootstrap Datepicker -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker3.min.css" type="text/css">
+
+        <!-- Comments -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/comment.css" type="text/css">
+
+        <!-- Toolkit -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/toolkit.css" type="text/css">
+
+        <?php
+        $layoutType = '';
+
+        if( @$_SESSION['user']['user_prefs']['site_layout_type'] == 'fluid' ) {
+            $layoutType = '-fluid';
+        } elseif ( SITE_DEFAULT_LAYOUT_TYPE == 'fluid' ) {
+            $layoutType = '-fluid';
+        }
+        ?>
+    </head>
+
+    <body style="margin-top: 70px;">
+
+        <!-- START:		blockUI -->
+        <?php if( (int)SITE_USE_BLOCKUI == 1 AND (int)IS_MOBILE != 1 ): ?>
+            <div style="display: block" class="blockUI"></div>
+            <div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
+            <div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?></div>
+        <?php endif; ?>
+        <!-- END:		blockUI -->
+        <div id="fb-root"></div>
+        <script type="text/javascript">
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : '<?php echo SITE_FACEBOOK_APP_ID; ?>',
+                    xfbml      : true,
+                    version    : 'v2.0'
+                });
+            };
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
+
+        <?php
+        echo $this->partial(
+            'partials/header/navbar.phtml',
+            array(
+                'type' => $layoutType
+            )
+        );
+        ?>
+
+        <div class="container<?php echo $layoutType; ?>">
+
+            <div class="row">
+                <div class="col-lg-3" style="padding-bottom: 10px;">
+                    
+                    <div style="position: relative;">
+                        <div>
+                            <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['url_slug']; ?>">
+                                <img class="avatar-sm img-responsive" src="<?php echo $_SESSION['user']['avatar_url']; ?>">
+                            </a>
+                        </div>
+
+                        <div style="position: absolute; top: 0; left: 42px;">
+                            <div style="font-size: small;">
+                                <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $this->user['url_slug']; ?>">
+                                    <?php echo $this->user['first_name']; ?> <?php echo $this->user['last_name']; ?>
+                                </a>
+                            </div>
+
+                            <div style="font-size: x-small;">
+                                <?php echo $this->user['email']; ?>
+                            </div>
+                        </div>
+
+                        <?php if( SITE_STREAM_TYPE == 'follow' ): ?>
+                            <?php if( myUUID() != $this->user['uuid'] AND $_SESSION['user']['logged_in'] ): ?>
+                                <div style="margin-top: 10px;">
+                                    <a href="javascript:void(0);" class="btn btn-success text-center btn-block"><?php echo translate('follow'); ?></a>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="profile-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h4><?php echo translate('about'); ?></h4>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-condensed table-hover">
+                                    <tr>
+                                        <td style="border-top: 0;">
+                                            <?php echo translate('date_joined'); ?>
+                                        </td>
+
+                                        <td style="border-top: 0;">
+                                            <?php echo date( SITE_DEFAULT_DATE_FORMAT, $this->user['date_created'] ); ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="well">
+                        <form role="form" class="form-horizontal">
+                            <div class="form-group" style="padding: 14px;">
+                                <textarea class="form-control" rows="5" id="frmNewStatus" name="status" placeholder="<?php echo translate('prompt_whats_new'); ?>"></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <!-- ul class="list-inline">
+                                        <li>
+                                            <a href="">
+                                                <i class="glyphicon glyphicon-upload"></i>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="">
+                                                <i class="glyphicon glyphicon-camera"></i>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="">
+                                                <i class="glyphicon glyphicon-map-marker"></i>
+                                            </a>
+                                        </li>
+                                    </ul -->
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <button class="btn btn-primary pull-right" id="btnNewStatus" type="button">
+                                        <i class="fa fa-pencil"></i> <?php echo translate('post'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- START:     No Messages Notice -->
+                    <div id="noticeNoMessages" class="text-center">
+                        <?php echo translate('no_messages'); ?>
+                    </div>
+                    <!-- END:       No Messages Notice -->
+
+                    <div id="statusList"></div>
+
+                    <div id="indicator-loading" class="indicator-custom text-center">
+                        Loading <i class="fa fa-spinner fa-pulse"></i>
+                    </div>
+
+                    <div id="indicator-finished" class="indicator-custom text-center">
+                        <i class="fa fa-check"></i> All items loaded
+                    </div>
+                </div>
+
+                <!-- START:     Sidebar (Right) -->
+                <div class="col-lg-2">
+                    <?php echo $this->partial('partials/sidebar/right.phtml'); ?>
+                </div>
+                <!-- END:       Sidebar (Right) -->
+
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                // scrollUp
+                $.scrollUp({
+                    scrollName: 'scrollUp',      // Element ID
+                    scrollDistance: 300,         // Distance from top/bottom before showing element (px)
+                    scrollFrom: 'top',           // 'top' or 'bottom'
+                    scrollSpeed: 300,            // Speed back to top (ms)
+                    easingType: 'linear',        // Scroll to top easing (see http://easings.net/)
+                    animation: 'fade',           // Fade, slide, none
+                    animationSpeed: 200,         // Animation speed (ms)
+                    scrollTrigger: false,        // Set a custom triggering element. Can be an HTML string or jQuery object
+                    scrollTarget: false,         // Set a custom target element for scrolling to. Can be element or number
+                    scrollText: 'Scroll to top', // Text for element, can contain HTML
+                    scrollTitle: false,          // Set a custom <a> title if required.
+                    scrollImg: true,            // Set true to use image
+                    activeOverlay: false,        // Set CSS color to display scrollUp active point, e.g '#00FFFF'
+                    zIndex: 2147483647           // Z-Index for the overlay
+                });
+
+                // image preloading
+                $.imgpreload([
+                    BASEURL + '/images/preloader/168.gif'
+                ], {
+                    each: function() {
+                        // this = dom image object
+                        // check for success with: $(this).data('loaded')
+                        // callback executes on every image load
+                    },
+                    all: function() {
+                        // this = array of dom image objects
+                        // check for success with: $(this[i]).data('loaded')
+                        // callback executes when all images are loaded
+                    }
+                });
+
+                <?php
+                if( !empty( $this->messages ) ) {
+                $json = json_encode( $this->messages, true );
+                ?>
+                var template	= $.templates('#templateStatus');
+                var htmlOutput	= template.render( <?php echo $json; ?> );
+
+                $('#statusList').html( htmlOutput );
+
+                <?php
+                } else {
+                ?>
+                $('#noticeNoMessages').show();
+                <?php
+                }
+                ?>
+
+                // START:   Auto-link URLs
+                $('.statusText').linky({
+                    mentions: true,
+                    hashtags: true,
+                    urls: true,
+                    linkTo: 'local'
+                });
+                // END:     Auto-link URLs
+
+                $('body').imagesLoaded( function() {
+                    $.unblockUI();
+                });
+            });
+
+            // Google+
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js?onload=googleplus_callback_onload';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+        </script>
+
+        <!-- SmartMenus jQuery plugin -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/smartmenus/jquery.smartmenus.js"></script>
+
+        <!-- SmartMenus jQuery Bootstrap Addon -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/smartmenus/jquery.smartmenus.bootstrap.js"></script>
+
+        <!-- Bootbox -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootbox/bootbox.js"></script>
+
+        <!-- jRumble -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.jrumble.min.js"></script>
+
+        <!-- JsRender -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jsrender/jsrender.min.js"></script>
+
+        <!-- OpenFace -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/create.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/delete.js"></script>
+
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/create.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/delete.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/like.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/unlike.js"></script>
+
+        <!-- moment.js -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
+
+        <!-- Livestamp.js -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
+
+        <?php
+        switch( $currentTheme ) {
+            case 'faceboot':
+                ?>
+
+                <!-- Custom JS (Faceboot) -->
+                <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/faceboot/extensions.min.js"></script>
+                <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/faceboot/app.min.js"></script>
+
+                <?php
+                break;
+        }
+        ?>
+
+        <!-- START:    Templates -->
+        <?php echo $this->partial('partials/newsfeed/newsfeed.phtml'); ?>
+        <?php echo $this->partial('partials/newsfeed/comment.phtml'); ?>
+        <!-- END:      Templates -->
+
+        <!-- Q -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/q.min.js"></script>
+
+        <!-- scrollUp -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/scrollUp/jquery.scrollUp.min.js"></script>
+
+        <!-- jsTimezoneDetect -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstz-1.0.4.min.js"></script>
+
+        <!-- Bootstrap Datepicker -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+
+        <!-- jQuery AutoLink -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-autolink/jquery.autolink.js"></script>
+
+        <!-- jQuery Scroll Stop -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.scrollstop.js"></script>
+
+        <!-- Newsfeed:  Infinite Scroll -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/newsfeed/scroll.js"></script>
+
+        <!-- Responsive Calendar -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/responsive-calendar/responsive-calendar.min.js"></script>
+
+        <!-- JsViews -->
+        <script type="text/javascript">
+            $.views.converters('nltobr', function(val) {
+                return val.replace(/\\n/g, '<br />')
+            });
+        </script>
+    </body>
+</html>

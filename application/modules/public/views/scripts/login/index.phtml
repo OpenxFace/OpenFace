@@ -67,7 +67,7 @@
 			var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
 			var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
 			var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
-			var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['username']; ?>';
+			var CURRENT_USERNAME		= '<?php echo @$_SESSION['user']['first_name'].' '.@$_SESSION['user']['last_name']; ?>';
 			var SITE_NAME				= '<?php echo SITE_NAME; ?>';		
 			var CURRENT_USER			= new Array();
 			var UUID					= uuid();		
@@ -76,7 +76,9 @@
 			var SOCIAL_LOGIN			= null;	
 					
 			<?php foreach( $_SESSION['user'] AS $key => $value ): ?>
-				CURRENT_USER['<?php echo $key; ?>'] = '<?php echo $value; ?>';
+                <?php if( !is_array( $value ) ): ?>
+				    CURRENT_USER['<?php echo $key; ?>'] = '<?php echo $value; ?>';
+				<?php endif; ?>
 			<?php endforeach; ?>
 		</script>     
 	    
@@ -117,11 +119,11 @@
 
 		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/custom.validation.js" type="text/javascript" charset="utf-8"></script>
 		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.formparams.min.js" type="text/javascript" charset="utf-8"></script>								     
-	    <link id="bootstrapCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/bootstrap.min.css" rel="stylesheet"  media="screen">
-	    <?php if( $currentTheme != 'bootstrap-with-theme' ): ?>
+	    <?php if( $currentTheme != 'bootstrap-theme' ): ?>
 	    	<link id="themeCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/bootstrap.min.css" rel="stylesheet">
 	    <?php else: ?>
-			<link id="themeCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/bootstrap/bootstrap.min.css" rel="stylesheet">    
+            <link id="bootstrapCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/bootstrap.min.css" rel="stylesheet"  media="screen">
+            <link id="themeCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/bootstrap/bootstrap.min.css" rel="stylesheet">
 	    <?php endif; ?>		
 	    
 	    <link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/zocial.css"> 
@@ -183,13 +185,17 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabLocal">
                             <div style="margin-top: 20px;">
-                                <form class="col-md-12" action="" method="POST" name="frmUserLogin" id="frmUserLogin">
+                                <form class="" action="" method="POST" name="frmUserLogin" id="frmUserLogin">
                                     <div class="form-group">
                                         <input autocomplete="off" type="text" class="form-control input-lg" placeholder="<?php echo translate('email'); ?>" id="frmEmail" name="email" data-required="1" data-type="email">
                                     </div>
+
+                                    <?php if( SITE_LOGIN_TYPE == 'usename_password' ): ?>
                                     <div class="form-group">
                                         <input autocomplete="off" type="password" class="form-control input-lg" placeholder="<?php echo translate('password'); ?>" id="frmPassword" name="password" data-required="1">
                                     </div>
+                                    <?php endif; ?>
+
                                     <div class="form-group">
                                         <button id="btnUserLogin" class="btn btn-primary btn-lg btn-block"><?php echo translate('login'); ?></button>
                                     </div>
@@ -284,46 +290,101 @@
 					}
 					
 					return false;
-			    });					
-			    
-				$('#btnUserLogin').click(function(event) {
-					event.preventDefault();
+			    });
 
-					if( !formIsValid('frmUserLogin') ) {
-						$('#frmUserLogin').effect('shake');
-						return false;
-					}					
-						
-					$.blockUI({
-						message: '<i class="fa fa-spinner fa-spin"></i>'
-					});
-					
-					$.ajax({
-						type: 'POST',
-						url: BASEURL + '/users/ajax',
-						data: { 
-							method: 'userLogin',
-							username: $('#frmEmail').val(),
-							password: sha1( $('#frmPassword').val() )
-						},
-						complete: function( jqXHR, textStatus ) {
-							// ...
-						},
-						success: function( response, textStatus, jqXHRresponse ) {
-							if( response.status == 'OK' ) {
-								$('#frmErrors').html('');
-								window.location.reload();			
-							} else {
-								$('#frmErrors').html('<div class="alert alert-danger"><i class="fa fa-warning"></i> '+ translate('authentication_failure') +'</div>')
-								$.unblockUI();
-							}
-						},
-						error: function(  jqXHR, textStatus, errorThrown ) {
-							$.unblockUI();
-						},		
-						dataType: 'json'
-					});					
-				});
+                <?php if( SITE_LOGIN_TYPE == 'username_password' ): ?>
+                    $('#btnUserLogin').click(function(event) {
+                        event.preventDefault();
+
+                        if( !formIsValid('frmUserLogin') ) {
+                            $('#frmUserLogin').effect('shake');
+                            return false;
+                        }
+
+                        $.blockUI({
+                            message: '<i class="fa fa-spinner fa-spin"></i>'
+                        });
+
+                        $.ajax({
+                            type: 'POST',
+                            url: BASEURL + '/users/ajax',
+                            data: {
+                                method: 'userLogin',
+                                username: $('#frmEmail').val(),
+                                password: sha1( $('#frmPassword').val() )
+                            },
+                            complete: function( jqXHR, textStatus ) {
+                                // ...
+                            },
+                            success: function( response, textStatus, jqXHRresponse ) {
+                                if( response.status == 'OK' ) {
+                                    $('#frmErrors').html('');
+                                    window.location.reload();
+                                } else {
+                                    $('#frmErrors').html('<div class="alert alert-danger"><i class="fa fa-warning"></i> '+ translate('authentication_failure') +'</div>')
+                                    $.unblockUI();
+                                }
+                            },
+                            error: function(  jqXHR, textStatus, errorThrown ) {
+                                $.unblockUI();
+                            },
+                            dataType: 'json'
+                        });
+                    });
+                <?php elseif( SITE_LOGIN_TYPE == 'email' ): ?>
+                    $('#btnUserLogin').click(function(event) {
+                        event.preventDefault();
+
+                        if( !formIsValid('frmUserLogin') ) {
+                            $('#frmUserLogin').effect('shake');
+                            return false;
+                        }
+
+                        $.blockUI({
+                            message: '<i class="fa fa-spinner fa-spin"></i>'
+                        });
+
+                        $.ajax({
+                            type: 'POST',
+                            url: BASEURL + '/users/ajax',
+                            data: {
+                                method: 'userLoginEmail',
+                                username: $('#frmEmail').val()
+                            },
+                            complete: function( jqXHR, textStatus ) {
+                                // ...
+                            },
+                            success: function( response, textStatus, jqXHRresponse ) {
+                                if( response.status == 'OK' ) {
+                                    if( response.result == 'MUST_VERIFY' ) {
+                                        $('#frmErrors').html('');
+                                        $('#btnUserLogin').remove();
+
+                                        // success message
+                                        var message = '<i class="fa fa-check"></i> ' + str_replace( '%EMAIL%', $('#frmEmail').val(), translate('check_email_verify_login') );
+
+                                        // display the success message
+                                        $('#frmUserLogin').html('<div class="alert alert-success">'+ message +'</div>');
+
+                                        // unblock the interface
+                                        $.unblockUI();
+                                    } else {
+                                        // error
+                                    }
+                                } else {
+                                    $('#frmErrors').html('<div class="alert alert-danger"><i class="fa fa-warning"></i> '+ translate('authentication_failure') +'</div>')
+                                    $.unblockUI();
+                                }
+                            },
+                            error: function(  jqXHR, textStatus, errorThrown ) {
+                                $.unblockUI();
+                            },
+                            dataType: 'json'
+                        });
+
+                        return false;
+                    });
+                <?php endif; ?>
 							    			    		   			     			   
 				$.imgpreload([DEFAULT_PRELOADER_IMAGE, 
 							  BASEURL + '/images/preloader/168.gif'

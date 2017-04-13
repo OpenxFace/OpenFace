@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="UTF-8" />
+	    <title><?php echo SITE_NAME; ?> &mdash; <?php echo translate('required_data'); ?></title>
+	    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+        <?php
+            echo $this->partial(
+                'partials/header/dependencies.phtml'
+            );
+        ?>
+	    
+	    <?php echo SITE_GLOBAL_HTML_HEADER; ?>								     
+	</head>
+
+	<body>
+		<!-- START:		blockUI -->
+		<?php if( (int)SITE_USE_BLOCKUI == 1 ): ?>
+			<div style="display: block" class="blockUI"></div>
+			<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
+			<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?></div>
+		<?php endif; ?>		
+		<!-- END:		blockUI -->
+		
+		<?php echo SITE_GLOBAL_HTML_BODY_START; ?>
+		
+		<div id="fb-root"></div>			
+		
+        <?php echo $this->partial('partials/header/navbar.phtml'); ?>
+		
+	    <div class="container-fluid" style="margin-top: 10px;">
+	
+	        <!-- Headings -->
+	
+	        <div class="row">
+				<div class="col-lg-12">
+    	        	<div id="frmErrors"></div>
+    
+    				<div class="tab-content">
+    				  <div class="tab-pane active" id="tabLocal">
+    				  	<div style="margin-top: 10px;">
+							<h1 class="page-header">
+								<?php echo translate('required_data'); ?>
+							</h1>    	
+										  	
+            				<form class="" action="" method="POST" name="frmUserUpdate" id="frmUserUpdate">
+            					<?php foreach( $_SESSION['user']['required_data'] AS $key => $value ): ?>
+                				    <div class="form-group">
+                				        <input autocomplete="off" type="text" class="form-control input-lg" placeholder="<?php echo translate( $value ); ?>" id="frm<?php echo $value; ?>" name="<?php echo $value; ?>" data-required="1">
+                				    </div>
+            				    <?php endforeach; ?>
+            				    
+            				    <div class="form-group">
+            				        <button id="btnUserUpdate" class="btn btn-primary btn-lg btn-block"><?php echo translate('save'); ?></button>
+            				    </div>
+            				</form>
+    					</div>					        				  
+    				  </div>
+    
+    				</div>
+				</div>
+	        </div>
+		</div>		    
+		
+	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>
+		<script type="text/javascript">
+		    $(document).ready(function() {
+
+				$('#btnUserUpdate').click(function(event) {
+					event.preventDefault();
+
+					if( !formIsValid('frmUserUpdate') ) {
+						$('#frmUserUpdate').effect('shake');
+						return false;
+					}					
+						
+					$.blockUI({
+						message: '<i class="fa fa-spinner fa-spin"></i>'
+					});
+
+					var formParams = $('#frmUserUpdate').formParams();
+					
+					$.ajax({
+						type: 'POST',
+						url: BASEURL + '/users/ajax',
+						data: { 
+							method: 'update',
+							data: formParams
+						},
+						complete: function( jqXHR, textStatus ) {
+							// ...
+						},
+						success: function( response, textStatus, jqXHRresponse ) {
+							if( response.status == 'OK' ) {
+								window.location.reload();											
+							} else {
+								$('#frmErrors').html('<div class="alert alert-danger"><i class="fa fa-warning"></i> '+ response.error +'</div>')
+								$.unblockUI();
+							}
+						},
+						error: function( jqXHR, textStatus, errorThrown ) {
+							$.unblockUI();
+						},		
+						dataType: 'json'
+					});					
+				});
+							    			    		   			     			   
+				$.imgpreload([
+                        BASEURL + '/images/preloader/168.gif'
+					], {
+				    each: function() {
+				        // this = dom image object
+				        // check for success with: $(this).data('loaded')
+				        // callback executes on every image load
+				    },
+				    all: function() {
+				        // this = array of dom image objects
+				        // check for success with: $(this[i]).data('loaded')
+				        // callback executes when all images are loaded				    		    			    			        
+				    }
+				});							
+						    
+				$('body').imagesLoaded( function() {
+					$.unblockUI();
+				});																    
+		    });
+		</script>	
+		
+		<!-- SmartMenus jQuery plugin -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/smartmenus/jquery.smartmenus.js"></script>
+		
+		<!-- SmartMenus jQuery Bootstrap Addon -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/smartmenus/jquery.smartmenus.bootstrap.js"></script>		
+
+		<!-- Bootbox.js -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootbox/bootbox.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootstrap-switch/bootstrap-switch.min.js"></script>
+
+        <!-- Form Params -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.formparams.min.js"></script>
+
+        <!-- Custom Validation -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/custom.validation.js"></script>
+
+        <?php echo SITE_GLOBAL_HTML_BODY_END; ?>
+	</body>	
+</html>

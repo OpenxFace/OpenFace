@@ -3077,3 +3077,25 @@ function user()
 {
     return @$_SESSION['user'];
 }
+
+function myUUID()
+{
+    return @$_SESSION['user']['uuid'];
+}
+
+function getDomainFromEmail( $email )
+{
+    $domain = substr( strrchr( $email, '@' ), 1 );
+    return $domain;
+}
+
+function getUsernameFromEmail( $email )
+{
+    $parts = explode( '@', $email );
+
+    if( !empty( $parts ) ) {
+        return $parts[0];
+    } else {
+        return false;
+    }
+}

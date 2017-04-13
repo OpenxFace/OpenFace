@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10.7
--- http://www.phpmyadmin.net
+-- version 4.0.10.18
+-- https://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jun 25, 2015 at 12:24 AM
--- Server version: 5.5.42-cll
--- PHP Version: 5.4.31
+-- Host: localhost:3306
+-- Generation Time: Apr 13, 2017 at 07:26 AM
+-- Server version: 5.5.54-cll
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -38,6 +38,23 @@ CREATE TABLE IF NOT EXISTS `openface_banned_ip` (
   `ip` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'IP or IP range',
   `comment` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `openface_follower`
+--
+
+CREATE TABLE IF NOT EXISTS `openface_follower` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `followee_uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
+  `follower_uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
+  `date` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `followee_uuid` (`followee_uuid`),
+  KEY `follower_uuid` (`follower_uuid`),
+  KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -960,6 +977,12 @@ INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(842, 
 INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(843, 1, 'europe', 'Europe');
 INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(844, 2, 'europe', 'Europa');
 INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(845, 2, 'reply', 'Antworten');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(846, 1, 'date_joined', 'Date Joined');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(847, 1, 'check_email_verify_login', 'Please check your e-mail (%EMAIL%) to verify your login request');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(848, 2, 'check_email_verify_login', 'Bitte überprüfen Sie Ihre E-Mail (%EMAIL%), um Ihre Anmeldung zu überprüfen');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(849, 1, 'required_data', 'Required Data');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(850, 1, 'unhandled_exception', 'Unhandled Exception');
+INSERT INTO `openface_phrase` (`id`, `language_id`, `name`, `text`) VALUES(851, 2, 'unhandled_exception', 'Unbehandelte Ausnahme');
 
 -- --------------------------------------------------------
 
@@ -1038,6 +1061,22 @@ INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `c
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(95, 'site_default_layout_type', 'fluid', NULL, 'global', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(96, 'site_logo_html', '<img src="__BASEURL__/images/logo/small.png" border="0">', NULL, 'global', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(97, 'site_default_avatar_url_small', '__BASEURL__/images/profiles/default/male/nobody_m.32x32.jpg', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(98, 'site_cookie_domain', NULL, NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(99, 'site_stream_type', 'global', 'follow,global', 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(100, 'site_login_type', 'email', 'email,username_password', 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(101, 'site_default_date_format', 'F d, Y', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(102, 'site_login_domain_regex_sql', '(openface).(org)$', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(103, 'site_allowed_email_domains', 'openface.org', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(104, 'site_email_regex', '/^[A-Za-z]+\\.[A-Za-z]+@(openface)\\.(org)$/', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(105, 'site_login_confirmation_timeout', '86400', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(106, 'site_email_system', 'mailjet', 'php,mailjet,smtp', 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(107, 'site_mailjet_api_public_key', NULL, NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(108, 'site_mailjet_api_secret_key', NULL, NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(109, 'site_mailjet_smtp_username', NULL, NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(110, 'site_mailjet_smtp_password', NULL, NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(111, 'site_mailjet_smtp_server_host', 'in-v3.mailjet.com', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(112, 'site_mailjet_smtp_server_port', '587', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(113, 'site_required_user_data', 'first_name,last_name', NULL, 'global', 'text', '1', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1148,8 +1187,9 @@ CREATE TABLE IF NOT EXISTS `openface_user` (
   KEY `last_upload` (`last_upload`),
   KEY `last_active` (`last_active`),
   KEY `first_name` (`first_name`),
-  KEY `last_name` (`last_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+  KEY `last_name` (`last_name`),
+  KEY `site_status` (`site_status`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `openface_user`
@@ -1261,6 +1301,25 @@ CREATE TABLE IF NOT EXISTS `openface_user_confirm` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `openface_user_confirm_login`
+--
+
+CREATE TABLE IF NOT EXISTS `openface_user_confirm_login` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `date_created` int(10) unsigned NOT NULL,
+  `date_expiration` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  UNIQUE KEY `code` (`code`),
+  KEY `date_expiration` (`date_expiration`),
+  KEY `date_created` (`date_created`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `openface_user_metadata`
 --
 
@@ -1280,37 +1339,22 @@ CREATE TABLE IF NOT EXISTS `openface_user_metadata` (
 -- Table structure for table `openface_user_preferences`
 --
 
-CREATE TABLE `openface_user_preferences` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `openface_user_preferences` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `value` text COLLATE utf8_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `value` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id`),
+  KEY `parent_uuid` (`user_id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
--- Indexes for dumped tables
---
 
---
--- Indexes for table `openface_user_preferences`
---
-ALTER TABLE `openface_user_preferences`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parent_uuid` (`user_id`),
-  ADD KEY `name` (`name`);
+-- --------------------------------------------------------
 
---
--- AUTO_INCREMENT for dumped tables
---
 
---
--- AUTO_INCREMENT for table `openface_user_preferences`
---
-ALTER TABLE `openface_user_preferences`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
+
+
 
 -- --------------------------------------------------------
 
@@ -1322,6 +1366,7 @@ CREATE TABLE IF NOT EXISTS `openface_user_status` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(36) COLLATE utf8_unicode_ci NOT NULL,
   `user_uuid` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `timeline_owner` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` text COLLATE utf8_unicode_ci,
   `privacy` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'public',
   `date` int(10) unsigned NOT NULL,
@@ -1331,7 +1376,8 @@ CREATE TABLE IF NOT EXISTS `openface_user_status` (
   KEY `user_uuid` (`user_uuid`),
   KEY `date` (`date`),
   KEY `ip` (`ip`),
-  KEY `privacy` (`privacy`)
+  KEY `privacy` (`privacy`),
+  KEY `timeline_owner` (`timeline_owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1435,7 +1481,13 @@ ALTER TABLE `openface_user_confirm`
   ADD CONSTRAINT `openface_user_confirm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `openface_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `openface_user_confirm_login`
+--
+ALTER TABLE `openface_user_confirm_login`
+  ADD CONSTRAINT `openface_user_confirm_login_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `openface_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `openface_user_preferences`
 --
 ALTER TABLE `openface_user_preferences`
-  ADD FOREIGN KEY (`user_id`) REFERENCES `openface_user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `openface_user_preferences_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `openface_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

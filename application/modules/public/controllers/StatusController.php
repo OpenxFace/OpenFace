@@ -63,6 +63,9 @@ class StatusController extends Zend_Controller_Action
 				case 'add':
 				    // ip
 				    $_POST['ip'] = getIP();
+
+				    // timeline owner
+                    $_POST['timeline_owner'] = myUUID();
 				    
 				    // add to DB
 					$result	= $this->_User_Status->insert( $_POST );

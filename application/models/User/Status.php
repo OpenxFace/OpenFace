@@ -175,7 +175,24 @@ class User_Status extends Db
 	    $data = ( ( $limit == 1 ) AND isset( $data[0] ) ) ? $data[0] : $data;
 	
 	    return $data;
-	}	
+	}
+
+	public function getOwnStream()
+    {
+        // get status messages
+        $messages = $this->getBy(
+            array(
+                'user_uuid' => myUUID()
+            ),
+            SITE_DEFAULT_STATUS_FETCH_LIMIT,
+            0,
+            array(
+                'date' => 'DESC'
+            )
+        );
+
+        return $messages;
+    }
 	
     // END OF THIS CLASS
 }

@@ -1,0 +1,178 @@
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/html5shiv.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/respond.min.js"></script>
+<![endif]-->
+
+<?php
+if( (int)SITE_ALLOW_TEMPLATE_CHANGE == 1 ) {
+    $currentTheme = ( strlen( @$_COOKIE['theme'] ) ) ? $_COOKIE['theme'] : SITE_DEFAULT_TEMPLATE;
+} else {
+    $currentTheme = SITE_DEFAULT_TEMPLATE;
+    setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH, SITE_COOKIE_DOMAIN );
+}
+
+$_SESSION['current_theme'] = $currentTheme;
+?>
+
+<?php $siteThemes		= $GLOBALS['SITE_THEMES']; ?>
+<?php $bootstrapThemes	= $GLOBALS['BOOTSTRAP_THEMES']; ?>
+
+<?php if( !empty( $siteThemes ) ): ?>
+
+    <?php
+    if( $currentTheme != SITE_DEFAULT_TEMPLATE ) {
+        if( !array_key_exists( $currentTheme, $siteThemes ) ) {
+            $currentTheme = SITE_DEFAULT_TEMPLATE;
+            setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH, SITE_COOKIE_DOMAIN );
+        }
+    }
+    ?>
+
+    <script type="text/javascript">
+        var BOOTSTRAP_THEMES	= new Array();
+        var SITE_THEMES			= new Array();
+
+        <?php foreach( $siteThemes AS $key => $value ): ?>
+        SITE_THEMES['<?php echo $key; ?>'] = '<?php echo $value['display_name']; ?>';
+        <?php endforeach; ?>
+
+        <?php foreach( $bootstrapThemes AS $key => $value ): ?>
+        BOOTSTRAP_THEMES['<?php echo $key; ?>'] = '<?php echo $value['display_name']; ?>';
+        <?php endforeach; ?>
+    </script>
+<?php else: ?>
+    <script type="text/javascript">
+        var BOOTSTRAP_THEMES	= new Array();
+        var SITE_THEMES			= new Array();
+    </script>
+<?php endif; ?>
+
+<?php if( !empty( $_SESSION['site']['phrases'] ) ): ?>
+    <script type="text/javascript">
+        var SITE_PHRASES = new Array();
+        <?php foreach( $_SESSION['site']['phrases'] AS $key => $value ): ?>
+        SITE_PHRASES['<?php echo $key; ?>'] = '<?php echo addslashes( str_replace( "\r\n", '<br>', $value ) ); ?>';
+        <?php endforeach; ?>
+    </script>
+<?php endif; ?>
+
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js"></script>
+<script type="text/javascript">
+    var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+    var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
+    var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
+    var CURRENT_USERNAME		= '<?php echo @$_SESSION['user']['first_name']; ?> <?php echo @$_SESSION['user']['last_name']; ?>';
+    var SITE_NAME				= '<?php echo SITE_NAME; ?>';
+    var CURRENT_USER			= new Array();
+    var UUID					= uuid();
+    var USE_BLOCKUI				= <?php echo (int)SITE_USE_BLOCKUI; ?>;
+    var IS_MOBILE				= <?php echo (int)IS_MOBILE; ?>;
+    var DEFAULT_AVATAR			= '<?php echo SITE_DEFAULT_AVATAR_URL; ?>';
+    var TOTAL_MEDIA_COUNT		= <?php echo (int)$this->countTotal; ?>;
+    var DISPLAYED_MEDIA_COUNT	= <?php echo (int)$this->countFetched; ?>;
+    var AJAX_REQ				= false;
+
+    <?php foreach( $_SESSION['user'] AS $key => $value ): ?>
+    <?php if( !is_array( $value ) ): ?>
+        CURRENT_USER['<?php echo $key; ?>'] = '<?php echo base64_encode( $value ); ?>';
+    <?php endif; ?>
+    <?php endforeach; ?>
+</script>
+
+<!-- START:    Favicon -->
+<link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon.ico" /><base>
+<link rel="apple-touch-icon" sizes="57x57" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<!-- END:      Favicon -->
+
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstorage.min.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.defaults.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.observor.js"></script>
+<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/custom.js"></script>
+
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/custom.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/font-awesome.min.css">
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/fonts/trusted-ideas/trusted-ideas.css">
+
+<?php
+switch( $currentTheme ) {
+    case 'bootstrap-theme':
+        ?>
+        <link rel="stylesheet" id="bootstrapCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/bootstrap.min.css">
+        <?php
+        break;
+        ?>
+        <?php
+}
+?>
+
+<link rel="stylesheet" id="themeCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/bootstrap.min.css">
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL;?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/custom.css">
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/homepage.css" type="text/css" />
+
+<!-- SmartMenus -->
+<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/smartmenus/jquery.smartmenus.bootstrap.css" rel="stylesheet">
+
+<!-- Sticky Footer -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/sticky-footer-navbar.css" type="text/css" />
+
+<!-- Custom CSS (OpenFace) -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/openface.css" type="text/css" />
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/newsfeed.css" type="text/css" />
+
+<!-- Indicator -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/indicator.css" type="text/css" />
+
+<!-- scrollUp -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/scrollUp.css" />
+
+<!-- Breakpoints -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/breakpoints.css" type="text/css">
+
+<!-- X-Editable -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/x-editable/bootstrap-editable.css"  type="text/css">
+
+<!-- Bootstrap Datepicker -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker3.min.css" type="text/css">
+
+<!-- Comments -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/comment.css" type="text/css">
+
+<!-- Badge -->
+<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/badge.css" type="text/css">
+
+<?php
+global $layoutType;
+$layoutType = '';
+
+if( @$_SESSION['user']['user_prefs']['site_layout_type'] == 'fluid' ) {
+    $layoutType = '-fluid';
+} elseif ( SITE_DEFAULT_LAYOUT_TYPE == 'fluid' ) {
+    $layoutType = '-fluid';
+}
+?>

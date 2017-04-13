@@ -229,4 +229,61 @@ class LoginController extends Zend_Controller_Action
     		}		
     	}
     }
+
+    public function confirmAction()
+    {
+        $this->_helper->viewRenderer->setNoRender( true );
+
+        $request    = $this->getRequest();
+        $params     = $request->getParams();
+        $code       = $params['code'];
+
+        $User_Confirm_Login = new User_Confirm_Login();
+        $data = $User_Confirm_Login->getBy(
+            array(
+                'code' => $code
+            )
+        );
+
+        if( !empty( $data ) ) {
+            $User       = new User;
+            $userData   = $User->getById( $data['user_id'] );
+
+            if( !empty( $userData ) ) {
+                switch( $userData['site_status'] ) {
+                    case 'pending':
+                        // confirm the account
+                        $User->confirmAccountById( $userData['id'] );
+
+                        // add to default usergroup
+                        $User->addUserToUsergroup(
+                            $userData['id'],
+                            SITE_DEFAULT_USERGROUP_ID
+                        );
+
+                        break;
+                }
+
+                // login
+                $loginResult = $User->login(
+                    $userData['email'],
+                    $userData['password']
+                );
+
+                if( $loginResult == 'LOGIN_OK' ) {
+                    $User_Confirm_Login->deleteById( $data['id'] );
+                    header('Location: '.BASEURL);
+                } else {
+                    // error
+                    header('Location: '.BASEURL.'/login');
+                }
+            } else {
+                // error
+                header('Location: '.BASEURL.'/login');
+            }
+        } else {
+            header('Location: '.BASEURL.'/login');
+        }
+    }
+
 }

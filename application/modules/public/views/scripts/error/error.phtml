@@ -22,7 +22,7 @@
 			}  
 		?> 
 		
-		<?php $siteThemes	= $GLOBALS['SITE_THEMES']; ?>
+		<?php $siteThemes		= $GLOBALS['SITE_THEMES']; ?>
 		<?php $bootstrapThemes	= $GLOBALS['BOOTSTRAP_THEMES']; ?>    	 
 				
 		<?php if( !empty( $siteThemes ) ): ?>
@@ -85,7 +85,7 @@
 		</script>     
 	
 	    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/favicon.ico" />
-		
+	        
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.9.1.min.js"></script>	
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootswatch.js"></script>		
@@ -169,30 +169,6 @@
 	      	</div>	      	
 	    </div>
 	    <!-- END:	Main Container -->
-	    
-	    
-		<div class="footer">
-			<div class="container-fluid">
-		    	<div class="row">
-		        	<div class="col-lg-12">		
-		            	<ul class="list-unstyled">
-		              		<li class="pull-right">
-		              			<a href="#top" class="backToTop noBlockUI">
-		              				<i class="fa fa-chevron-up"></i>
-		              			</a>&nbsp;
-								<a href="#top" class="backToTop noBlockUI">	              	
-									<?php echo translate('to_top'); ?>
-		              			</a>
-		              		</li>
-		              		<li>
-		              			<i class="fa fa-rss-square"></i>&nbsp;<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/rss">RSS</a>
-		              		</li>
-		            	</ul>
-		            	<p>&copy; <?php echo translate('copyright'); ?> <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. <?php echo translate('all_rights_reserved'); ?>.</p>		
-		          	</div>
-		        </div>
-      		</div>
-    	</div>
     	    
 		<script type="text/javascript">
 		    $(document).ready(function() {	

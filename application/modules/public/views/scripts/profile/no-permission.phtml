@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $_SESSION['user']['locale']; ?>" class="hl-<?php echo $_SESSION['user']['locale']; ?> logged-in ">
+<head>
+    <meta charset="UTF-8" />
+    <title><?php echo strtoupper( $_SESSION['site']['phrases']['error'] ); ?> &bull; <?php echo SITE_NAME; ?></title>
+    
+ 	<?php
+		if( SITE_ALLOW_TEMPLATE_CHANGE == 1 ) {
+ 			$currentTheme = ( strlen( @$_COOKIE['theme'] ) ) ? $_COOKIE['theme'] : SITE_DEFAULT_TEMPLATE;
+		} else {
+			$currentTheme = SITE_DEFAULT_TEMPLATE;
+			setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+		}
+	?>
+     
+	<?php $siteThemes = $GLOBALS['SITE_THEMES']; ?> 
+	
+	<?php if( !empty( $siteThemes ) ): ?>
+
+		<?php			 
+			if( $currentTheme != SITE_DEFAULT_TEMPLATE ) {
+				if( !array_key_exists( $currentTheme, $siteThemes ) ) {
+					$currentTheme = SITE_DEFAULT_TEMPLATE;
+					setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+				}
+			}			
+		?>
+		
+		<script type="text/javascript">	
+			var SITE_THEMES = new Array();
+			<?php foreach( $siteThemes AS $key => $value ): ?>
+				SITE_THEMES['<?php echo $key; ?>'] = '<?php echo $value; ?>';	
+			<?php endforeach; ?>
+		</script>
+		<?php else: ?>
+		<script type="text/javascript">		
+			var SITE_THEMES = new Array();
+		</script>				
+	<?php endif; ?>
+	    
+	<script type="text/javascript">
+		var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+		var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
+		var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
+		var IS_NORMALIZED			= false;
+		var THEME_ROOT				= '<?php echo SITE_LOCAL_THEME_URL_ROOT; ?>';		
+	</script>     
+
+    <meta name="robots" content="noimageindex" />
+
+    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/ico/favicon.ico" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <link rel="apple-touch-icon-precomposed" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/ico/apple-touch-icon-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/ico/apple-touch-icon-72x72-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/ico/apple-touch-icon-114x114-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/ico/apple-touch-icon-144x144-precomposed.png" />
+
+    
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    
+
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js?<?php echo rand(); ?>"></script>    
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.js"></script>
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/themeswitcher.js?<?php echo rand(); ?>"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.defaults.js"></script>
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.observor.js?<?php echo rand(); ?>"></script>        
+    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bluebar.js"></script>
+    
+	<link rel="stylesheet" type="text/css" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/index/logged-in.css">
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.selectBoxIt.css" type="text/css" />
+	
+	<?php if( $currentTheme != 'instagram'): ?>
+		<?php if( !array_key_exists( $currentTheme, $siteThemes ) ): ?>
+			<link rel="stylesheet" id="theme-url" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/<?php echo $currentTheme; ?>/jquery-ui.css" type="text/css" media="screen" />
+			<?php else: ?>
+			<link rel="stylesheet" id="normalizeCss" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/normalize.css" type="text/css" />
+			<link rel="stylesheet" id="theme-url" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery-ui/themes/<?php echo $currentTheme; ?>/jquery-ui.css" type="text/css" media="screen" />		
+		<?php endif; ?>		
+		
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/fg.menu.css" type="text/css" />
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/fg.menu.js"></script>
+		
+	<?php else: ?>
+		<link rel="stylesheet" id="theme-url" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery-ui/themes/cobalt/jquery-ui.css" type="text/css" media="screen" />
+	<?php endif; ?>
+	
+	<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/font-awesome.min.css">
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.selectBoxIt.min.js"></script>    
+
+	<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.pnotify.min.js"></script>
+	<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.pnotify.default.icons.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/public/jquery.pnotify.icons.css" media="all" rel="stylesheet" type="text/css" />	
+
+	<style type="text/css">
+		.centerMe {    		
+			margin: 100px auto 0;
+			width: 700px;
+		}			 
+	</style>
+
+</head>
+<body class=" p-error dialog-404">
+
+	<!-- START:		blockUI -->
+		<div style="display: block" class="blockUI"></div>
+		<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
+		<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><img src="<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>"></div>		
+	<!-- END:		blockUI -->	
+	
+<div class="root">
+
+    <div class="page">
+        
+            
+	<header class="top-bar top-bar-new instagram" <?php if( $currentTheme != 'instagram' ): ?> style="display: none;" <?php endif; ?>>
+    <div class="top-bar-wrapper">
+        <h1 class="logo"><a href="/"><?php echo SITE_NAME; ?></a></h1>
+
+        <div class="top-bar-left">
+            <ul class="top-bar-actions">
+                <li>
+                    <a class="top-bar-home" href="/" label=Home><i></i></a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="top-bar-right account-state" id="top_bar_right">
+            <ul class="top-bar-actions">
+                
+                
+                <li id="link_profile" class="link-profile has-dropdown">
+                    <a class="noBlockUI" href="javascript:;">
+                        
+    <span class="img img-outset current-user-avatar" style="background-image: url('<?php echo $_SESSION['user']['avatar_url']; ?>');">
+        <img src="<?php echo SITE_DEFAULT_AVATAR_URL; ?>" onerror="imageFallback(this);" alt="" />
+        <b></b>
+    </span>
+
+                        <strong><?php echo $_SESSION['user']['username']; ?></strong>
+                    </a>
+
+                    <div class="dropdown">
+                        <i></i>
+
+                        <ul role="navigation">
+                        	<?php if( $_SESSION['user']['logged_in'] ): ?>
+                            	<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['username']; ?>">View Profile</a></li>
+	                            <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/edit/">Edit Profile</a></li>
+	                            <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/logout/">Log Out</a></li> 
+	                            <?php else: ?>
+									<li>
+										<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/login">Login</a>
+										<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/register">Register</a>
+									</li> 	                                                       	
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </li>
+                
+            </ul>
+
+            
+          </div>
+    </div>
+</header> <!-- .top-bar -->
+            
+<header class="jquery-ui ui-widget-header" <?php if( $currentTheme == 'instagram' ): ?> style="min-height: 35px; display: none;" <?php endif; ?>>
+	<div style="margin: 0 auto; width: 50%; margin-top: 2px; min-height: 35px">
+		<div style="width: 100px; float: left;">
+			<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>" alt="<?php echo SITE_NAME; ?>" title="<?php echo SITE_NAME; ?>">
+				<span style="margin: 20px;" class="font-awesome icon-camera-retro icon-2x"></span>
+			</a>								
+		</div>	
+		
+		<div style="width: 200px; float: right;">
+			<a tabindex="0" href="#userMenuOptions" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="flat">
+				<span class="ui-icon ui-icon-triangle-1-s"></span>
+				<?php echo $_SESSION['user']['username']; ?>
+			</a>
+			<div id="userMenuOptions" class="hidden">
+			<ul>
+				<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/login"><?php echo $_SESSION['site']['phrases']['login']; ?></a></li>
+				<li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/accounts/register"><?php echo $_SESSION['site']['phrases']['register']; ?></a></li>
+			</ul>
+			</div>							
+		</div>	
+		
+		<!-- div style="color: #dbdcde; position: absolute; top: 72%; left: 50%; width: 32px; height: 32px; margin-top: -16px; /* Half the height */ margin-left: -16px; /* Half the width */">		
+			<i class="icon-camera-retro icon-3x"></i>
+		</div -->								
+	</div>										
+</header>        
+
+        
+        <div class="main">
+
+	    <div class="ui-widget centerMe">
+			<div style="padding: 0 .7em;" class="ui-state-error ui-corner-all">
+				<p style="margin: 10px;">
+					<span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>
+					<strong style="text-transform: uppercase;"><?php echo $_SESSION['site']['phrases']['error']; ?>:</strong> <?php echo $_SESSION['site']['phrases']['permission_error_view_user_profiles']; ?>
+				</p>
+			</div>
+		</div>        
+	<!-- div class="error-container">
+	
+
+	<h2>Page Not Found</h2>
+
+	<p>This page could not be found.<br />You might have followed an incorrect link.</p>
+	
+ 	
+
+
+	</div -->
+
+        </div> <!-- .main -->
+        
+
+    </div> <!-- .page -->
+
+     <?php echo $this->partial( 'partials/footer.phtml' ); ?>
+    
+    <footer class="page-footer" role="contentinfo">
+        <div class="wrapper">
+            <nav>
+                <ul>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/us/">About us</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/">Support</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/">Blog</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/press/">Press</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/developer/">API</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/legal/privacy/">Privacy</a></li>
+                    <li><a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/about/legal/terms/">Terms</a></li>
+                </ul>
+            </nav>
+
+            <p class="copyright">&copy; 2013 <?php echo SITE_NAME; ?></p>
+        </div>
+    </footer>
+    
+
+
+<div id="reactModalMountPoint"></div>
+</div> <!-- .root -->
+
+
+
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/strings/strings_en.js"></script>
+        <script type="text/javascript">
+			window._csrf_token = '306a99ff8cb6c49293fa414e01fa404b';
+			window._jscalls = [
+			
+			['bluebar', 'init', []],
+			
+			['framework/config', 'init', [{staticRoot: '<?php echo PROTOCOL_RELATIVE_URL; ?>'}]],
+			
+			];
+		</script>
+
+
+
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/__runtime.js"></script>
+		<script src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/__config.js"></script>
+		<script>
+			window.commonjsBundler.init(
+			    "<?php echo PROTOCOL_RELATIVE_URL; ?>/js/",
+			    window.__commonjsBundlerConfig
+			);
+			window.commonjsBundler.fetcher.fetchAndRequire('main', function() {});
+		</script>
+
+		<script type="text/javascript">
+		    $(document).ready(function() {
+			    if( CURRENT_THEME != 'instagram' ) {					    							    
+					$('#flat').menu({ 
+						content: $('#flat').next().html(), // grab content from this page
+						showSpeed: 400 
+					});
+
+					$('.sidebar').css('margin-top', '1px');
+					$('.sidebar').css('height', '107%');
+					$('.page-footer').css('margin-top', '0px');
+			    }			    			   
+							    
+		    	$('#theme-switcher').themeswitcher({ 
+			    	useGoogleCDN: false,
+			    	loadTheme: CURRENT_THEME,
+			    	localCssPath: BASEURL + '/' + THEME_ROOT, 
+			    	localThemes: SITE_THEMES,
+			    	cookieExpires: 315569259747, 
+			    	cookiePath: '/',		   
+			    	cookieName: 'theme', 
+			    	cookieOnSet: function( cookieName, cookieValue ) {
+				    	CURRENT_THEME = cookieValue;
+				    							    	
+				    	if( CURRENT_THEME != 'instagram' ) {							    							    							    									    																					    	
+					    	if( !IS_NORMALIZED ) {							    	
+				    			$('head').append('<link id="normalizeCss" rel="stylesheet" href="'+BASEURL+'/css/public/normalize.css" type="text/css" />');
+				    			IS_NORMALIZED = true;
+					    	}
+
+					    	$('header.instagram').hide();
+					    	$('header.jquery-ui').show();							    								    	
+				    	} else {							    	
+				    		if( IS_NORMALIZED ) {
+					    		$('#normalizeCss').remove();
+					    		IS_NORMALIZED = false;			    		
+				    		}
+
+				    		$('header.jquery-ui').hide();						    		
+				    		$('header.instagram').show();
+				    	}
+
+			    		$.post( BASEURL, { sessionUpdate: true, theme: cookieValue },
+							function( data ) {
+				    			if( CURRENT_THEME != 'instagram' ) {									
+									$('.font-awesome').css( 'color', $('.ui-widget-header').css('color') );
+				    			}																    				
+							}
+						);					
+				    },
+			    	onSelect: function() {						  						    
+			    		   			
+		        	},
+		        	onSelectComplete: function() {		     
+			    		$.blockUI({ message: '<img border="0" src="' + BASEURL + '/images/preloader/tools.gif">' });
+			    		window.location.reload();				        		
+		        	},
+		        	appendThemes: function(switcherpane) {
+
+				    }
+		    	});
+		    				    
+				$.imgpreload([DEFAULT_PRELOADER_IMAGE, BASEURL+'/images/preloader/tools.gif', BASEURL+'/images/preloader/download/small/blue.gif', BASEURL + '/images/preloader/spinner/481.gif'], {
+				    each: function() {
+				        // this = dom image object
+				        // check for success with: $(this).data('loaded')
+				        // callback executes on every image load
+				    },
+				    all: function() {
+				        // this = array of dom image objects
+				        // check for success with: $(this[i]).data('loaded')
+				        // callback executes when all images are loaded
+				    }
+				});
+																
+				$('body').imagesLoaded( function() {
+					$.unblockUI();
+				});	
+		    });		    				    
+		</script>
+	</body>
+</html>

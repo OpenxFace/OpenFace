@@ -20,6 +20,13 @@
 define('THIS_PAGE', 'ERROR');
 class ErrorController extends Zend_Controller_Action
 {
+    private $_User;
+
+    public function init()
+    {
+        $this->_User = new User;
+    }
+
     public function errorAction()
     {
         $errors     = $this->_getParam('error_handler');
@@ -28,6 +35,17 @@ class ErrorController extends Zend_Controller_Action
         $trace      = $exception->getTraceAsString();
         
         $controller	= trim( $this->getRequest()->getParam('controller') );
+
+        // check if this is a user
+        $user = $this->_User->getBy(
+            array(
+                'url_slug' => $controller,
+            )
+        );
+
+        if( !empty( $user ) ) {
+            return $this->_forward( 'display', 'profile', null, array( 'user' => $user ) );
+        }
 
         switch ( $errors->type ) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:

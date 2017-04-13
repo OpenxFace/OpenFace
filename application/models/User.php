@@ -16,7 +16,6 @@
 
 class User extends Db
 {
-	private $columnNames;
 	protected $_Language;
 	protected $_Usergroup;
 	protected $_Site_Permission;
@@ -26,7 +25,6 @@ class User extends Db
 	    $this->tableName = DB_TABLE_PREFIX.'user';	    
 	    parent::__construct( $this->tableName );
 
-	    $this->_columnNames       = fetchColumnNames( $this->tableName );
 		$this->_Language          = new Language;
 		$this->_Usergroup         = new Usergroup;
 		$this->_Site_Permission   = new Site_Permission;		
@@ -394,10 +392,12 @@ class User extends Db
 		if( empty( $data ) ) {
 			return false;
 		}
+
+		$columnNames = fetchColumnNames( $this->tableName );
 		
 		// START:	filter input
 		foreach( $data AS $key => $value ) {
-			if( !in_array( $key, $this->_columnNames ) ) {
+			if( !in_array( $key, $columnNames ) ) {
 				unset( $data[$key] );	
 			}	
 		}
@@ -453,7 +453,7 @@ class User extends Db
 		$sql   .= ");";		
 		$res    = mysqli_query( $this->db, $sql ) OR die( mysqli_error( $this->db )."\nSQL:  ".$sql );
 		
-		$userId	= mysqli_insert_id();
+		$userId	= (int)mysqli_insert_id( $this->db );
 		// END:		insert user into DB
 		
 		// START:	notify moderator, if required
@@ -785,6 +785,129 @@ class User extends Db
        		return 'LOGIN_INVALID_PASSWORD'; 	
         }      
     }
+
+    public function loginByEmail( $email )
+    {
+        $userId         = 0;
+        $email          = trim( $email );
+        $emailDomain    = getDomainFromEmail( $email );
+        $allowedDomains = explode( ',', SITE_ALLOWED_EMAIL_DOMAINS );
+
+        // check regex match
+        if( !preg_match( SITE_EMAIL_REGEX, $email ) ) {
+            return array(
+                'status'    => 'ERROR',
+                'error'     => 'INVALID_EMAIL_ADDRESS',
+                'details'   => $email
+            );
+        }
+
+        // check if valid domain
+        if( !in_array( $emailDomain, $allowedDomains ) ) {
+            return array(
+                'status'    => 'ERROR',
+                'error'     => 'INVALID_DOMAIN',
+                'details'   => $emailDomain
+            );
+        } else {
+            $exists = $this->emailExists( $email );
+
+            if( !$exists ) {
+                // get the username
+                $username = getUsernameFromEmail( $email );
+                // START:   check for aliases
+                $existingRecord = $this->getByRegex(
+                    array(
+                        'email' => '^'.$username.'+@'.SITE_LOGIN_DOMAIN_REGEX_SQL
+                    )
+                );
+
+                // END:     check for aliases
+                if( !empty( $existingRecord ) ) {
+                    $userId = $existingRecord['id'];
+                } else {
+                    $userId = $this->createUser(
+                        array(
+                            'uuid'          => uuid(),
+                            'email'         => $email,
+                            'password'      => randomString().' '.randomString(),
+                            'url_slug'      => randomString(),
+                            'signup_ip'     => getIp(),
+                            'date_created'  => time(),
+                            'last_ip'       => getIp(),
+                        )
+                    );
+                }
+            } else {
+                $data = $this->getBy(
+                    array(
+                        'email' => $email
+                    )
+                );
+
+                if( !empty( $data ) ) {
+                    $userId = $data['id'];
+                }
+            }
+
+            if( $userId > 0 ) {
+                // init
+                $User_Confirm_Login = new User_Confirm_Login();
+
+                // delete existing values
+                $User_Confirm_Login->deleteBy(
+                    'user_id',
+                    $userId,
+                    0
+                );
+
+                // confirmation code
+                $code = randomString();
+
+                // add new value
+                $result = (int)$User_Confirm_Login->insert(
+                    array(
+                        'user_id'           => $userId,
+                        'code'              => $code,
+                        'date_created'      => time(),
+                        'date_expiration'   => time() + SITE_LOGIN_CONFIRMATION_TIMEOUT
+                    )
+                );
+
+                if( $result > 0 ) {
+                    $emailSend = $this->sendLoginConfirmationEmail(
+                        $userId,
+                        $code,
+                        $email
+                    );
+
+                    if( $emailSend ) {
+                        return array(
+                            'status'    => 'OK',
+                            'result'    => 'MUST_VERIFY'
+                        );
+                    } else {
+                        return array(
+                            'status'    => 'ERROR',
+                            'error'     => 'EMAIL_CONFIRMATION_SEND',
+                            'result'    => $emailSend
+                        );
+                    }
+                } else {
+                    return array(
+                        'status'    => 'ERROR',
+                        'result'    => 'DB_TABLE'
+                    );
+                }
+            } else {
+                return array(
+                    'status'    => 'ERROR',
+                    'result'    => 'USER_DOES_NOT_EXIST'
+                );
+            }
+        }
+    }
+
     /**
      * User Login via an External Service
      *
@@ -1056,35 +1179,35 @@ class User extends Db
 			}
 		}   	
     }
-    
+
     /**
      * Update Own Profile
-     * 
+     *
      * @param   array   $data
      * @return  mixed   boolean or int
     */
     public function updateSelf( $data = array() )
     {
-        $affectedRows   = 0; 
-        $userPrefs      = array();  
-        
+        $affectedRows   = 0;
+        $userPrefs      = array();
+
         if( !empty( $data ) ) {
             // START:   user preferences
             if( isset( $data['user_prefs'] ) ) {
                 $userPrefs = $data['user_prefs'];
-                
+
                 if( !empty( $userPrefs ) ) {
                     $User_Prefs = new User_Preferences();
                     $affectedRows += $User_Prefs->updateSelf( $userPrefs );
-                }                
-            }            
+                }
+            }
             // END:     user preferences
-            
+
             // User ID
             $id = (int)$_SESSION['user']['id'];
-            
+
             $columnNames = fetchColumnNames( $this->tableName );
-            
+
             // START:	filter input
             foreach( $data AS $key => $value ) {
                 if( !in_array( $key, $columnNames ) ) {
@@ -1092,18 +1215,18 @@ class User extends Db
                 }
             }
             // END:		filter input
-    
+
             // check the data array again after filtering
             if( empty( $data ) ) {
                 return $affectedRows;
             }
-    
+
             $count	= count( $data );
-    
-            $sql    = "UPDATE `".DB_TABLE_PREFIX.".$this->tableName.` ";
+
+            $sql    = "UPDATE `".$this->tableName."` ";
             $sql   .= "SET ";
             $i		= 0;
-            
+
             foreach( $data AS $key => $value ) {
                 $i++;
                 if( !is_numeric( $key ) ) {
@@ -1113,24 +1236,26 @@ class User extends Db
                     }
                 }
             }
-             
+
             $sql .= "WHERE `id` = ".mysqli_real_escape_string( $this->db, (int)$id )." ";
             $sql .= "LIMIT 1 ";
-    
+
             $res = mysqli_query( $this->db, $sql ) OR die( mysqli_error( $this->db ).'<br>'.$sql );
-             
+
             $affectedRows += mysqli_affected_rows( $this->db );
         }
 
         return (int)$affectedRows;
-    }     
+    }
     
     public function updateUserById($id, $data)
     {
-    	if( !empty( $data ) ) {    		
+    	if( !empty( $data ) ) {
+            $columnNames = fetchColumnNames( $this->tableName );
+
     		// START:	filter input
     		foreach( $data AS $key => $value ) {
-    			if( !in_array( $key, $this->_columnNames ) ) {
+    			if( !in_array( $key, $columnNames ) ) {
     				unset( $data[$key] );
     			}
     		}
@@ -1205,4 +1330,97 @@ class User extends Db
     {
 		return $this->fetchUserDetailsById( $userId );
     }
+
+    protected function sendLoginConfirmationEmail( $userId, $code, $email = null )
+    {
+        require_once( 'PHPMailer/PHPMailerAutoload.php' );
+
+        $mail = new PHPMailer;
+        $user = $this->fetchUserDetailsById( $userId );
+
+        // e-mail override
+        if( !is_null( $email ) ) {
+            $user['email'] = $email;
+        }
+
+        switch( SITE_EMAIL_SYSTEM ) {
+            case 'mailjet':
+
+                // is SMTP
+                $mail->IsSMTP();
+                $mail->SMTPAuth = true;
+
+                // secure SMTP
+                $mail->SMTPSecure = 'tls';
+
+                // enables SMTP debug information (for testing)
+                // $mail->SMTPDebug = 2;
+
+                // sets the SMTP server
+                $mail->Host = SITE_MAILJET_SMTP_SERVER_HOST;
+
+                // set the SMTP port for the GMAIL server
+                $mail->Port = SITE_MAILJET_SMTP_SERVER_PORT;
+
+                // SMTP account username
+                $mail->Username = SITE_MAILJET_SMTP_USERNAME;
+
+                // SMTP account password
+                $mail->Password = SITE_MAILJET_SMTP_PASSWORD;
+
+                break;
+
+            default:
+                // do nothing...
+        }
+
+        $mail->From		= SITE_EMAIL_ADDRESS;
+        $mail->FromName = SITE_NAME;
+
+        if( strlen( trim( $user['first_name'] ) ) AND strlen( trim( $user['last_name'] ) ) ) {
+            $mail->addAddress( $user['email'], $user['first_name'].' '.$user['last_name'] );
+        } else {
+            $mail->addAddress( $user['email'] );
+        }
+
+        $mail->addReplyTo( SITE_EMAIL_ADDRESS, SITE_NAME );
+
+        $mail->WordWrap = 50;
+        $mail->isHTML( true );
+
+        $mail->Subject	= '['.SITE_NAME.'] Password-less Login';
+
+        if( strlen( trim( $user['first_name'] ) ) AND strlen( trim( $user['last_name'] ) ) ) {
+            $body = 'Hello '.$user['first_name'].' '.$user['last_name'].', ';
+        } else {
+            $body = 'Hello, ';
+        }
+
+        $targetUrl     = BASEURL.'/login/confirm/code/'.$code;
+
+        $body          .= '<br><br>Please confirm that you wish to log in to your account at '.SITE_NAME.' by following this URL:  ';
+        $body    	   .= '<a href="'.$targetUrl.'">'.$targetUrl.'</a>';
+
+        $mail->Body		= $body;
+
+        if( strlen( trim( $user['first_name'] ) ) AND strlen( trim( $user['last_name'] ) ) ) {
+            $body = "Hello ".$user['first_name']." ".$user['last_name'].", ";
+        } else {
+            $body = "Hello, ";
+        }
+
+        $body    	   .= "\r\n\r\nPlease confirm that you wish to log in to your account at ".SITE_NAME." by following this URL:  ";
+        $body    	   .= $targetUrl;
+
+        $mail->AltBody = $body;
+
+        if( !$mail->send() ) {
+            file_put_contents( BASEDIR.'/data/logs/error/php/'.__FUNCTION__.'-'.date('Y-m-d').'.log', var_export( $mail->ErrorInfo, true ), FILE_APPEND );
+
+            return $mail->ErrorInfo;
+        }
+
+        return true;
+    }
+
 }

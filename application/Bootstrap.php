@@ -63,6 +63,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->_updateUserSession();
         $this->_checkUpgrade();
         $this->_setupFirePHP();
+        $this->_checkRequiredData();
     }
     
     private function _checkInstall()
@@ -490,4 +491,39 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             $request->setParam('error_handler', $error);
         }
     }
+
+    protected function _checkRequiredData()
+    {
+        $_SESSION['user']['required_data'] = array();
+
+        $requiredData = explode( ',', SITE_REQUIRED_USER_DATA );
+
+        foreach( $requiredData AS $key => $value ) {
+            if( !strlen( @$_SESSION['user'][ $value ] ) ) {
+                $_SESSION['user']['required_data'][] = $value;
+            }
+        }
+
+        if( !empty( $_SESSION['user']['required_data'] ) ) {
+            $allowedPaths = array(
+                'ajax',
+                'login',
+                'logout',
+                'mandatory',
+                'users',
+            );
+
+            $allowed = false;
+            foreach( $allowedPaths AS $key => $value ) {
+                if( preg_match('/'.$value.'/', $_SERVER['REQUEST_URI'] ) ) {
+                    $allowed = true;
+                }
+            }
+
+            if( !$allowed ) {
+                header('Location: '.BASEURL.'/profile/mandatory');
+            }
+        }
+    }
+
 }

@@ -19,7 +19,6 @@
   text-align: center;
 }
 .responsive-calendar .day a {
-  color: #000000;
   display: block;
   cursor: pointer;
   padding: 20% 0 20% 0;

@@ -1077,6 +1077,7 @@ INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `c
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(111, 'site_mailjet_smtp_server_host', 'in-v3.mailjet.com', NULL, 'global', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(112, 'site_mailjet_smtp_server_port', '587', NULL, 'global', 'text', '1', NULL, NULL);
 INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(113, 'site_required_user_data', 'first_name,last_name', NULL, 'global', 'text', '1', NULL, NULL);
+INSERT INTO `openface_site_config` (`id`, `name`, `value`, `possible_values`, `category`, `ui_type`, `editable`, `hint`, `comment`) VALUES(113, 'site_default_avatar_url_female', '__BASEURL__/images/profiles/female.png', NULL, 'global', 'text', '1', NULL, NULL);
 
 -- --------------------------------------------------------
 

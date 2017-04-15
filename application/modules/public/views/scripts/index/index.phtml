@@ -360,14 +360,18 @@
                     $('#noticeNoMessages').show();
                 <?php 
                     }                       
-                ?> 
+                ?>
+
+                // Auto embed images
+                $('.statusText, .commentText').autoimage();
 
                 // START:   Auto-link URLs
-                $('.statusText').linky({
+                $('.statusText, .commentText').autolink({
                     mentions: true,
                     hashtags: true,
                     urls: true,
-                    linkTo: 'local'
+                    linkTo: 'local',
+                    target: '_blank'
                 });                
                 // END:     Auto-link URLs									
 						    
@@ -457,7 +461,10 @@
 	
 		<!-- Responsive Calendar -->	
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/responsive-calendar/responsive-calendar.min.js"></script>
-			
+
+        <!-- jQuery.AutoImage -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-autoimage/jquery.autoimage.js"></script>
+
 		<!-- JsViews -->	    
 		<script type="text/javascript">
             $.views.converters('nltobr', function(val) {

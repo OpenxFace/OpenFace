@@ -1,5 +1,16 @@
 /*==========  Mobile First Method  ==========*/
 
+#headerUserInfo {
+	position: absolute;
+	bottom: 10px;
+	left: 40%;
+}
+
+#userInfo-Name {
+	display: none;
+	font-weight: bold;
+}
+
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
     
@@ -13,6 +24,16 @@
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
 
+}
+
+@media only screen and (max-width : 583px) {
+	#headerUserInfo {
+		display: none;
+	}
+
+	#userInfo-Name {
+		display: block;
+	}
 }
 
 /* Medium Devices, Desktops */
@@ -40,6 +61,18 @@
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
 
+}
+
+@media only screen and (min-width : 860px) {
+	#headerUserInfo {
+		left: 25%;
+	}
+}
+
+@media only screen and (min-width : 1230px) {
+	#headerUserInfo {
+		left: 19%;
+	}
 }
 
 @media only screen and (max-width : 1184px) {

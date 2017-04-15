@@ -36,11 +36,27 @@ class ProfileController extends Zend_Controller_Action
         if( empty( $params['user'] ) ) {
             forceError();
         } else {
+            if( is_null( $params['user']['avatar_url'] ) ) {
+                switch( $params['user']['gender'] ) {
+                    case 'female':
+                        $params['user']['avatar_url'] = SITE_DEFAULT_AVATAR_URL_FEMALE;
+
+                        break;
+
+                    default:
+                        $params['user']['avatar_url'] = SITE_DEFAULT_AVATAR_URL;
+                }
+            }
+
             $messages = $this->_User_Status->getBy(
                 array(
                     'timeline_owner' => $params['user']['uuid']
                 ),
-                100
+                100,
+                0,
+                array(
+                    'date' => 'DESC'
+                )
             );
 
             if( !empty( $messages ) ) {

@@ -83,9 +83,12 @@ $(document).ready(function() {
 
 						// render
 						$('#statusList').prepend( htmlOutput );
+
+                        // Auto embed images
+                        $('#statusText-' + response.data.id).autoimage();
 												
 		                // START:   Auto-link URLs
-		                $('#statusText-' + response.data.id).linky({
+		                $('#statusText-' + response.data.id).autolink({
 		                    mentions: true,
 		                    hashtags: true,
 		                    urls: true,

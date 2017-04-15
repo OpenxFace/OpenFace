@@ -102,6 +102,18 @@ $(document).ready( function() {
 									$('#frmStatusResponse-' + parentId).prepend( htmlOutput );									
 								}
 
+                                // Auto embed images
+                                $('#commentText-' + response.data.id).autoimage();
+
+                                // START:   Auto-link URLs
+                                $('#commentText-' + response.data.id).autolink({
+                                    mentions: true,
+                                    hashtags: true,
+                                    urls: true,
+                                    linkTo: 'local'
+                                });
+                                // END:     Auto-link URLs
+
 								// unblock the interface
 								$.unblockUI();
 							} else {

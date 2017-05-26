@@ -191,24 +191,7 @@
 			<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
 			<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?></div>
 		<?php endif; ?>		
-		<!-- END:		blockUI -->	
-		<div id="fb-root"></div>
-	    <script type="text/javascript">
-	      window.fbAsyncInit = function() {
-	        FB.init({
-	          appId      : '<?php echo SITE_FACEBOOK_APP_ID; ?>',
-	          xfbml      : true,
-	          version    : 'v2.0'
-	        });
-	      };
-	      (function(d, s, id){
-	         var js, fjs = d.getElementsByTagName(s)[0];
-	         if (d.getElementById(id)) {return;}
-	         js = d.createElement(s); js.id = id;
-	         js.src = "//connect.facebook.net/en_US/sdk.js";
-	         fjs.parentNode.insertBefore(js, fjs);
-	       }(document, 'script', 'facebook-jssdk'));
-	    </script>		
+		<!-- END:		blockUI -->
 		
         <?php 
 			echo $this->partial(
@@ -378,14 +361,7 @@
 				$('body').imagesLoaded( function() {
 					$.unblockUI();
 				});																				    
-		    });	
-		    	    				    
-			// Google+
-		  	(function() {
-		    	var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-		    	po.src = 'https://apis.google.com/js/plusone.js?onload=googleplus_callback_onload';
-		    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-		  	})(); 		    		    				    
+		    });
 		</script>
 		
 		<!-- SmartMenus jQuery plugin -->

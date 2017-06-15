@@ -645,24 +645,31 @@ function getCurrentDate()
 	return currentDate;	
 }
 
-function getCurrentDateAndTime()
+function getCurrentDateAndTime( includeTimezone )
 {
+	if( typeof includeTimezone === 'undefined' ) {
+		includeTimezone = false;
+	}
+
     var today		= new Date();
 	var dd			= today.getDate();
 	var mm			= today.getMonth() + 1;
 	var yyyy		= today.getFullYear();
 	var hours		= today.getHours();
 	var minutes		= today.getMinutes();
-	var seconds		= today.getSeconds();	
-	var timezone	= jstz.determine();
-    var timezone	= timezone.name();
-    
-    switch( timezone ) {
-    	case 'Europe/Berlin':
-    		timezone = translate('europe');
-    		
-    		break;
-    }
+	var seconds		= today.getSeconds();
+
+	if( includeTimezone ) {
+        var timezone	= jstz.determine();
+        var timezone	= timezone.name();
+
+        switch( timezone ) {
+            case 'Europe/Berlin':
+                timezone = translate('europe');
+
+                break;
+        }
+	}
 
 	if( dd < 10 ) {
 	    dd = '0' + dd;
@@ -684,9 +691,14 @@ function getCurrentDateAndTime()
 		seconds = '0' + seconds;
 	}
 
-	var currentDate = dd + '.' + mm + '.' + yyyy;	
-	var currentTime = hours + ':' + minutes + ':' + seconds + ' ' + timezone;
-	
+	var currentDate = dd + '.' + mm + '.' + yyyy;
+
+	if( includeTimezone ) {
+        var currentTime = hours + ':' + minutes + ':' + seconds + ' ' + timezone;
+	} else {
+        var currentTime = hours + ':' + minutes + ':' + seconds;
+    }
+
 	return currentDate + ' ' + currentTime;	
 }
 

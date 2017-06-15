@@ -34,7 +34,7 @@ class AdminController extends Zend_Controller_Action
     	$this->_requestUri         = $this->getRequest()->getRequestUri();
     	$this->_Admin              = new Admin;
     	$this->_Site_Config        = new Site_Config;
-    	$this->_Phrase             = new Phrase;
+    	$this->_Phrase             = new Site_Phrase;
     	$this->_Site_Permission    = new Site_Permission;
     	$this->_Usergroup          = new Usergroup;
     	$this->_User               = new User;    	       	    	

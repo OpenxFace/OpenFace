@@ -356,7 +356,12 @@
                     linkTo: 'local',
                     target: '_blank'
                 });                
-                // END:     Auto-link URLs									
+                // END:     Auto-link URLs	
+				
+				// strip slashes
+				$.each( $('.statusText, .commentText'), function( index, value ) {
+					$(value).html( stripslashes( $(value).html() ) );
+				});
 						    
 				$('body').imagesLoaded( function() {
 					$.unblockUI();
@@ -376,46 +381,45 @@
 		<!-- jRumble -->
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.jrumble.min.js"></script>
 		
-	    <!-- JsRender -->	
+		<!-- JsRender -->	
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jsrender/jsrender.min.js"></script>		
 		
 		<!-- OpenFace -->
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment.js"></script>
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/create.js"></script>
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/delete.js"></script>
-        
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/create.js"></script>
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/delete.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/create.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/delete.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/create.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/delete.js"></script>
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/like.js"></script>
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/unlike.js"></script>		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/unlike.js"></script>		
 		
 		<!-- moment.js -->
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
         
-        <!-- Livestamp.js -->
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
+		<!-- Livestamp.js -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
 		
-	    <?php
-	        switch( $currentTheme ) {
-	            case 'faceboot':
-	    ?>
-	    
-	    <!-- Custom JS (Faceboot) -->	
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/faceboot/extensions.min.js"></script>
-	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/faceboot/app.min.js"></script> 
-	    
-	    <?php
-	                break;
-	        }
-	    ?>	
-	    
-	    <!-- START:    Templates -->
-        <?php echo $this->partial('partials/newsfeed/newsfeed.phtml'); ?>  
-        <?php echo $this->partial('partials/newsfeed/comment.phtml'); ?>  
-	    <!-- END:      Templates -->
+		<?php
+			switch( $currentTheme ) {
+				case 'faceboot':
+		?>
 
-        <!-- Q -->	   
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/q.min.js"></script>
+		<!-- Custom JS (Faceboot) -->	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/faceboot/extensions.min.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/faceboot/app.min.js"></script> 
+
+		<?php
+				break;
+			}
+		?>	
+	    
+		<!-- START:    Templates -->
+		<?php echo $this->partial('partials/newsfeed/newsfeed.phtml'); ?>  
+		<?php echo $this->partial('partials/newsfeed/comment.phtml'); ?>  
+		<!-- END:      Templates -->
+
+		<!-- Q -->	   
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/q.min.js"></script>
                 
 	    <!-- scrollUp -->
 	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/scrollUp/jquery.scrollUp.min.js"></script>
@@ -443,9 +447,9 @@
 
 		<!-- JsViews -->	    
 		<script type="text/javascript">
-            $.views.converters('nltobr', function(val) {
-                return val.replace(/\\n/g, '<br />')
-            });  
+			$.views.converters('nltobr', function(val) {
+				return val.replace(/\\n/g, '<br />')
+			});  
 		</script> 	
 	</body>	
 </html>

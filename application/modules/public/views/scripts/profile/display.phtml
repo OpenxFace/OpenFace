@@ -389,6 +389,11 @@
                     linkTo: 'local'
                 });
                 // END:     Auto-link URLs
+				
+                // strip slashes
+                $.each( $('.statusText, .commentText'), function( index, value ) {
+                    $(value).html( stripslashes( $(value).html() ) );
+                });				
 
                 $('body').imagesLoaded( function() {
                     $.unblockUI();

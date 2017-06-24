@@ -428,7 +428,18 @@
 
         <!-- moment.js -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
+        <?php if( $_SESSION['user']['selected_locale'] != 'en-us' ) {
+            $locale = $_SESSION['user']['selected_locale'];
+            switch( $locale ) {
+                case 'de-de':
+                    $js = 'de';
 
+                    break;
+            }
+            ?>
+            <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/locale/<?php echo $js; ?>.js"></script>
+        <?php } ?>
+		
         <!-- Livestamp.js -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
 
@@ -474,7 +485,6 @@
 
         <!-- Responsive Calendar -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/responsive-calendar/responsive-calendar.min.js"></script>
-
 
         <!-- jQuery.AutoImage -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-autoimage/jquery.autoimage.js"></script>

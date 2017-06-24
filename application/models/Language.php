@@ -211,7 +211,35 @@ class Language extends Db
             $data = mysqli_fetch_assoc( $res );
             return $data['id'];
         }
-    }    
+    } 
+	
+    public function fetchLocaleIdByLanguageId( $languageId )
+    {
+        $sql    = "SELECT `locale_id` FROM `".mysqli_real_escape_string( $this->db, $this->tableName )."` ";
+        $sql   .= "WHERE `id` = '".mysqli_real_escape_string( $this->db, $languageId )."' ";
+        $sql   .= "LIMIT 1 ";
+
+        $res    = mysqli_query( $this->db, $sql ) OR die( mysqli_error( $this->db ).PHP_EOL."SQL: ".$sql.PHP_EOL."File: ".__FILE__.PHP_EOL."Line: ".__LINE__ );
+
+        if( mysqli_num_rows( $res ) > 0 ) {
+            $data = mysqli_fetch_assoc( $res );
+            return $data['locale_id'];
+        }
+    }
+
+    public function fetchIso31661ByLanguageId( $languageId )
+    {
+        $sql    = "SELECT `iso_3166_1` FROM `".mysqli_real_escape_string( $this->db, $this->tableName )."` ";
+        $sql   .= "WHERE `id` = '".mysqli_real_escape_string( $this->db, $languageId )."' ";
+        $sql   .= "LIMIT 1 ";
+
+        $res    = mysqli_query( $this->db, $sql ) OR die( mysqli_error( $this->db ).PHP_EOL."SQL: ".$sql.PHP_EOL."File: ".__FILE__.PHP_EOL."Line: ".__LINE__ );
+
+        if( mysqli_num_rows( $res ) > 0 ) {
+            $data = mysqli_fetch_assoc( $res );
+            return $data['iso_3166_1'];
+        }
+    }	
 
     /**
      * Fetch language ID via

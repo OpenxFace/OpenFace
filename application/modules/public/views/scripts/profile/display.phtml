@@ -255,6 +255,14 @@
                             <div>
                                 <?php echo translate('joined'); ?> <?php echo date( SITE_DEFAULT_DATE_FORMAT, $this->user['date_created'] ); ?>
                             </div>
+
+                            <?php if( !empty( $this->user['metadata'] ) ): ?>
+                                <?php foreach( $this->user['metadata'] AS $key => $value ): ?>
+                                    <div>
+                                        <?php echo translate( $value['name'] ); ?> <?php echo $value['value']; ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -389,11 +397,11 @@
                     linkTo: 'local'
                 });
                 // END:     Auto-link URLs
-				
+
                 // strip slashes
                 $.each( $('.statusText, .commentText'), function( index, value ) {
                     $(value).html( stripslashes( $(value).html() ) );
-                });				
+                });
 
                 $('body').imagesLoaded( function() {
                     $.unblockUI();
@@ -439,7 +447,7 @@
             ?>
             <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/locale/<?php echo $js; ?>.js"></script>
         <?php } ?>
-		
+
         <!-- Livestamp.js -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
 
@@ -485,6 +493,7 @@
 
         <!-- Responsive Calendar -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/responsive-calendar/responsive-calendar.min.js"></script>
+
 
         <!-- jQuery.AutoImage -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-autoimage/jquery.autoimage.js"></script>

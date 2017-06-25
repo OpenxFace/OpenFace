@@ -125,6 +125,15 @@ class ProfileController extends Zend_Controller_Action
                     // END:     Get the comment owner
                 }
             }
+			
+			// metadata
+            $User_Metadata = new User_Metadata;
+            $params['user']['metadata'] = $User_Metadata->getBy(
+                array(
+                    'parent_uuid'   => $params['user']['uuid'],
+                ),
+                0
+            );			
 
             $this->view->messages   = $messages;
             $this->view->user       = $params['user'];

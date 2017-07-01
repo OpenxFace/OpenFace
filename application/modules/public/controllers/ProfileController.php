@@ -50,7 +50,7 @@ class ProfileController extends Zend_Controller_Action
 
             $messages = $this->_User_Status->getBy(
                 array(
-                    'timeline_owner' => $params['user']['uuid']
+                    'user_uuid' => $params['user']['uuid']
                 ),
                 100,
                 0,

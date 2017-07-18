@@ -48,20 +48,8 @@ class ProfileController extends Zend_Controller_Action
                 }
             }
 
-<<<<<<< HEAD
             $messages = $this->_User_Status->getTimelineByUserUuid(
                 $params['user']['uuid']
-=======
-            $messages = $this->_User_Status->getBy(
-                array(
-                    'user_uuid' => $params['user']['uuid']
-                ),
-                100,
-                0,
-                array(
-                    'date' => 'DESC'
-                )
->>>>>>> origin/master
             );
 
             if( !empty( $messages ) ) {

@@ -360,7 +360,6 @@
                     linkTo: 'local',
                     target: '_blank'
                 });                
-<<<<<<< HEAD
                 // END:     Auto-link URLs
 		
                 // strip slashes
@@ -590,14 +589,6 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
                 // END:     Lightbox
-=======
-                // END:     Auto-link URLs	
-				
-				// strip slashes
-				$.each( $('.statusText, .commentText'), function( index, value ) {
-					$(value).html( stripslashes( $(value).html() ) );
-				});
->>>>>>> origin/master
 						    
 				$('body').imagesLoaded( function() {
 					$.unblockUI();
@@ -621,29 +612,18 @@
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jsrender/jsrender.min.js"></script>		
 		
 		<!-- OpenFace -->
-<<<<<<< HEAD
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment.js"></script>
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/create.js"></script>
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/delete.js"></script>
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/create.js"></script>
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/delete.js"></script>
-=======
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment.js"></script>
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/create.js"></script>
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/comment/delete.js"></script>
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/create.js"></script>
-		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/delete.js"></script>
->>>>>>> origin/master
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/like.js"></script>
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/status/unlike.js"></script>		
 		
 		<!-- moment.js -->
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
-<<<<<<< HEAD
+
         <?php if( $_SESSION['user']['selected_locale'] != 'en' ) {
-=======
-        <?php if( $_SESSION['user']['selected_locale'] != 'en-us' ) {
->>>>>>> origin/master
             $locale = $_SESSION['user']['selected_locale'];
             switch( $locale ) {
                 case 'de-de':
@@ -651,26 +631,17 @@
 
                     break;
             }
-<<<<<<< HEAD
         ?>
-
-        <?php if( @$js ): ?>
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/locale/<?php echo $js; ?>.js"></script>
-        <?php endif; ?>
 
         <?php } ?>
 
-        <!-- Livestamp.js -->
-        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
-=======
-            ?>
+        <?php if( @$js ): ?>
             <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/locale/<?php echo $js; ?>.js"></script>
-        <?php } ?>		
+        <?php endif; ?>
         
 		<!-- Livestamp.js -->
 		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
->>>>>>> origin/master
-		
+
 		<?php
 			switch( $currentTheme ) {
 				case 'faceboot':
@@ -733,20 +704,13 @@
 
         <!-- JsViews -->
 		<script type="text/javascript">
-<<<<<<< HEAD
-            		$.views.converters('nltobr', function( val ) {
-                		return val.replace(/\\n/g, '<br />')
-            		});
+            $.views.converters('stripslashes', function( val ) {
+                return stripslashes( val )
+            });
 
-            		$.views.converters('stripslashes', function( val ) {
-                		return stripslashes( val )
-            }		);
-        	</script>
-=======
 			$.views.converters('nltobr', function(val) {
 				return val.replace(/\\n/g, '<br />')
 			});  
 		</script> 	
->>>>>>> origin/master
-	</body>	
+	</body>
 </html>

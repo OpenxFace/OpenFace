@@ -211,13 +211,8 @@ class Language extends Db
             $data = mysqli_fetch_assoc( $res );
             return $data['id'];
         }
-<<<<<<< HEAD
     }
 
-=======
-    } 
-	
->>>>>>> origin/master
     public function fetchLocaleIdByLanguageId( $languageId )
     {
         $sql    = "SELECT `locale_id` FROM `".mysqli_real_escape_string( $this->db, $this->tableName )."` ";
@@ -244,11 +239,7 @@ class Language extends Db
             $data = mysqli_fetch_assoc( $res );
             return $data['iso_3166_1'];
         }
-<<<<<<< HEAD
     }
-=======
-    }	
->>>>>>> origin/master
 
     /**
      * Fetch language ID via

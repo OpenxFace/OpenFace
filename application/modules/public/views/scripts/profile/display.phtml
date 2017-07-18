@@ -288,11 +288,7 @@
                             <?php if( !empty( $this->user['metadata'] ) ): ?>
                                 <?php foreach( $this->user['metadata'] AS $key => $value ): ?>
                                     <div>
-<<<<<<< HEAD
                                         <?php echo translate( $value['name'] ); ?>:&nbsp;&nbsp;<?php echo $value['value']; ?>
-=======
-                                        <?php echo translate( $value['name'] ); ?> <?php echo $value['value']; ?>
->>>>>>> origin/master
                                     </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -429,7 +425,6 @@
                     $(value).html( stripslashes( $(value).html() ) );
                 });
 
-<<<<<<< HEAD
                 // START:   Plupload
                 PLUPLOAD = new plupload.Uploader({
                     runtimes : 'html5,flash,silverlight,html4',
@@ -653,8 +648,6 @@
                 <?php endforeach; ?>
                 // END:     Lightbox
 
-=======
->>>>>>> origin/master
                 $('body').imagesLoaded( function() {
                     $.unblockUI();
                 });
@@ -688,14 +681,9 @@
 
         <!-- moment.js -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
-<<<<<<< HEAD
         <?php if( $_SESSION['user']['selected_locale'] != 'en' ) {
             $locale = $_SESSION['user']['selected_locale'];
 
-=======
-        <?php if( $_SESSION['user']['selected_locale'] != 'en-us' ) {
-            $locale = $_SESSION['user']['selected_locale'];
->>>>>>> origin/master
             switch( $locale ) {
                 case 'de-de':
                     $js = 'de';

@@ -23,9 +23,4 @@ class User_Metadata extends Db
         $this->tableName = DB_TABLE_PREFIX.'user_metadata';
         parent::__construct( $this->tableName );
     }
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/master

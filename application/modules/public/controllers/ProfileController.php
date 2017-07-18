@@ -48,8 +48,20 @@ class ProfileController extends Zend_Controller_Action
                 }
             }
 
+<<<<<<< HEAD
             $messages = $this->_User_Status->getTimelineByUserUuid(
                 $params['user']['uuid']
+=======
+            $messages = $this->_User_Status->getBy(
+                array(
+                    'user_uuid' => $params['user']['uuid']
+                ),
+                100,
+                0,
+                array(
+                    'date' => 'DESC'
+                )
+>>>>>>> origin/master
             );
 
             if( !empty( $messages ) ) {
@@ -127,6 +139,15 @@ class ProfileController extends Zend_Controller_Action
                     );
                 }
             }
+			
+			// metadata
+            $User_Metadata = new User_Metadata;
+            $params['user']['metadata'] = $User_Metadata->getBy(
+                array(
+                    'parent_uuid'   => $params['user']['uuid'],
+                ),
+                0
+            );			
 
             $User_Metadata = new User_Metadata;
             $params['user']['metadata'] = $User_Metadata->getBy(

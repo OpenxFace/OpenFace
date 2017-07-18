@@ -4,7 +4,7 @@
  * Bootstrap
  *
  * @author      BizLogic <hire@bizlogicdev.com>
- * @copyright   2012 - 2015 BizLogic
+ * @copyright   2012 - 2017 BizLogic
  * @link        http://bizlogicdev.com
  * @license     GNU Affero General Public License v3
  *
@@ -276,8 +276,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         if( $_SESSION['user']['language_id'] != $siteDefaultLanguageId ) {
         	$_SESSION['site']['phrases'] = array_merge( $siteDefaultPhrases, $_SESSION['site']['phrases'] );
         }
+<<<<<<< HEAD
 
         $_SESSION['user']['selected_locale'] = @$_SESSION['user']['lang_override'] ? $Language->fetchLocaleIdByLanguageId( $_SESSION['user']['language_id'] ) : $_SESSION['user']['locale'];
+=======
+		
+		$_SESSION['user']['selected_locale'] = $_SESSION['user']['lang_override'] ? $Language->fetchLocaleIdByLanguageId( $_SESSION['user']['language_id'] ) : $_SESSION['user']['locale'];
+>>>>>>> origin/master
     }
 
     protected function _setRunEnv()

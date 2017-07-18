@@ -24,4 +24,8 @@ class User_Metadata extends Db
         parent::__construct( $this->tableName );
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master

@@ -157,6 +157,17 @@
 						</li>																														
 					</ul>
 				</li>
+				<li>
+					<a href="#" data-toggle="dropdown" class='dropdown-toggle'>
+						<span>Media</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/media"><?php echo ucfirst( translate('all') ); ?></a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 			<div class="user">
 				<ul class="icon-nav">					
@@ -258,6 +269,17 @@
 				</ul>
 			</div>
 			
+			<div class="subnav subnav-hidden">
+				<div class="subnav-title">
+					<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span><?php echo ucfirst( translate('media') ); ?></span></a>
+				</div>
+				<ul class="subnav-menu">
+					<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/media"><?php echo ucfirst( translate('all') ); ?></a>
+					</li>
+				</ul>
+			</div>
+			
 		</div>
 		<div id="main">
 			<div class="container-fluid">
@@ -307,17 +329,11 @@
 									<thead>
 										<tr>						
 											<th>e-mail</th>
-											<th>Username</th>
-											<th>Site Language</th>
 											<th>Site Status</th>
 											<th>Join Date</th>
-											<th>Last Upload</th>
 											<th>Last Active</th>
-											<th>Last Login</th>
-											<th>Signup IP</th>
-											<th>Last IP</th>											
-											<th></th>	
-											<th></th>										
+											<th></th>
+											<th></th>
 											<th class="with-checkbox">
 												Edit
 												<div style="float: right;">
@@ -384,52 +400,37 @@
 		    'aoColumns': [
                     // e-mail
                     null,
-                    // username
-                    null,
-                    // site language
-                    null,
                     // site status
                     null,
                     // join date
                     {'mRender': function ( data, type, full ) {
-                      return date('F j, Y <br> H:i:s', data);
-                    }},
-                    // last upload
-                    {'mRender': function ( data, type, full ) {
-                      return ( parseInt( data ) > 0 ) ? date('F j, Y <br> H:i:s', data) : '-';
+                      //return date('F j, Y <br> H:i:s', data);
                     }},
                     // last active
                     {'mRender': function ( data, type, full ) {
-                      return ( parseInt( data ) > 0 ) ? date('F j, Y <br> H:i:s', data) : '-';
+                        //return ( parseInt( data ) > 0 ) ? date('F j, Y <br> H:i:s', data) : '-';
                     }},
-                    // last login
-                    {'mRender': function ( data, type, full ) {
-                      return ( parseInt( data ) > 0 ) ? date('F j, Y <br> H:i:s', data) : '-';
-                    }},			
-                    // signup IP				  
-                    null,
-                    // last IP
-                    null,
                     // URL slug
                     { 'bSearchable': false,
                     	'bVisible': false 
-                    },                    							  
-                    // id colomn							  
+                    },
+                    // id column
                     { 'bSearchable': false,
-                    	'bVisible': false 
-                    },		    
+                    	'bVisible': false
+                    },
                     // START:	options column                  
-                    {	'mDataProp': null,
+                    {
+                        'mDataProp': null,
                     'sClass': 'with-checkbox',
                     'sDefaultContent': '<a data-id="__ID__" data-urlslug="__URL_SLUG__" href="__BASEURL__/__URL_SLUG__" target="_blank" class="btn adminUserView" rel="tooltip" title="View"><i class="icon-search"></i></a>&nbsp;<a data-id="__ID__" href="#" class="btn adminUserEdit" rel="tooltip" title="Edit"><i class="icon-edit"></i></a>&nbsp;<a data-id="__ID__" data-username="__USERNAME__" href="#" class="btn adminUserDelete" rel="tooltip" title="Delete"><i class="icon-remove"></i></a>&nbsp;<div style="float: right;"><input type="checkbox" class="cbDataTables" value="1"></div>',
                     'sWidth': '10%',
                         'mRender': function ( data, type, full ) {
-                        	var newData = str_replace('__ID__', full[11], data); 
+                        	/*var newData = str_replace('__ID__', full[11], data);
                         	newData		= str_replace('__URL_SLUG__', full[10], newData)
                         	newData		= str_replace('__BASEURL__', BASEURL, newData);
                         	newData		= str_replace('__USERNAME__', full[1], newData);
                         	
-                        	return newData;
+                        	return newData; */
                         }								
                     }
                     // END:	options column							  		                      
@@ -511,7 +512,7 @@
 										$('.ui-dialog-content').dialog('close');
 									}								
 								},
-								error: function(  jqXHR, textStatus, errorThrown ) {
+								error: function( jqXHR, textStatus, errorThrown ) {
 								},		
 								dataType: 'json'
 							});	

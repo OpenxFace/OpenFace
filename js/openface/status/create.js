@@ -23,7 +23,8 @@ $(document).ready(function() {
 		var formEl	= $('#frmNewStatus');
 		var status	= $.trim( formEl.val() );
 		var ME		= $(this);
-		var myUUID	= uuid();
+		var UUID	= $('#frmStatusUuid').val();
+		var myUUID	= ( UUID.length > 0 ) ? UUID : uuid();
 		
 		// disable the button
 		ME.prop('disabled', true);
@@ -42,13 +43,27 @@ $(document).ready(function() {
 				data: { 
 					method: 'add', 				
 					status: status,
-					uuid: myUUID
+					uuid: myUUID,
+					timeline_owner: $('#frmTimelineOwner').val()
 				},
 				complete: function( jqXHR, textStatus ) {
 					// ...
 				},
 				success: function( response, textStatus, jqXHRresponse ) {				
-					if( response.status == 'OK' ) {						
+					if( response.status == 'OK' ) {
+
+                        // START:	Attachment Upload
+                        if( STATUS_HAS_ATTACHMENT ) {
+                        	$.blockUI();
+                            PLUPLOAD.start();
+                        }
+                        // END:		Attachment Upload
+
+						// change the UUID
+						var newUuid = uuid();
+                        UUID		= newUuid;
+                        $('#frmStatusUuid').val( newUuid );
+
 						// clear the value
 						formEl.val('');	
 						
@@ -74,7 +89,9 @@ $(document).ready(function() {
 							'owner': owner,
 							'like_data': {},
 							'uuid': myUUID,
-							'current_user': owner
+							'current_user': owner,
+							'timeline_owner': response.data.timeline_owner,
+							'user_uuid': CURRENT_USER.uuid
 						}];
 						
 						// template

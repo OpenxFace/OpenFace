@@ -154,5 +154,18 @@ $(document).ready( function() {
 			return false;
 		}		
 	});
+
+
+    // Location Detection
+    $(document).on('click', '#locationDetect', function( event ) {
+        event.preventDefault();
+        return false;
+    });
+
+    // Location Detection
+    $(document).on('click', '#status-uploadImage', function( event ) {
+        event.preventDefault();
+		return false;
+    });
 	
 });

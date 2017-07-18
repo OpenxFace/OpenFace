@@ -145,6 +145,17 @@
 						</li>												
 					</ul>
 				</li>
+				<li>
+					<a href="#" data-toggle="dropdown" class='dropdown-toggle'>
+						<span>Media</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/media"><?php echo ucfirst( translate('all') ); ?></a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 			<div class="user">
 				<ul class="icon-nav">					
@@ -246,7 +257,17 @@
 					</li>
 				</ul>
 			</div>
-
+			
+			<div class="subnav subnav-hidden">
+				<div class="subnav-title">
+					<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span><?php echo ucfirst( translate('media') ); ?></span></a>
+				</div>
+				<ul class="subnav-menu">
+					<li>
+						<a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/admin/media"><?php echo ucfirst( translate('all') ); ?></a>
+					</li>
+				</ul>
+			</div>
 			
 		
 		</div>

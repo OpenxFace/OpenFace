@@ -25,7 +25,7 @@ class UploadController extends Zend_Controller_Action
     public function init() 
     {    	
     	$this->_accountStatus	= $_SESSION['user']['site_status'];    	    	
-    	$this->_Upload	= new Upload;
+    	$this->_Upload          = new Upload;
     }
     
     public function indexAction() 
@@ -37,7 +37,7 @@ class UploadController extends Zend_Controller_Action
     
     public function ajaxAction()
     {
-    	if( !in_array('can_upload', $_SESSION['site']['permissions']['upload'] ) ) {
+    	if( !has_permission('can_upload') ) {
     		$json			= array();
     		$json['status']	= 'ERROR';
     		$json['error']	= 'NO_PERMISSION';
@@ -149,11 +149,13 @@ class UploadController extends Zend_Controller_Action
     		rename("{$filePath}.part", $filePath);
     	} else {
     		// return Success JSON-RPC response
-    		exit( json_encode( array(
-    				'chunk'			=> $_REQUEST['chunk'],
-    				'totalChunks'	=> $_POST['chunks']
-    		)
-    		)
+    		exit(
+    		    json_encode(
+    		        array(
+    				    'chunk'			=> $_REQUEST['chunk'],
+    				    'totalChunks'	=> $_POST['chunks']
+    		        )
+    		    )
     		);
     	}
     	// END:		chunk handling
@@ -167,14 +169,23 @@ class UploadController extends Zend_Controller_Action
     			if( isset( $_POST['uuid'] ) ) {
     				$fileData['uuid'] = $_POST['uuid'];
     			} elseif( isset( $_POST['UUID'] ) ) {
-    				$fileData['uuid'] = $_POST['UUID'];
-    			}
-    	
+                    $fileData['uuid'] = $_POST['UUID'];
+                } else if( isset( $_POST['parent_uuid'] ) ) {
+                    $fileData['uuid'] = $_POST['parent_uuid'];
+    			} else {
+    			    $fileData['uuid'] = uuid();
+                }
+
+                if( isset( $_POST['parent_uuid'] ) ) {
+    			    $fileData['parent_uuid'] = $_POST['parent_uuid'];
+                }
+
+                $fileData['filesize']       = $_FILES['file']['size'];
     			$fileData['filename']		= fetchFilename( $_POST['name'] );
     			$fileData['fileExt']		= fetchFileExt( $_POST['name'] );
     			$fileData['uploader_ip'] 	= $_SERVER['REMOTE_ADDR'];
     	
-    			$method = $_POST['method'];
+    			$method = @$_POST['method'];
     			
     			switch( $method ) {
     				case 'media-embed-thumb':    					

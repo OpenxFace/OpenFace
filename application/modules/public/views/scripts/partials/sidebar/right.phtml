@@ -29,25 +29,45 @@
 <!-- Responsive calendar - END -->
 
 <script type="text/javascript">
-    $(document).ready(function() {    
-    	$('.responsive-calendar').responsiveCalendar({
-    		monthChangeAnimation: false,
-    		onDayClick: function( event ) { 
-    			setTimeout( function() { 
-            		$.unblockUI(); 
-        		}, 500);        		
-        	}
-    	});
+    $(document).ready(function() {
+        <?php
+            $locale = $_SESSION['user']['selected_locale'];
 
-	// set the date & time
-	$('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
+            if( $locale != 'en-us' ) {
+        ?>
+            $('.responsive-calendar').responsiveCalendar({
+                monthChangeAnimation: false,
+                onDayClick: function( event ) {
+                    setTimeout( function() {
+                        $.unblockUI();
+                    }, 500);
+                },
+                translateMonths: [ translate('january'), translate('february'), translate('march'), translate('april'), translate('may'), translate('june'), translate('july'), translate('august'), translate('september'), translate('october'), translate('november'), translate('december') ]
+            });
+        <?php
+            } else {
+        ?>
+            $('.responsive-calendar').responsiveCalendar({
+                monthChangeAnimation: false,
+                onDayClick: function( event ) {
+                    setTimeout( function() {
+                        $.unblockUI();
+                    }, 500);
+                }
+            });
+        <?php
+            }
+        ?>
 
-    	// update the date & time
-	setInterval( function() {			        
-		$('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
-		
-		// set today as active
-		$('#calendarRightSidebar .days .day.today').addClass('active');		
-	}, 1000);	        
+        // set the date & time
+        $('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
+
+            // update the date & time
+        setInterval( function() {
+            $('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
+
+            // set today as active
+            $('#calendarRightSidebar .days .day.today').addClass('active');
+        }, 1000);
     });
 </script>

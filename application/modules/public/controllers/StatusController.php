@@ -60,23 +60,32 @@ class StatusController extends Zend_Controller_Action
 			$json	= array();			
 			
 			switch( $method ) {
+                case 'completeUploads':
+
+                    // START:   Complete any file uploads
+                    $Upload = new Upload();
+                    $json   = $Upload->completeFileUpload( $_POST['uuid'] );
+                    // END:     Complete any file uploads
+
+                    break;
+
 				case 'add':
 				    // ip
 				    $_POST['ip'] = getIP();
-
-				    // timeline owner
-                    $_POST['timeline_owner'] = myUUID();
 				    
 				    // add to DB
 					$result	= $this->_User_Status->insert( $_POST );
 						
 					if( (int)$result > 0 ) {
+					    $User = new User;
+
 						$json['status']   = 'OK';
 						$json['data']     = array(
-						    'id'              => $result,
-						    'status'          => $this->_AutoEmbed->parse( $_POST['status'] ),
-						    'current_user'    => $currentUser,
-						    'owner'           => $currentUser
+						    'id'                => $result,
+						    'status'            => $this->_AutoEmbed->parse( $_POST['status'] ),
+						    'current_user'      => $currentUser,
+						    'owner'             => $currentUser,
+                            			    'timeline_owner'    => $User->fetchUserDetailsByUUID( $_POST['timeline_owner'] ),
 						);
 						
 						if( isset( $_POST['uuid'] ) ) {
@@ -126,7 +135,7 @@ class StatusController extends Zend_Controller_Action
  				    $record = $this->_User_Status->getById( $statusId );
 
  				    if( !empty( $record ) ) {
- 				        if( @$record['user_uuid'] == $_SESSION['user']['uuid'] ) {
+ 				        if( @$record['user_uuid'] == $_SESSION['user']['uuid'] OR @$record['timeline_owner'] == $_SESSION['user']['uuid'] ) {
  				            $result	= $this->_User_Status->deleteById( $statusId );
 
  				            if( (int)$result > 0 ) {

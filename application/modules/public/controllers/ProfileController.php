@@ -37,7 +37,7 @@ class ProfileController extends Zend_Controller_Action
             forceError();
         } else {
             if( is_null( $params['user']['avatar_url'] ) ) {
-                switch( $params['user']['gender'] ) {
+                switch( @$params['user']['gender'] ) {
                     case 'female':
                         $params['user']['avatar_url'] = SITE_DEFAULT_AVATAR_URL_FEMALE;
 
@@ -48,21 +48,15 @@ class ProfileController extends Zend_Controller_Action
                 }
             }
 
-            $messages = $this->_User_Status->getBy(
-                array(
-                    'timeline_owner' => $params['user']['uuid']
-                ),
-                100,
-                0,
-                array(
-                    'date' => 'DESC'
-                )
+            $messages = $this->_User_Status->getTimelineByUserUuid(
+                $params['user']['uuid']
             );
 
             if( !empty( $messages ) ) {
                 $AutoEmbed              = new AutoEmbed;
                 $User_Status_Comment    = new User_Status_Comment;
                 $User                   = new User;
+                $User_Status_Media      = new User_Status_Media;
 
                 foreach ( $messages AS $key => $value ) {
                     // current user
@@ -123,8 +117,24 @@ class ProfileController extends Zend_Controller_Action
                         }
                     }
                     // END:     Get the comment owner
+
+                    // get media
+                    $messages[ $key ]['media'] = $User_Status_Media->getBy(
+                        array(
+                            'parent_uuid' => $value['uuid']
+                        ),
+                        100
+                    );
                 }
             }
+
+            $User_Metadata = new User_Metadata;
+            $params['user']['metadata'] = $User_Metadata->getBy(
+                array(
+                    'parent_uuid' => $params['user']['uuid'],
+                ),
+                0
+            );
 
             $this->view->messages   = $messages;
             $this->view->user       = $params['user'];

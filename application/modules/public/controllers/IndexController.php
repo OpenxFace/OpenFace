@@ -29,7 +29,7 @@ class IndexController extends Zend_Controller_Action
     }
     
     public function indexAction() 
-    {            
+    {
         // total count
         $countTotal = $this->_User_Status->countBy( 'privacy', 'public' );
         
@@ -51,14 +51,21 @@ class IndexController extends Zend_Controller_Action
         if( !empty( $messages ) ) {            
             $AutoEmbed              = new AutoEmbed;
             $User_Status_Comment    = new User_Status_Comment;
+            $User_Status_Media      = new User_Status_Media;
             $User                   = new User;
             
             foreach( $messages AS $key => $value ) {
                 // current user
                 $currentUser                        = user();
-                $messages[ $key ]['current_user']   = $currentUser; 
-                
-                // START:   status                
+                $messages[ $key ]['current_user']   = $currentUser;
+
+                // message owner
+                $messages[ $key ]['owner'] = $User->fetchUserDetailsByUUID( $value['user_uuid'] );
+
+                // timeline owner
+                $messages[ $key ]['timeline_owner'] = $User->fetchUserDetailsByUUID( $value['timeline_owner'] );
+
+                // START:   status
                 // AutoEmbed
                 $messages[ $key ]['status'] = $AutoEmbed->parse( $value['status'] );
                 
@@ -112,9 +119,17 @@ class IndexController extends Zend_Controller_Action
                     }
                 }
                 // END:     Get the comment owner
+
+                // get media
+                $messages[ $key ]['media'] = $User_Status_Media->getBy(
+                    array(
+                        'parent_uuid' => $value['uuid']
+                    ),
+                    100
+                );
             }    
         }
-        
+
         $this->view->countTotal     = $countTotal;
         $this->view->countFetched   = $countFetched;
         $this->view->messages       = $messages;

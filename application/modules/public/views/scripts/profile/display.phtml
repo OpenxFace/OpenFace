@@ -66,6 +66,10 @@
             </script>
         <?php endif; ?>
 
+        <?php
+            $UUID = uuid();
+        ?>
+
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js"></script>
         <script type="text/javascript">
             var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
@@ -74,18 +78,21 @@
             var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>';
             var SITE_NAME				= '<?php echo SITE_NAME; ?>';
             var CURRENT_USER			= new Array();
-            var UUID					= uuid();
+            var UUID					= '<?php echo $UUID; ?>';
             var USE_BLOCKUI				= <?php echo (int)SITE_USE_BLOCKUI; ?>;
             var IS_MOBILE				= <?php echo (int)IS_MOBILE; ?>;
             var DEFAULT_AVATAR			= '<?php echo SITE_DEFAULT_AVATAR_URL; ?>';
             var TOTAL_MEDIA_COUNT		= <?php echo (int)$this->countTotal; ?>;
             var DISPLAYED_MEDIA_COUNT	= <?php echo (int)$this->countFetched; ?>;
             var AJAX_REQ				= false;
+            var STATUS_HAS_ATTACHMENT   = false;
+            var PLUPLOAD_DEBUG          = true;
+            var PLUPLOAD;
 
             <?php foreach( $_SESSION['user'] AS $key => $value ): ?>
-            <?php if( !is_array( $value ) ): ?>
-            CURRENT_USER['<?php echo $key; ?>'] = '<?php echo base64_encode( $value ); ?>';
-            <?php endif; ?>
+                <?php if( !is_array( $value ) ): ?>
+                    CURRENT_USER['<?php echo $key; ?>'] = '<?php echo base64_encode( $value ); ?>';
+                <?php endif; ?>
             <?php endforeach; ?>
         </script>
 
@@ -175,14 +182,19 @@
         <!-- Toolkit -->
         <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/toolkit.css" type="text/css">
 
-        <?php
-        $layoutType = '';
 
-        if( @$_SESSION['user']['user_prefs']['site_layout_type'] == 'fluid' ) {
-            $layoutType = '-fluid';
-        } elseif ( SITE_DEFAULT_LAYOUT_TYPE == 'fluid' ) {
-            $layoutType = '-fluid';
-        }
+        <!-- lightgallery.js -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/lightgallery/lightgallery.min.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/lightgallery/lg-transitions.min.css" type="text/css">
+
+        <?php
+            $layoutType = '';
+
+            if( @$_SESSION['user']['user_prefs']['site_layout_type'] == 'fluid' ) {
+                $layoutType = '-fluid';
+            } elseif ( SITE_DEFAULT_LAYOUT_TYPE == 'fluid' ) {
+                $layoutType = '-fluid';
+            }
         ?>
     </head>
 
@@ -213,7 +225,7 @@
                         <?php echo $this->user['first_name']; ?> <?php echo $this->user['last_name']; ?>
                     </h1>
 
-                    <div style="margin-left: 5px; font-size: x-small;">
+                    <div style="font-size: x-small; margin-top: 10px; margin-left: 3px;">
                         <a class="noBlockUI" href="mailto:<?php echo $this->user['email']; ?>"><?php echo $this->user['email']; ?></a>
                     </div>
                 </div>
@@ -221,6 +233,19 @@
                 <div style="position: absolute; bottom: -55px;">
                     <img style="height: 200px;" src="<?php echo $this->user['avatar_url']; ?>" class="img-thumbnail" alt="">
                 </div>
+
+
+                <?php if( myUUID() != $this->user['uuid'] ): ?>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pull-right">
+                                <a href="<?php echo PROTOCOL_RELATIVE_URL;?>/dm/<?php echo $this->user['url_slug']; ?>" class="btn btn-default blockUI-trigger">
+                                    <i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo translate('message'); ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         <!-- END:       Header -->
@@ -253,8 +278,20 @@
                             </div>
 
                             <div>
-                                <?php echo translate('joined'); ?> <?php echo date( SITE_DEFAULT_DATE_FORMAT, $this->user['date_created'] ); ?>
+                                <?php echo translate('joined'); ?>:  <span alt="<?php echo date( SITE_DEFAULT_DATE_FORMAT, $this->user['date_created'] ); ?>" title="<?php echo date( SITE_DEFAULT_DATE_FORMAT, $this->user['date_created'] ); ?>" data-livestamp="<?php echo $this->user['date_created']; ?>"><i class="fa fa fa-spinner fa-spin"></i></span>
                             </div>
+
+                            <div>
+                                <?php echo translate('last_seen'); ?>:&nbsp;&nbsp;<span alt="<?php echo date( SITE_DEFAULT_DATE_TIME_FORMAT, $this->user['last_active'] ); ?>" title="<?php echo date( SITE_DEFAULT_DATE_TIME_FORMAT, $this->user['last_active'] ); ?>" data-livestamp="<?php echo $this->user['last_active']; ?>"><?php if( $this->user['last_active'] ): ?><i class="fa fa fa-spinner fa-spin"></i><?php else: ?>&mdash;<?php endif; ?></span>
+                            </div>
+
+                            <?php if( !empty( $this->user['metadata'] ) ): ?>
+                                <?php foreach( $this->user['metadata'] AS $key => $value ): ?>
+                                    <div>
+                                        <?php echo translate( $value['name'] ); ?>:&nbsp;&nbsp;<?php echo $value['value']; ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -263,30 +300,23 @@
                     <div class="well">
                         <form role="form" class="form-horizontal">
                             <div class="form-group" style="padding: 14px;">
+                                <input id="frmStatusUuid" name="uuid" type="hidden" value="<?php echo $UUID; ?>">
                                 <textarea class="form-control" rows="5" id="frmNewStatus" name="status" placeholder="<?php echo translate('prompt_whats_new'); ?>"></textarea>
+                                <input type="hidden" id="frmTimelineOwner" name="timeline_owner" value="<?php echo $this->user['uuid'];?>">
                             </div>
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <!-- ul class="list-inline">
+                                    <ul class="list-inline">
                                         <li>
-                                            <a href="">
-                                                <i class="glyphicon glyphicon-upload"></i>
+                                            <a id="status-uploadImage" href="javascript:void(0);" class="unBlockUI">
+                                                <i class="fa fa-camera" aria-hidden="false"></i>
                                             </a>
                                         </li>
+                                    </ul>
 
-                                        <li>
-                                            <a href="">
-                                                <i class="glyphicon glyphicon-camera"></i>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="">
-                                                <i class="glyphicon glyphicon-map-marker"></i>
-                                            </a>
-                                        </li>
-                                    </ul -->
+                                    <div id="filelist"></div>
+                                    <div id="fileContainer"></div>
                                 </div>
 
                                 <div class="col-lg-6">
@@ -363,17 +393,17 @@
 
                 <?php
                 if( !empty( $this->messages ) ) {
-                $json = json_encode( $this->messages, true );
+                    $json = json_encode( $this->messages, true );
                 ?>
-                var template	= $.templates('#templateStatus');
-                var htmlOutput	= template.render( <?php echo $json; ?> );
+                    var template	= $.templates('#templateStatus');
+                    var htmlOutput	= template.render( <?php echo $json; ?> );
 
-                $('#statusList').html( htmlOutput );
+                    $('#statusList').html( htmlOutput );
 
                 <?php
                 } else {
                 ?>
-                $('#noticeNoMessages').show();
+                    $('#noticeNoMessages').show();
                 <?php
                 }
                 ?>
@@ -389,6 +419,234 @@
                     linkTo: 'local'
                 });
                 // END:     Auto-link URLs
+
+                // strip slashes
+                $.each( $('.statusText, .commentText'), function( index, value ) {
+                    $(value).html( stripslashes( $(value).html() ) );
+                });
+
+                // START:   Plupload
+                PLUPLOAD = new plupload.Uploader({
+                    runtimes : 'html5,flash,silverlight,html4',
+                    browse_button: 'status-uploadImage', // you can pass in id...
+                    container: document.getElementById('fileContainer'), // ... or DOM Element itself
+                    multipart: true,
+                    multipart_params: {
+                        'uuid': UUID
+                    },
+                    url: BASEURL + '/upload/ajax',
+                    filters : {
+                        max_file_size: '15mb',
+                        mime_types: [
+                            {
+                                title : translate('images'),
+                                extensions : 'jpg,jpeg,gif,png'
+                            }
+                        ]
+                    },
+
+                    // Flash settings
+                    flash_swf_url : BASEURL + '/js/plupload/Moxie.swf',
+
+                    // Silverlight settings
+                    silverlight_xap_url : BASEURL + '/js/plupload/Moxie.xap',
+
+                    // PreInit events, bound before any internal events
+                    preinit : {
+                        Init: function(up, info) {
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[Init]', 'Info:', info, 'Features:', up.features);
+                            }
+                        },
+
+                        UploadFile: function(up, file) {
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[UploadFile]', file);
+                            }
+
+                            // You can override settings before the file is uploaded
+                            // up.setOption('url', 'upload.php?id=' + file.id);
+                            // up.setOption('multipart_params', {param1 : 'value1', param2 : 'value2'});
+                        }
+                    },
+
+                    init: {
+                        PostInit: function() {
+                            // Called after initialization is finished and internal event handlers bound
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[PostInit]');
+                            }
+
+                            document.getElementById('filelist').innerHTML = '';
+                        },
+
+                        Browse: function(up) {
+                            // Called when file picker is clicked
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[Browse]');
+                            }
+                        },
+
+                        Refresh: function(up) {
+                            // Called when the position or dimensions of the picker change
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[Refresh]');
+                            }
+                        },
+
+                        StateChanged: function(up) {
+                            // Called when the state of the queue is changed
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[StateChanged]', up.state == plupload.STARTED ? "STARTED" : "STOPPED");
+                            }
+                        },
+
+                        QueueChanged: function(up) {
+                            // Called when queue is changed by adding or removing files
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[QueueChanged]');
+                            }
+
+                            if( up.total.queued > 0 || up.total.uploaded > 0 ) {
+                                STATUS_HAS_ATTACHMENT = true;
+                            } else if( up.total.uploaded == 0 ) {
+                                STATUS_HAS_ATTACHMENT = false;
+                            }
+                        },
+
+                        OptionChanged: function(up, name, value, oldValue) {
+                            // Called when one of the configuration options is changed
+                            if (PLUPLOAD_DEBUG) {
+                                console.log('[OptionChanged]', 'Option Name: ', name, 'Value: ', value, 'Old Value: ', oldValue);
+                            }
+                        },
+
+                        BeforeUpload: function(up, file) {
+                            // Called right before the upload for a given file starts, can be used to cancel it if required
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[BeforeUpload]', 'File: ', file);
+                            }
+                        },
+
+                        UploadProgress: function(up, file) {
+                            // Called while file is being uploaded
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[UploadProgress]', 'File:', file, "Total:", up.total);
+                            }
+
+                            document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                        },
+
+                        FileFiltered: function(up, file) {
+                            // Called when file successfully files all the filters
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[FileFiltered]', 'File:', file);
+                            }
+                        },
+
+                        FilesAdded: function(up, files) {
+                            // Called when files are added to queue
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[FilesAdded]');
+                            }
+
+                            plupload.each(files, function(file) {
+                                if( PLUPLOAD_DEBUG ) {
+                                    console.log('  File:', file);
+                                }
+
+                                document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+                            });
+                        },
+
+                        FilesRemoved: function(up, files) {
+                            // Called when files are removed from queue
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[FilesRemoved]');
+                            }
+
+                            plupload.each(files, function(file) {
+                                console.log('  File:', file);
+                            });
+                        },
+
+                        FileUploaded: function(up, file, info) {
+                            // Called when file has finished uploading
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[FileUploaded] File:', file, "Info:", info);
+                            }
+                        },
+
+                        ChunkUploaded: function(up, file, info) {
+                            // Called when file chunk has finished uploading
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[ChunkUploaded] File:', file, "Info:", info);
+                            }
+                        },
+
+                        UploadComplete: function(up, files) {
+                            // Called when all files are either uploaded or failed
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[UploadComplete]');
+                            }
+
+                            // AJAX REQ
+                            $.ajax({
+                                type: 'POST',
+                                url: BASEURL + '/status/ajax',
+                                data: {
+                                    method: 'completeUploads',
+                                    uuid: UUID
+                                },
+                                complete: function( jqXHR, textStatus ) {
+                                    // ...
+                                },
+                                success: function( response, textStatus, jqXHRresponse ) {
+                                    if( response.status == 'OK' ) {
+                                        // ...
+                                    } else {
+                                        // ...
+                                    }
+
+                                    window.location.reload();
+                                },
+                                error: function( jqXHR, textStatus, errorThrown ) {
+                                    // ...
+                                },
+                                dataType: 'json'
+                            });
+                        },
+
+                        Destroy: function(up) {
+                            // Called when uploader is destroyed
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[Destroy] ');
+                            }
+                        },
+
+                        Error: function(up, args) {
+                            // Called when error occurs
+                            if( PLUPLOAD_DEBUG ) {
+                                console.log('[Error] ', args);
+                            }
+
+                            document.getElementById('console').innerHTML += "\nError #" + args.code + ": " + args.message;
+                        }
+                    }
+                });
+
+                PLUPLOAD.init();
+                // END:     Plupload
+
+                // START:   Lightbox
+                <?php foreach( $this->messages AS $key => $value ): ?>
+                    <?php if( !empty( $value['media'] ) ): ?>
+                        lightGallery( document.getElementById('animated-thumbnails-<?php echo $value['id']; ?>'), {
+                            thumbnail: true
+                        });
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                // END:     Lightbox
 
                 $('body').imagesLoaded( function() {
                     $.unblockUI();
@@ -423,6 +681,18 @@
 
         <!-- moment.js -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
+        <?php if( $_SESSION['user']['selected_locale'] != 'en' ) {
+            $locale = $_SESSION['user']['selected_locale'];
+
+            switch( $locale ) {
+                case 'de-de':
+                    $js = 'de';
+
+                    break;
+            }
+            ?>
+            <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/locale/<?php echo $js; ?>.js"></script>
+        <?php } ?>
 
         <!-- Livestamp.js -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
@@ -473,6 +743,20 @@
 
         <!-- jQuery.AutoImage -->
         <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-autoimage/jquery.autoimage.js"></script>
+
+        <!-- lightgallery.js -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/lightgallery/lightgallery.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/lightgallery/plugins/lg-thumbnail.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/lightgallery/plugins/lg-hash.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/lightgallery/plugins/lg-zoom.js"></script>
+
+        <!-- Plupload -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/plupload/plupload.full.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>
+
+        <!-- truncate -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.truncate.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.truncate.defaults.js"></script>
 
         <!-- JsViews -->
         <script type="text/javascript">

@@ -35,7 +35,7 @@ class Phrase extends Db
 	{
 		$data	= array();
 		
-		$sql	= "SELECT * FROM ` ".mysqli_real_escape_string( $this->db, $this->tableName )."`  ";
+		$sql	= "SELECT * FROM `".mysqli_real_escape_string( $this->db, $this->tableName )."`  ";
 		$sql   .= "ORDER BY ".mysqli_real_escape_string( $this->db, $orderBy )." ";
 		$sql   .= mysqli_real_escape_string( $this->db, $sortOrder );
 		

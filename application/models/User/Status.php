@@ -25,7 +25,40 @@ class User_Status extends Db
 	{
 	    $this->tableName = DB_TABLE_PREFIX.'user_status';
 	    parent::__construct( $this->tableName );
-	} 
+	}
+
+    /**
+     * Delete by ID
+     *
+     * @param	int	$id
+     * @return	boolean
+    */
+    public function deleteById( $id = 0 )
+    {
+        $id = (int)$id;
+
+        if( isZero( $id ) ) {
+            return false;
+        }
+
+        $data = $this->getById( $id );
+
+        if( !empty( $data ) ) {
+            // delete associated media
+            $User_Status_Media = new User_Status_Media;
+            $User_Status_Media->deleteByParentUuid( $data['uuid'] );
+
+            // remove from the DB
+            $sql = "DELETE FROM ";
+            $sql .= " `".mysqli_real_escape_string( $this->db, $this->tableName )."` ";
+            $sql .= "WHERE `id` = '".mysqli_real_escape_string( $this->db, $id )."' ";
+            $sql .= "LIMIT 1 ";
+
+            $res = mysqli_query( $this->db, $sql ) OR die( '<pre>SQL Error:  '.mysqli_error( $this->db ).'<br>SQL:  '.$sql.'<br>File:  '.__FILE__.'<br>Line:  '.__LINE__ );
+
+            return mysqli_affected_rows( $this->db );
+        }
+    }
 	
 	/**
 	 * Insert
@@ -192,6 +225,58 @@ class User_Status extends Db
         );
 
         return $messages;
+    }
+
+    public function getTimelineByUserUuid( $userUuid = '', $limit = 1000, $offset = 0, $orderBy = array( 'date' => 'DESC' ) )
+    {
+        $data  = array();
+
+        $query = "SELECT * FROM ";
+        $query .= " `".mysqli_real_escape_string( $this->db, $this->tableName )."` ";
+        $query .= "WHERE `timeline_owner` = ";
+        $query .= " '".mysqli_real_escape_string( $this->db, $userUuid )."' ";
+        $query .= "OR `user_uuid` = ";
+        $query .= " '".mysqli_real_escape_string( $this->db, $userUuid )."' ";
+
+        if( !empty( $orderBy ) ) {
+            $count 	= count( $orderBy );
+            $i		= 0;
+
+            $query .= "ORDER BY ";
+            foreach( $orderBy AS $orderKey => $orderValue ) {
+                $i++;
+                $query .= "`".$orderKey."` ".$orderValue." ";
+
+                if( $i < $count ) {
+                    $query .= ", ";
+                }
+            }
+        }
+
+        $limit	= (int)$limit;
+        $offset = (int)$offset;
+
+        if( ( $limit > 0 ) AND ( $offset > 0 ) ) {
+            $query .= "LIMIT ".$offset.", ".$limit;
+        }
+
+        $res  = mysqli_query( $this->db, $query ) OR die( '<pre>SQL Error:  '.mysqli_error( $this->db ).'<br>SQL:  '.$query.'<br>File:  '.__FILE__.'<br>Line:  '.__LINE__ );
+
+        if( mysqli_num_rows( $res ) > 0 ) {
+            $User = new User;
+
+            while( $row = mysqli_fetch_assoc( $res ) ) {
+                // get the owner
+                $row['owner'] = $User->fetchUserDetailsByUUID( $row['user_uuid'] );
+
+                // get the timeline owner
+                $row['timeline_owner'] = $User->fetchUserDetailsByUUID( $row['timeline_owner'] );
+
+                $data[] = $row;
+            }
+        }
+
+        return $data;
     }
 	
     // END OF THIS CLASS

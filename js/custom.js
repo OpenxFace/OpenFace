@@ -708,6 +708,16 @@ function momentGetCurrentDateAndTime()
 	momentNow.format('DD.MM.YYYY HH:mm:ss');	
 }
 
+function getLocation() {
+    if (navigator.geolocation) {
+        location = navigator.geolocation.getCurrentPosition();
+    } else {
+        location = 'Geolocation is not supported by this browser.';
+    }
+
+    return location;
+}
+
 Array.prototype.remove = function(value) {
     if (this.indexOf(value)!==-1) {
        this.splice(this.indexOf(value) );

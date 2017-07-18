@@ -23,7 +23,7 @@ $(document).ready(function() {
 		event.preventDefault();
 		
 		var statusId	= $(this).data('id');
-		var statusHtml	= $.trim( $('#statusText-' + statusId).html() );
+		var statusHtml	= $.truncate( $.trim( $('#statusText-' + statusId).html() ) );
 		
 		// dialog
 		bootbox.dialog({

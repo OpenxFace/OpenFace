@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <title><?php echo SITE_NAME; ?> - <?php echo translate('company_directory'); ?></title>
+	    
+	    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	    <meta name="apple-mobile-web-app-capable" content="yes" />	    
+
+	    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	    <!--[if lt IE 9]>
+	      <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/html5shiv.js"></script>
+	      <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/respond.min.js"></script>
+		<![endif]-->	      	    
+	    
+	 	<?php
+			if( (int)SITE_ALLOW_TEMPLATE_CHANGE == 1 ) {
+	 			$currentTheme = ( strlen( @$_COOKIE['theme'] ) ) ? $_COOKIE['theme'] : SITE_DEFAULT_TEMPLATE;
+			} else {
+	 			$currentTheme = SITE_DEFAULT_TEMPLATE;
+	 			setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+			}
+			
+			$_SESSION['current_theme'] = $currentTheme;
+		?> 
+		
+		<?php $siteThemes		= $GLOBALS['SITE_THEMES']; ?>
+		<?php $bootstrapThemes	= $GLOBALS['BOOTSTRAP_THEMES']; ?>    	 
+				
+		<?php if( !empty( $siteThemes ) ): ?>
+			
+			<?php 		
+				if( $currentTheme != SITE_DEFAULT_TEMPLATE ) {
+					if( !array_key_exists( $currentTheme, $siteThemes ) ) {
+						$currentTheme = SITE_DEFAULT_TEMPLATE;
+						setcookie( 'theme', SITE_DEFAULT_TEMPLATE, time() + SITE_COOKIE_TIMEOUT, SITE_COOKIE_PATH );
+					}
+				}
+			?>
+						
+			<script type="text/javascript">	
+				var BOOTSTRAP_THEMES	= new Array();	
+				var SITE_THEMES			= new Array();
+				
+				<?php foreach( $siteThemes AS $key => $value ): ?>
+					SITE_THEMES['<?php echo $key; ?>'] = '<?php echo $value['display_name']; ?>';	
+				<?php endforeach; ?>
+
+				<?php foreach( $bootstrapThemes AS $key => $value ): ?>
+					BOOTSTRAP_THEMES['<?php echo $key; ?>'] = '<?php echo $value['display_name']; ?>';
+				<?php endforeach; ?>				
+			</script>
+			<?php else: ?>
+			<script type="text/javascript">		
+				var BOOTSTRAP_THEMES	= new Array();
+				var SITE_THEMES			= new Array();
+			</script>			
+		<?php endif; ?>
+		
+	    <?php if( !empty( $_SESSION['site']['phrases'] ) ): ?>    
+	    	<script type="text/javascript">
+	    		var SITE_PHRASES = new Array();
+				<?php foreach( $_SESSION['site']['phrases'] AS $key => $value ): ?>
+					SITE_PHRASES['<?php echo $key; ?>'] = '<?php echo addslashes( str_replace( "\r\n", '<br>', $value ) ); ?>';
+				<?php endforeach; ?>
+	    	</script>
+	    <?php endif; ?>	
+	    
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/phpjs.js"></script>	    		   	    
+		<script type="text/javascript">
+			var BASEURL					= '<?php echo PROTOCOL_RELATIVE_URL; ?>';
+			var DEFAULT_PRELOADER_IMAGE	= '<?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?>';
+			var CURRENT_THEME 			= '<?php echo $currentTheme; ?>';
+			var CURRENT_USERNAME		= '<?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>';
+			var SITE_NAME				= '<?php echo SITE_NAME; ?>';		
+			var CURRENT_USER			= new Array();
+			var UUID					= uuid();		
+			var USE_BLOCKUI				= <?php echo (int)SITE_USE_BLOCKUI; ?>;
+			var IS_MOBILE				= <?php echo (int)IS_MOBILE; ?>;
+			var DEFAULT_AVATAR			= '<?php echo SITE_DEFAULT_AVATAR_URL; ?>';	
+			var TOTAL_MEDIA_COUNT		= <?php echo (int)$this->countTotal; ?>;
+			var DISPLAYED_MEDIA_COUNT	= <?php echo (int)$this->countFetched; ?>;
+			var AJAX_REQ				= false;
+					
+			<?php foreach( $_SESSION['user'] AS $key => $value ): ?>
+				<?php if( !is_array( $value ) ): ?>
+				    CURRENT_USER['<?php echo $key; ?>'] = '<?php echo base64_encode( $value ); ?>';
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</script>     
+	    
+	    <!-- START:    Favicon -->
+	    <link rel="Shortcut Icon" type="image/x-icon" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon.ico" /><base>
+        <link rel="apple-touch-icon" sizes="57x57" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="<?php echo PROTOCOL_RELATIVE_URL; ?>/images/favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">	    
+	    <!-- END:      Favicon -->
+	        
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-1.9.1.min.js"></script>					
+	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/bootstrap.min.js"></script>		
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-ui-1.9.2.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstorage.min.js"></script>	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.imgpreload.min.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/imagesloaded.pkgd.min.js"></script>	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.blockUI.defaults.js"></script>	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.observor.js"></script>
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/custom.js"></script>
+		
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/custom.css" type="text/css" />				
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/font-awesome.min.css">
+			    
+	    <link rel="stylesheet" id="bootstrapCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/bootstrap.min.css">
+        <link id="themeCSS" media="screen" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/bootstrap.min.css" rel="stylesheet">									     
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/homepage.css" type="text/css" />	
+	    		
+		<!-- SmartMenus -->
+		<link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/smartmenus/jquery.smartmenus.bootstrap.css" rel="stylesheet">	    
+	    
+	    <!-- Sticky Footer -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/sticky-footer-navbar.css" type="text/css" />	
+	    
+	    <!-- Custom CSS (OpenFace) -->	
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/openface.css" type="text/css" />		    
+	    
+	    <!-- Custom CSS -->	
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/newsfeed.css" type="text/css" />	
+	    
+	    <!-- Indicator -->
+		<link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/indicator.css" type="text/css" />    
+	    
+	    <!-- scrollUp -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/scrollUp.css" />
+	    
+	    <!-- Responsive Calendar -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/responsive-calendar/responsive-calendar.css" type="text/css" />
+	    
+	    <!-- Breakpoints -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/breakpoints.css" type="text/css">
+
+        <!-- Trusted Shops Fonts -->
+        <link href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/trusted-font/trusted.css" rel="stylesheet" type="text/css">
+
+	    <?php
+	        switch( $currentTheme ) {
+	            case 'faceboot':
+	    ?>
+	    
+	    <!-- Custom CSS (Faceboot) -->	
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/extensions.min.css" type="text/css" />	
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/themes/<?php echo $currentTheme; ?>/app.min.css" type="text/css" />
+	    
+	    <?php
+	                break;
+	        }
+	    ?>	
+	    
+        <!-- Bootstrap Datepicker -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker3.min.css" type="text/css">
+	    
+        <!-- Comments -->
+	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/comment.css" type="text/css">	    
+
+        <!-- DataTables -->
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/datatables/dataTables.bootstrap.min.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/datatables/responsive/responsive.bootstrap.min.css" type="text/css">
+
+        <?php 
+			$layoutType = '';
+
+            if( @$_SESSION['user']['user_prefs']['site_layout_type'] == 'fluid' ) {
+                $layoutType = '-fluid';
+            } elseif ( SITE_DEFAULT_LAYOUT_TYPE == 'fluid' ) {
+                $layoutType = '-fluid';
+            }
+        ?>
+	</head>
+
+	<body>
+		<!-- START:		blockUI -->
+		<?php if( (int)SITE_USE_BLOCKUI == 1 AND (int)IS_MOBILE != 1 ): ?>
+			<div style="display: block" class="blockUI"></div>
+			<div style="display: block; z-index: 1000; border: medium none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: fixed;" class="blockUI blockOverlay"></div>
+			<div style="display: block; z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; cursor: wait;" class="blockUI blockMsg blockPage"><?php echo SITE_DEFAULT_PRELOADER_IMAGE_PATH; ?></div>
+		<?php endif; ?>		
+		<!-- END:		blockUI -->
+		
+        <?php 
+			echo $this->partial(
+				'partials/header/navbar.phtml', 
+				array(
+    				'type' => $layoutType
+				)
+			); 
+		?>
+		
+	    <div class="container<?php echo $layoutType; ?>">
+            <div class="row">
+                <div class="col-lg-2" style="padding-bottom: 10px;">
+                    <div style="position: relative;">
+                        <div>
+                            <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['url_slug']; ?>">
+                                <img class="avatar-sm img-responsive" src="<?php echo $_SESSION['user']['avatar_url']; ?>">
+                            </a>
+                        </div>
+                        
+                        <div style="position: absolute; top: 0; left: 42px;">
+                            <div style="font-size: small;">
+                                <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/<?php echo $_SESSION['user']['url_slug']; ?>">
+                                    <?php echo $_SESSION['user']['first_name']; ?> <?php echo $_SESSION['user']['last_name']; ?>
+                                </a>
+                            </div>
+                            
+                            <div style="font-size: x-small;">
+                                <?php echo $_SESSION['user']['email']; ?>
+                            </div>
+                        </div>                      
+                    </div>                                       
+                </div>
+                
+                <div class="col-lg-10">
+                    <!-- START:     DataTable -->
+                    <table id="datatable-users" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th><?php echo translate('first_name'); ?></th>
+                                <th><?php echo translate('last_name'); ?></th>
+                                <th><?php echo translate('email'); ?></th>
+                                <th><?php echo translate('last_active'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- END:       DataTable -->
+                    
+					<div id="indicator-loading" class="indicator-custom text-center">
+                    	Loading <i class="fa fa-spinner fa-pulse"></i>
+                	</div>
+                
+					<div id="indicator-finished" class="indicator-custom text-center">
+						<i class="fa fa-check"></i> All items loaded                
+					</div>                                                                                   
+                </div>
+                                            
+            </div>
+        </div>
+		
+		<!-- SmartMenus jQuery plugin -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/smartmenus/jquery.smartmenus.js"></script>
+		
+		<!-- SmartMenus jQuery Bootstrap Addon -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/smartmenus/jquery.smartmenus.bootstrap.js"></script>
+		
+		<!-- Bootbox -->							
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootbox/bootbox.js"></script>
+		
+		<!-- jRumble -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.jrumble.min.js"></script>
+		
+	    <!-- JsRender -->	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jsrender/jsrender.min.js"></script>
+		
+		<!-- moment.js -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/moment/moment.min.js"></script>
+        
+        <!-- Livestamp.js -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/livestamp.js"></script>
+		
+	    <?php
+	        switch( $currentTheme ) {
+	            case 'faceboot':
+	    ?>
+	    
+	    <!-- Custom JS (Faceboot) -->	
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/faceboot/extensions.min.js"></script>
+	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/faceboot/app.min.js"></script> 
+	    
+	    <?php
+	                break;
+	        }
+	    ?>	
+	    
+	    <!-- START:    Templates -->
+        <?php echo $this->partial('partials/newsfeed/newsfeed.phtml'); ?>  
+        <?php echo $this->partial('partials/newsfeed/comment.phtml'); ?>  
+	    <!-- END:      Templates -->
+
+        <!-- Q -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/q.min.js"></script>
+
+	    <!-- scrollUp -->
+	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/scrollUp/jquery.scrollUp.min.js"></script>
+
+	    <!-- jsTimezoneDetect -->
+	    <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jstz-1.0.4.min.js"></script>
+
+        <!-- Bootstrap Datepicker -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/bootstrap/extensions/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+
+        <!-- jQuery AutoLink -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-autolink/jquery.autolink.js"></script>
+
+		<!-- jQuery Scroll Stop -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery.scrollstop.js"></script>
+
+		<!-- Newsfeed:  Infinite Scroll -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/openface/newsfeed/scroll.js"></script>
+
+		<!-- Responsive Calendar -->
+		<script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/responsive-calendar/responsive-calendar.min.js"></script>
+
+        <!-- jQuery.AutoImage -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/jquery-autoimage/jquery.autoimage.js"></script>
+
+        <!-- DataTables -->
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/datatables/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/datatables/dataTables.bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/datatables/responsive/dataTables.responsive.min.js"></script>
+        <script type="text/javascript" src="<?php echo PROTOCOL_RELATIVE_URL; ?>/js/datatables/responsive/responsive.bootstrap.min.js"></script>
+
+		<!-- JsViews -->	    
+		<script type="text/javascript">
+            $.views.converters('nltobr', function(val) {
+                return val.replace(/\\n/g, '<br />')
+            });  
+		</script>
+
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                // scrollUp
+                $.scrollUp({
+                    scrollName: 'scrollUp',      // Element ID
+                    scrollDistance: 300,         // Distance from top/bottom before showing element (px)
+                    scrollFrom: 'top',           // 'top' or 'bottom'
+                    scrollSpeed: 300,            // Speed back to top (ms)
+                    easingType: 'linear',        // Scroll to top easing (see http://easings.net/)
+                    animation: 'fade',           // Fade, slide, none
+                    animationSpeed: 200,         // Animation speed (ms)
+                    scrollTrigger: false,        // Set a custom triggering element. Can be an HTML string or jQuery object
+                    scrollTarget: false,         // Set a custom target element for scrolling to. Can be element or number
+                    scrollText: 'Scroll to top', // Text for element, can contain HTML
+                    scrollTitle: false,          // Set a custom <a> title if required.
+                    scrollImg: true,            // Set true to use image
+                    activeOverlay: false,        // Set CSS color to display scrollUp active point, e.g '#00FFFF'
+                    zIndex: 2147483647           // Z-Index for the overlay
+                });
+
+                // image preloading
+                $.imgpreload([
+                    BASEURL + '/images/preloader/168.gif'
+                ], {
+                    each: function() {
+                        // this = dom image object
+                        // check for success with: $(this).data('loaded')
+                        // callback executes on every image load
+                    },
+                    all: function() {
+                        // this = array of dom image objects
+                        // check for success with: $(this[i]).data('loaded')
+                        // callback executes when all images are loaded
+                    }
+                });
+
+                $('#datatable-users').DataTable( {
+                    'responsive': true,
+                    'deferRender': true,
+                    'serverSide': true,
+                    'processing': true,
+                    'ajax': {
+                        'url': BASEURL + '/users/ajax',
+                        'type': 'POST',
+                        'data': function ( d ) {
+                            d.method = 'datatables-list';
+                        }
+                    },
+                    'dom': "<'row'<'col-sm-6'l><'col-sm-6'f>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>" + "<'row'<'col-sm-6'l><'col-sm-6'f>>",
+                    'order': [[ 1, 'asc' ]],
+                    'lengthMenu': [[10, 25, 50, 100, 200, 500, 1000, -1], [10, 25, 50, 100, 200, 500, 1000, translate('all')]],
+                    'pageLength': 200,
+                    'columnDefs': [
+                        {
+                            // The `data` parameter refers to the data for the cell (defined by the
+                            // `data` option, which defaults to the column being worked with, in
+                            // this case `data: 0`.
+                            'render': function ( data, type, row ) {
+                                if( data ) {
+                                    data = '<a href="' + BASEURL + '/' + row[4] +'">'+ data +'</a>';
+                                } else {
+                                    data = '&mdash;';
+                                }
+
+                                return data;
+                            },
+                            'targets': [0,1]
+                        },
+                        {
+                            // The `data` parameter refers to the data for the cell (defined by the
+                            // `data` option, which defaults to the column being worked with, in
+                            // this case `data: 0`.
+                            'render': function ( data, type, row ) {
+                                if( data ) {
+                                    data = '<a class="noBlockUI" href="mailto:'+ data +'">'+ data +'</a>';
+                                } else {
+                                    data = '&mdash;';
+                                }
+
+                                return data;
+                            },
+                            'targets': [2]
+                        },
+                        {
+                            // The `data` parameter refers to the data for the cell (defined by the
+                            // `data` option, which defaults to the column being worked with, in
+                            // this case `data: 0`.
+                            'render': function ( data, type, row ) {
+                                if( data ) {
+                                    data = '<span data-livestamp="'+ data +'" alt="'+ date( 'F d, Y H:i', data ) +'" title="'+ date( 'F d, Y H:i', data ) +'"><i class="fa fa-spinner fa-spin fa-fw"></i> <span class="sr-only">'+ translate('loading') +'...</span></span>';
+                                } else {
+                                    data = '&mdash;';
+                                }
+
+                                return data;
+                            },
+                            'targets': [3]
+                        }
+                    ]
+                });
+
+                $('body').imagesLoaded( function() {
+                    $.unblockUI();
+                });
+            });
+        </script>
+	</body>	
+</html>

@@ -323,10 +323,10 @@ class User extends Db
 		return $data;		
 	}	
 	
-	private function confirmAccountById( $userId )
+	public function confirmAccountById( $userId, $siteStatus = 'confirmed' )
 	{
 		$sql    = "UPDATE `".DB_TABLE_PREFIX."user` ";
-		$sql   .= "SET `site_status` = 'email_confirmed' ";
+		$sql   .= "SET `site_status` = '".mysqli_real_escape_string( $this->db, $siteStatus )."' ";
 		$sql   .= "WHERE `id` = '".mysqli_real_escape_string( $this->db, $userId )."' ";
 		$sql   .= "LIMIT 1 ";
 		
@@ -364,7 +364,7 @@ class User extends Db
 		if( mysqli_num_rows( $res ) > 0 ) {
 			$data = mysqli_fetch_assoc( $res );
 			
-			$this->addUserToUsergroup( $data['user_id'], SITE_DEFAULT_USERGROUP );
+			$this->addUserToUsergroup( $data['user_id'], SITE_DEFAULT_USERGROUP_ID );
 			$this->deleteConfirmCodeById( $data['id'] );
 			return $this->confirmAccountById( $data['user_id'] );
 		}
@@ -471,7 +471,7 @@ class User extends Db
 		}
 		// END:		send e-mail, if required
 		
-		return 'OK';		
+		return $userId;
 	}
 	
 	public function resetOwnPassword( $email, $recaptchaChallenge, $recaptchaResponse )
@@ -503,7 +503,10 @@ class User extends Db
 	
 		$mail = new PHPMailer;
 		$user = $this->fetchUserDetailsById( $userId );
-	
+
+        	// charset
+        	$mail->CharSet  = 'UTF-8';
+
 		$mail->From		= SITE_EMAIL_ADDRESS;
 		$mail->FromName = SITE_NAME;
 		$mail->addAddress( $user['email'], $user['first_name'].' '.$user['last_name'] );
@@ -539,6 +542,9 @@ class User extends Db
 		
 		$mail = new PHPMailer;
 		$user = $this->fetchUserDetailsBy( 'email', $email );
+
+		// charset
+        	$mail->CharSet = 'UTF-8';
 		
 		$code = randomString( 60 );
 		$this->addPasswordResetCode( $user['id'], $code );
@@ -580,6 +586,9 @@ class User extends Db
 	
 		$mail = new PHPMailer;
 		$user = $this->fetchUserDetailsById( $userId );
+
+		// charset
+        	$mail->CharSet = 'UTF-8';
 	
 		$mail->From		= SITE_EMAIL_ADDRESS;
 		$mail->FromName = SITE_NAME;
@@ -815,6 +824,7 @@ class User extends Db
             if( !$exists ) {
                 // get the username
                 $username = getUsernameFromEmail( $email );
+
                 // START:   check for aliases
                 $existingRecord = $this->getByRegex(
                     array(
@@ -849,6 +859,8 @@ class User extends Db
                     $userId = $data['id'];
                 }
             }
+
+            $userId = (int)$userId;
 
             if( $userId > 0 ) {
                 // init
@@ -1338,6 +1350,9 @@ class User extends Db
         $mail = new PHPMailer;
         $user = $this->fetchUserDetailsById( $userId );
 
+        // charset
+        $mail->CharSet = 'UTF-8';
+
         // e-mail override
         if( !is_null( $email ) ) {
             $user['email'] = $email;
@@ -1388,28 +1403,28 @@ class User extends Db
         $mail->WordWrap = 50;
         $mail->isHTML( true );
 
-        $mail->Subject	= '['.SITE_NAME.'] Password-less Login';
+        $mail->Subject	= '['.SITE_NAME.'] '.translate('email_passwordless_login_subject');
 
         if( strlen( trim( $user['first_name'] ) ) AND strlen( trim( $user['last_name'] ) ) ) {
-            $body = 'Hello '.$user['first_name'].' '.$user['last_name'].', ';
+            $body = translate('email_passwordless_login_greeting').' '.$user['first_name'].' '.$user['last_name'].', ';
         } else {
-            $body = 'Hello, ';
+            $body = translate('email_passwordless_login_greeting').', ';
         }
 
         $targetUrl     = BASEURL.'/login/confirm/code/'.$code;
 
-        $body          .= '<br><br>Please confirm that you wish to log in to your account at '.SITE_NAME.' by following this URL:  ';
+        $body          .= '<br><br>'.translate('email_passwordless_login_body').'  ';
         $body    	   .= '<a href="'.$targetUrl.'">'.$targetUrl.'</a>';
 
         $mail->Body		= $body;
 
         if( strlen( trim( $user['first_name'] ) ) AND strlen( trim( $user['last_name'] ) ) ) {
-            $body = "Hello ".$user['first_name']." ".$user['last_name'].", ";
+            $body = translate('email_passwordless_login_greeting')." ".$user['first_name']." ".$user['last_name'].", ";
         } else {
-            $body = "Hello, ";
+            $body = translate('email_passwordless_login_greeting').", ";
         }
 
-        $body    	   .= "\r\n\r\nPlease confirm that you wish to log in to your account at ".SITE_NAME." by following this URL:  ";
+        $body    	   .= "\r\n\r\n".translate('email_passwordless_login_body')."  ";
         $body    	   .= $targetUrl;
 
         $mail->AltBody = $body;

@@ -108,7 +108,17 @@
 	    <!-- Sticky Footer -->
 	    <link rel="stylesheet" href="<?php echo PROTOCOL_RELATIVE_URL; ?>/css/sticky-footer-navbar.css" type="text/css" />	
 	    
-	    <?php echo SITE_GLOBAL_HTML_HEADER; ?>									     
+	    <?php echo SITE_GLOBAL_HTML_HEADER; ?>
+
+        <?php
+            $layoutType = '';
+
+            if( @$_SESSION['user']['user_prefs']['site_layout_type'] == 'fluid' ) {
+                $layoutType = '-fluid';
+            } elseif ( SITE_DEFAULT_LAYOUT_TYPE == 'fluid' ) {
+                $layoutType = '-fluid';
+            }
+        ?>
 	</head>
 
 	<body>
@@ -120,27 +130,19 @@
 		<?php endif; ?>		
 		<!-- END:		blockUI -->	
 		<div id="fb-root"></div>
-	    <script type="text/javascript">
-	      window.fbAsyncInit = function() {
-	        FB.init({
-	          appId      : '<?php echo SITE_FACEBOOK_APP_ID; ?>',
-	          xfbml      : true,
-	          version    : 'v2.0'
-	        });
-	      };
-	      (function(d, s, id){
-	         var js, fjs = d.getElementsByTagName(s)[0];
-	         if (d.getElementById(id)) {return;}
-	         js = d.createElement(s); js.id = id;
-	         js.src = "//connect.facebook.net/en_US/sdk.js";
-	         fjs.parentNode.insertBefore(js, fjs);
-	       }(document, 'script', 'facebook-jssdk'));
-	    </script>
-	    <?php echo SITE_GLOBAL_HTML_BODY_START; ?>		
+
+	    <?php echo SITE_GLOBAL_HTML_BODY_START; ?>
+
+        <?php
+            echo $this->partial(
+                'partials/header/navbar.phtml',
+                array(
+                    'type' => $layoutType
+                )
+            );
+        ?>
 		
-        <?php echo $this->partial('partials/header/navbar.phtml'); ?>
-		
-	    <div class="container-fluid">		      	
+	    <div class="container<?php echo $layoutType; ?>">
 	      	<div>
 		        <div class="row">
 		          <div class="col-lg-12">
@@ -191,14 +193,7 @@
 				$('body').imagesLoaded( function() {
 					$.unblockUI();
 				});																    
-		    });	
-		    	    				    
-			// Google+
-		  	(function() {
-		    	var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-		    	po.src = 'https://apis.google.com/js/plusone.js?onload=googleplus_callback_onload';
-		    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-		  	})(); 		    		    				    
+		    });
 		</script>
 				
 		<!-- SmartMenus -->

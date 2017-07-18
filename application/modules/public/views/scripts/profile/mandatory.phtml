@@ -47,9 +47,36 @@
 										  	
             				<form class="" action="" method="POST" name="frmUserUpdate" id="frmUserUpdate">
             					<?php foreach( $_SESSION['user']['required_data'] AS $key => $value ): ?>
-                				    <div class="form-group">
-                				        <input autocomplete="off" type="text" class="form-control input-lg" placeholder="<?php echo translate( $value ); ?>" id="frm<?php echo $value; ?>" name="<?php echo $value; ?>" data-required="1">
-                				    </div>
+                                    <?php
+                                        switch( $value ) {
+                                            case 'gender':
+                                     ?>
+                                        <div class="form-group">
+                                            <select id="frm<?php echo $value; ?>" name="<?php echo $value; ?>" class="form-control input-lg" data-required="1">
+                                                <option value="">
+                                                    <?php echo translate('gender'); ?>
+                                                </option>
+
+                                                <option value="male">
+                                                    <?php echo translate('male'); ?>
+                                                </option>
+
+                                                <option value="female">
+                                                    <?php echo translate('female'); ?>
+                                                </option>
+                                            </select>
+                                        </div>
+                                     <?php
+                                                break;
+
+                                            default:
+                                    ?>
+                                                <div class="form-group">
+                                                    <input autocomplete="off" type="text" class="form-control input-lg" placeholder="<?php echo translate( $value ); ?>" id="frm<?php echo $value; ?>" name="<?php echo $value; ?>" data-required="1">
+                                                </div>
+                                    <?php
+                                        }
+                                    ?>
             				    <?php endforeach; ?>
             				    
             				    <div class="form-group">
@@ -86,7 +113,7 @@
 						type: 'POST',
 						url: BASEURL + '/users/ajax',
 						data: { 
-							method: 'update',
+							method: 'updateMandatory',
 							data: formParams
 						},
 						complete: function( jqXHR, textStatus ) {

@@ -73,7 +73,29 @@
 	              			</ul>
 	            		</li>
 	            	<?php endif; ?>			            		
-	            <?php endif; ?>			             		             
+	            <?php endif; ?>
+
+                <li class="dropdown">
+                    <a id="menuCompany" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo translate('company');?> <span class="caret"></span></a>
+                    <ul aria-labelledby="menuCompany" class="dropdown-menu" id="dropdownCompany">
+                        <li>
+                            <a href="<?php echo PROTOCOL_RELATIVE_URL.'/company/directory'; ?>">
+                                <?php echo translate('directory'); ?>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!--li class="dropdown">
+                    <a id="menuGroups" href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo translate('groups');?> <span class="caret"></span></a>
+                    <ul aria-labelledby="menuGroups" class="dropdown-menu" id="dropdownGroups">
+                        <li>
+                            <a href="<?php echo PROTOCOL_RELATIVE_URL.'/groups'; ?>">
+                                <?php echo translate('all'); ?>
+                            </a>
+                        </li>
+                    </ul>
+                </li-->
       		</ul>
 
 			<!-- START:	Search Form -->

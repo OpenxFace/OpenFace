@@ -2,7 +2,7 @@
             <div id="statusContainer-{{:id}}" class="panel panel-default">
                 <div class="panel-heading">
                     <div class="dropdown pull-right">
-                        {{if current_user.uuid == owner.uuid}}
+                        {{if current_user.uuid == owner.uuid || current_user.uuid == timeline_owner.uuid}}
                         <a id="statusAction-{{:id}}" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
                             <i class="fa fa-angle-down"></i>
                         </a> 
@@ -36,7 +36,7 @@
                             </div>
 
                             <div class="pull-left" style="vertical-align: middle;">
-                                <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/{{:owner.url_slug}}">{{:owner.first_name}} {{:owner.last_name}}</a>
+                                <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/{{:owner.url_slug}}">{{:owner.first_name}} {{:owner.last_name}}</a> {{if owner.uuid != timeline_owner.uuid}}<?php echo translate('posted_on_timeline_of'); ?> <a href="<?php echo PROTOCOL_RELATIVE_URL; ?>/{{:timeline_owner.url_slug}}">{{:timeline_owner.first_name}} {{:timeline_owner.last_name}}</a>{{/if}}
                                 <br>
                                 <i style="font-size: small;" class="fa fa-clock-o"></i> 
                                 <span style="font-size: small;" data-livestamp="{{:date}}">
@@ -50,6 +50,16 @@
                 <div class="panel-body">
                     <div id="statusText-{{:id}}" class="statusText">
                         {{nltobr:status}}
+                    </div>
+
+                    <div id="statusMedia-{{:id}}" style="margin-top: 10px;">
+                        {{if media}}
+                            <div id="animated-thumbnails-{{:id}}">
+                            {{for media}}
+                                <a href="{{:url}}" class="noBlockUI"><img class="img-thumbnail" src="{{:url}}" style="height: 100px;"></a>
+                            {{/for}}
+                            </div>
+                        {{/if}}
                     </div>
 
                     <div class="clearfix"></div>

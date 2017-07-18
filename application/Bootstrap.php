@@ -235,6 +235,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	mysqli_set_charset( $mysqli, $db['charset'] ); 
 
     	// save in registry
+        Zend_Registry::set( 'DB_DETAILS', $db );
     	Zend_Registry::set( 'DB_CONNECTION', $mysqli );    	
     }   
 
@@ -247,7 +248,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {        
     	global $SITE_LANGUAGES; 
 	   	
-        $Language	= new Language();
+        $Language		= new Language();
         $SITE_LANGUAGES		= $Language->fetchActiveLanguages();
         
         if( isset( $_SESSION['user']['lang_override'] ) ) {
@@ -275,6 +276,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         if( $_SESSION['user']['language_id'] != $siteDefaultLanguageId ) {
         	$_SESSION['site']['phrases'] = array_merge( $siteDefaultPhrases, $_SESSION['site']['phrases'] );
         }
+
+        $_SESSION['user']['selected_locale'] = @$_SESSION['user']['lang_override'] ? $Language->fetchLocaleIdByLanguageId( $_SESSION['user']['language_id'] ) : $_SESSION['user']['locale'];
     }
 
     protected function _setRunEnv()

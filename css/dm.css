@@ -1,0 +1,23 @@
+.msg-date {
+    background: none;
+    text-align: center;
+    font-size: small;
+    border: none;
+    border-bottom-width: medium;
+    border-bottom-style: none;
+    border-bottom-color: currentcolor;
+    box-shadow: none;
+    border-bottom: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+.msg-wrap .media-heading {
+    font-weight: 700;
+}
+
+textarea {
+    box-sizing: border-box;
+    max-height: 160px;
+    min-height: 38px;
+    overflow-x: hidden;
+}

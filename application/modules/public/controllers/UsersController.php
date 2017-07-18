@@ -45,8 +45,79 @@ class UsersController extends Zend_Controller_Action
 			$json	= array();			
 			
 			switch( $method ) {
+                case 'datatables-list':
+                    $Datatables = new Datatables( 'user' );
+                    $columns    = array(
+                        'first_name',
+                        'last_name',
+                        'email',
+                        'last_active',
+                        'url_slug',
+                    );
+
+                    $result = $Datatables->get( $_POST, $columns );
+                    $json   = $result;
+
+                    break;
+
                 case 'update':
                     $result	= $this->_User->updateSelf( $_POST['data'] );
+
+                    if( $result > 0 ) {
+                        $json['status'] = 'OK';
+                    } else {
+                        $json['status'] = 'ERROR';
+                        $json['error']	= 'NOT_UPDATED';
+                    }
+
+                    break;
+
+                case 'updateMandatory':
+                    // update URL Slug
+                    if( strlen( @$_POST['data']['first_name'] ) AND strlen( @$_POST['data']['last_name'] ) ) {
+                        $_POST['data']['url_slug'] = $_POST['data']['first_name'].$_POST['data']['last_name'];
+
+                        // slugify
+                        $_POST['data']['url_slug'] = url_slug(
+                            $_POST['data']['url_slug'],
+                            array(
+                                'delimiter'     => '',
+                                'lowercase'     => false,
+                                'transliterate' => true,
+                            )
+                        );
+                    }
+
+                    // check if URL Slug exists
+                    $urlSlugExists = false;
+                    $existingUrlSlug = $this->_User->getBy(
+                        array(
+                            'url_slug' => $_POST['data']['url_slug']
+                        )
+                    );
+
+                    if( !empty( $existingUrlSlug ) ) {
+                        $urlSlugExists = true;
+                        $i = 0;
+                    }
+
+                    while( $urlSlugExists ) {
+                        $_POST['data']['url_slug'] = $_POST['data']['url_slug'].'-'.$i++;
+
+                        $existingUrlSlug = $this->_User->getBy(
+                            array(
+                                'url_slug' => $_POST['data']['url_slug']
+                            )
+                        );
+
+                        if( empty( $existingUrlSlug ) ) {
+                            $urlSlugExists = false;
+                        }
+                    }
+
+                    // result
+                    $result	= $this->_User->updateSelf( $_POST['data'] );
+
                     if( $result > 0 ) {
                         $json['status'] = 'OK';
                     } else {

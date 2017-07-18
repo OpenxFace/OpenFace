@@ -1,7 +1,3 @@
-<div id="currentDate"></div>
-
-<hr>
-
 <!-- Responsive calendar - START -->
 <div id="calendarRightSidebar" class="responsive-calendar">
 	<div class="controls">
@@ -37,7 +33,7 @@
         <?php
             $locale = $_SESSION['user']['selected_locale'];
 
-            if( $locale != 'en-us' ) {
+            if( $locale != 'en' ) {
         ?>
             $('.responsive-calendar').responsiveCalendar({
                 monthChangeAnimation: false,
@@ -62,29 +58,21 @@
         <?php
             }
         ?>
+	
+        var SET_DATE = true;
+        var AUTO_DATE_SET;
 
-<<<<<<< HEAD
-        // set the date & time
-        $('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
-
-            // update the date & time
-        setInterval( function() {
-            $('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
-
+        // update the date & time
+        AUTO_DATE_SET = setInterval( function() {
             // set today as active
             $('#calendarRightSidebar .days .day.today').addClass('active');
-        }, 1000);
-=======
-		// set the date & time
-		$('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
 
-			// update the date & time
-		setInterval( function() {			        
-			$('#currentDate').html( '<i class="fa fa-clock-o"></i> ' + getCurrentDateAndTime() );
+            SET_DATE = false;
 
-			// set today as active
-			$('#calendarRightSidebar .days .day.today').addClass('active');		
-		}, 1000);	        
->>>>>>> origin/master
+            if( !SET_DATE ) {
+                clearInterval( AUTO_DATE_SET );
+            }
+        }, 1000);	
+
     });
 </script>

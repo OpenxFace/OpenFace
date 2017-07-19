@@ -351,24 +351,29 @@ class AutoEmbed
     /**
      * Grabs the response from a remote URL.
      *
-     * @param string $url The remote URL.
-     * @return bool|string False on error, otherwise the response body.
+     * @param	string	$url			The remote URL.
+	 * @param	boolean	$followLocation	CURL_FOLLOWLOCATION
+     * @return	bool|string				False on error, otherwise the response body.
     */
-    public function my_remote_get( $url ) 
+    public function my_remote_get( $url, $followLocation = true ) 
     {
         $handle = curl_init();
+		
         curl_setopt( $handle, CURLOPT_CONNECTTIMEOUT, 5 );
         curl_setopt( $handle, CURLOPT_TIMEOUT, 5 );
         curl_setopt( $handle, CURLOPT_URL, $url);
         curl_setopt( $handle, CURLOPT_RETURNTRANSFER, true );
         curl_setopt( $handle, CURLOPT_SSL_VERIFYHOST, false );
         curl_setopt( $handle, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $handle, CURLOPT_FOLLOWLOCATION, false );
+        curl_setopt( $handle, CURLOPT_FOLLOWLOCATION, $followLocation );
         curl_setopt( $handle, CURLOPT_HEADER, false );
         curl_setopt( $handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0 );
-        $response = curl_exec( $handle );
-        curl_close( $handle );
-        return $response;
+        
+		$response = curl_exec( $handle );        
+		
+		curl_close( $handle );
+        
+		return $response;
     }
 
     /**

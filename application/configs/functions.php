@@ -3293,3 +3293,34 @@ function nltobr( $text )
 {
     return str_replace( array("\r\n","\r","\n","\\r","\\n","\\r\\n"), '<br>', $text );
 }
+
+function mailjet_send_email( $paramsCustom = array() )
+{
+    $paramsDefault = array(
+        'email_system' => 'mailjet',
+        'server' => array(
+            'host' => SITE_MAILJET_SMTP_SERVER_HOST,
+            'port' => SITE_MAILJET_SMTP_SERVER_PORT,
+        ),
+        'smtp' => array(
+            'username' => SITE_MAILJET_SMTP_USERNAME,
+            'password' => SITE_MAILJET_SMTP_PASSWORD,
+        ),
+        'email' => array(
+            'to' => array(
+                'email' => null
+            ),
+            'from' => array(
+                'email' => SITE_EMAIL_ADDRESS
+            ),
+            'body' => array(
+                'html' => null
+            )
+        )
+    );
+    
+    $params = array_merge_recursive( $paramsDefault, $paramsCustom ); 
+    $Email  = new Email;
+
+    return $Email->send( $params );
+}

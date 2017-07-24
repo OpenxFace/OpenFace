@@ -3319,8 +3319,40 @@ function mailjet_send_email( $paramsCustom = array() )
         )
     );
     
-    $params = array_merge_recursive( $paramsDefault, $paramsCustom ); 
+    $params = array_merge_deep( $paramsDefault, $paramsCustom ); 
     $Email  = new Email;
 
     return $Email->send( $params );
+}
+
+function array_merge_deep_array($arrays)
+{
+    $result = array();
+
+    foreach ($arrays as $array) {
+        foreach ($array as $key => $value) {
+            // Renumber integer keys as array_merge_recursive() does. Note that PHP
+            // automatically converts array keys that are integer strings (e.g., '1')
+            // to integers.
+            if (is_integer($key)) {
+                $result[] = $value;
+            }
+            // Recurse when both values are arrays.
+            elseif (isset($result[$key]) && is_array($result[$key]) && is_array($value)) {
+                $result[$key] = array_merge_deep_array(array($result[$key], $value));
+            }
+            // Otherwise, use the latter value, overriding any previous value.
+            else {
+                $result[$key] = $value;
+            }
+        }
+    }
+
+    return $result;
+}
+
+function array_merge_deep()
+{
+    $args = func_get_args();
+    return array_merge_deep_array($args);
 }
